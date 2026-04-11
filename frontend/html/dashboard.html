@@ -1,27 +1,27 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard - Lunetix</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/base.css" />
-  <link rel="stylesheet" href="../css/course-detail.css" />
-  <link rel="stylesheet" href="../css/playground.css" />
-  <link rel="stylesheet" href="../css/projects.css" />
-  <link rel="stylesheet" href="../css/quizzes.css" />
-  <link rel="stylesheet" href="../css/community.css" />
-  <link rel="stylesheet" href="../css/certificates.css" />
-  <link rel="stylesheet" href="../css/analytics.css" />
-  <link rel="stylesheet" href="../css/settings.css" />
-  <link rel="stylesheet" href="../css/bookmarks.css" />
-  <link rel="stylesheet" href="../css/dashboard-page.css" />
+  <link rel="stylesheet" href="/frontend/css/style.css" />
+  <link rel="stylesheet" href="/frontend/css/base.css" />
+  <link rel="stylesheet" href="/frontend/css/course-detail.css" />
+  <link rel="stylesheet" href="/frontend/css/playground.css" />
+  <link rel="stylesheet" href="/frontend/css/projects.css" />
+  <link rel="stylesheet" href="/frontend/css/quizzes.css" />
+  <link rel="stylesheet" href="/frontend/css/community.css" />
+  <link rel="stylesheet" href="/frontend/css/certificates.css" />
+  <link rel="stylesheet" href="/frontend/css/analytics.css" />
+  <link rel="stylesheet" href="/frontend/css/settings.css" />
+  <link rel="stylesheet" href="/frontend/css/bookmarks.css" />
+  <link rel="stylesheet" href="/frontend/css/dashboard-page.css" />
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 <div class="app-layout">
 
-  <!-- ══ SIDEBAR ══ -->
+  <!-- -- SIDEBAR -- -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <div class="logo-icon">
@@ -47,7 +47,7 @@
       </ul>
     </nav>
     <div class="sidebar-upgrade">
-      <div style="font-size:18px;margin-bottom:6px">👑</div>
+      <div style="font-size:18px;margin-bottom:6px">??</div>
       <h4>Upgrade to Pro</h4>
       <p>Unlock all courses, AI tools, and advanced analytics.</p>
       <button class="btn btn-primary" onclick="showUpgradeModal()">Upgrade Now</button>
@@ -56,12 +56,12 @@
 
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
-  <!-- ══ UPGRADE MODAL ══ -->
+  <!-- -- UPGRADE MODAL -- -->
   <div id="upgrade-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:400;align-items:center;justify-content:center;padding:20px">
     <div class="upgrade-modal-box">
-      <button onclick="closeUpgradeModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+      <button onclick="closeUpgradeModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">?</button>
       <div class="upgrade-header">
-        <div style="font-size:32px;margin-bottom:8px">👑</div>
+        <div style="font-size:32px;margin-bottom:8px">??</div>
         <h2 style="font-size:22px;font-weight:800;margin-bottom:6px">Upgrade to <span style="background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Pro</span></h2>
         <p style="font-size:13px;color:rgba(255,255,255,0.6)">Unlock the full Lunetix experience</p>
       </div>
@@ -119,23 +119,23 @@
       <div style="text-align:center;margin-top:16px">
         <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px">Metode pembayaran yang diterima</div>
         <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
-          <span class="upgrade-pay-badge">💳 Kartu Kredit</span>
-          <span class="upgrade-pay-badge">🏦 Transfer Bank</span>
-          <span class="upgrade-pay-badge">📱 GoPay</span>
-          <span class="upgrade-pay-badge">📱 OVO</span>
-          <span class="upgrade-pay-badge">📱 DANA</span>
+          <span class="upgrade-pay-badge">?? Kartu Kredit</span>
+          <span class="upgrade-pay-badge">?? Transfer Bank</span>
+          <span class="upgrade-pay-badge">?? GoPay</span>
+          <span class="upgrade-pay-badge">?? OVO</span>
+          <span class="upgrade-pay-badge">?? DANA</span>
         </div>
       </div>
       <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.3)">
-        🔒 Pembayaran aman · Batalkan kapan saja · Garansi 7 hari
+        ?? Pembayaran aman � Batalkan kapan saja � Garansi 7 hari
       </div>
     </div>
   </div>
 
-  <!-- ══ CHECKOUT MODAL ══ -->
+  <!-- -- CHECKOUT MODAL -- -->
   <div id="checkout-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:center;justify-content:center;padding:20px">
     <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:420px;padding:28px;position:relative">
-      <button onclick="closeCheckoutModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">✕</button>
+      <button onclick="closeCheckoutModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">?</button>
       <h3 style="font-size:16px;font-weight:700;margin-bottom:4px" id="checkout-title">Upgrade to Pro</h3>
       <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px" id="checkout-subtitle">Rp 99.000 / bulan</div>
       <div style="display:grid;gap:12px;margin-bottom:20px">
@@ -174,23 +174,23 @@
       <button class="btn btn-primary btn-full" style="padding:12px;font-size:14px" onclick="processPayment()">
         <i data-lucide="lock" style="width:14px;height:14px"></i> Bayar Sekarang
       </button>
-      <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">🔒 Transaksi aman · SSL encrypted</div>
+      <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">?? Transaksi aman � SSL encrypted</div>
     </div>
   </div>
 
-  <!-- ══ COURSE DETAIL MODAL ══ -->
+  <!-- -- COURSE DETAIL MODAL -- -->
   <div class="course-detail-overlay" id="course-modal">
     <div class="course-detail-modal">
       <div class="cd-hero">
-        <button class="cd-close" onclick="closeCourseModal()">✕</button>
-        <span class="cd-hero-emoji">🤖</span>
+        <button class="cd-close" onclick="closeCourseModal()">?</button>
+        <span class="cd-hero-emoji">??</span>
         <h1>Course Title</h1>
         <p>Course description goes here.</p>
         <div class="cd-hero-meta">
-          <span class="cd-meta-level">📊 Beginner</span>
-          <span class="cd-meta-duration">⏱️ 8h 30m</span>
-          <span class="cd-meta-students">👥 2.1k students</span>
-          <span class="cd-meta-rating">⭐ 4.8</span>
+          <span class="cd-meta-level">?? Beginner</span>
+          <span class="cd-meta-duration">?? 8h 30m</span>
+          <span class="cd-meta-students">?? 2.1k students</span>
+          <span class="cd-meta-rating">? 4.8</span>
         </div>
       </div>
       <div class="cd-tabs">
@@ -212,7 +212,7 @@
     </div>
   </div>
 
-  <!-- ══ MAIN ══ -->
+  <!-- -- MAIN -- -->
   <div class="main-content">
 
     <!-- TOPBAR -->
@@ -224,7 +224,7 @@
       <div class="search-bar" id="topbar-search-wrap">
         <span class="search-icon"><i data-lucide="search" style="width:14px;height:14px"></i></span>
         <input type="text" id="topbar-search" placeholder="Search anything..." onkeydown="handleTopbarSearch(event)" oninput="showSearchSuggestions(this.value)" autocomplete="off" />
-        <kbd style="font-size:10px;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px">⌘K</kbd>
+        <kbd style="font-size:10px;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px">?K</kbd>
         <div id="search-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,0.5);z-index:200;overflow:hidden"></div>
       </div>
       <div class="topbar-right">
@@ -247,7 +247,7 @@
               <button onclick="markAllRead()" style="font-size:11px;color:var(--accent-light);background:none;border:none;cursor:pointer">Tandai semua dibaca</button>
             </div>
             <div id="notif-list"></div>
-            <div class="tb-dd-footer" onclick="window.navigateTo&&navigateTo('analytics');closeAllDropdowns()">Lihat semua aktivitas →</div>
+            <div class="tb-dd-footer" onclick="window.navigateTo&&navigateTo('analytics');closeAllDropdowns()">Lihat semua aktivitas ?</div>
           </div>
         </div>
         <div class="tb-profile-wrap" id="tb-profile-wrap">
@@ -292,7 +292,7 @@
           <div class="db-main">
             <!-- Greeting -->
             <div style="margin-bottom:20px">
-              <h1 id="greeting" style="font-size:24px;font-weight:700;margin-bottom:4px">Good morning! 👋</h1>
+              <h1 id="greeting" style="font-size:24px;font-weight:700;margin-bottom:4px">Good morning! ??</h1>
               <p style="font-size:13px;color:var(--text-secondary)">Ready to level up your AI skills today?</p>
             </div>
 
@@ -359,7 +359,7 @@
             <div class="db-study-tip-card">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
                 <span style="font-size:14px;font-weight:600">AI Study Tip</span>
-                <span style="font-size:14px">✨</span>
+                <span style="font-size:14px">?</span>
               </div>
               <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px" id="db-study-tip">Loading tip...</p>
               <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;width:100%" onclick="window.navigateTo&&navigateTo('playground')">
@@ -383,7 +383,7 @@
             <!-- 7 Day Streak -->
             <div class="card db-streak-card">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-                <span style="font-size:18px">🔥</span>
+                <span style="font-size:18px">??</span>
                 <div>
                   <div style="font-size:13px;font-weight:600">7 Day Streak</div>
                   <div style="font-size:11px;color:var(--text-muted)">Keep it up, you're on fire!</div>
@@ -391,7 +391,7 @@
               </div>
               <div id="db-streak-dots"></div>
               <button class="btn btn-outline" style="width:100%;padding:7px;font-size:11px;margin-top:10px" onclick="window.navigateTo&&navigateTo('analytics')">
-                View Full Analytics →
+                View Full Analytics ?
               </button>
             </div>
           </div>
@@ -428,7 +428,7 @@
 
 
       <!-- PAGE: PLAYGROUND -->
-      <!-- ══ AI PLAYGROUND ══ -->
+      <!-- -- AI PLAYGROUND -- -->
       <div class="page" id="page-playground">
 
         <!-- Header -->
@@ -477,7 +477,7 @@
                   <span class="pg-panel-title">Your Input</span>
                   <div class="pg-input-tabs">
                     <button class="pg-itab active" id="itab-text" onclick="pgSwitchInputTab('text')">Text</button>
-                    <button class="pg-itab" id="itab-code" onclick="pgSwitchInputTab('code')">⌥ Code</button>
+                    <button class="pg-itab" id="itab-code" onclick="pgSwitchInputTab('code')">? Code</button>
                   </div>
                 </div>
                 <textarea id="pg-input" class="pg-textarea" placeholder="Explain how neural networks work in simple terms, and give me an example with Python code" onkeydown="pgHandleKey(event)" oninput="pgAutoResize(this)"></textarea>
@@ -512,7 +512,7 @@
                   </div>
                 </div>
                 <div class="pg-output-footer" id="pg-output-footer" style="display:none">
-                  <span id="pg-gen-time" style="font-size:11px;color:var(--text-muted)">Generated in 2.3s · 512 tokens</span>
+                  <span id="pg-gen-time" style="font-size:11px;color:var(--text-muted)">Generated in 2.3s � 512 tokens</span>
                   <div style="display:flex;gap:8px">
                     <button class="pg-icon-btn" title="Copy" onclick="pgCopyOutput()"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
                     <button class="pg-icon-btn" title="Thumbs up"><i data-lucide="thumbs-up" style="width:14px;height:14px"></i></button>
@@ -559,7 +559,7 @@
             <div class="pg-panel" style="padding:16px;margin-bottom:14px">
               <div style="font-size:13px;font-weight:600;margin-bottom:12px">Model</div>
               <div id="pg-model-list"></div>
-              <a href="#" style="font-size:11px;color:var(--accent-light);display:block;margin-top:10px">View all models →</a>
+              <a href="#" style="font-size:11px;color:var(--accent-light);display:block;margin-top:10px">View all models ?</a>
             </div>
 
             <!-- Tools -->
@@ -583,7 +583,7 @@
 
 
       <!-- PAGE: PROJECTS -->
-      <!-- ══ PROJECTS ══ -->
+      <!-- -- PROJECTS -- -->
       <div class="page" id="page-projects">
 
         <!-- Header -->
@@ -610,7 +610,7 @@
             <button class="proj-ftab" onclick="filterProjects('completed',this)">Completed</button>
             <button class="proj-ftab" onclick="filterProjects('collab',this)">Collaborations</button>
           </div>
-          <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Recent</span> ▾</div>
+          <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Recent</span> ?</div>
         </div>
 
         <!-- Main layout -->
@@ -669,11 +669,11 @@
             <!-- Earn More Points -->
             <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(157,92,246,0.05));border-color:var(--border-accent)">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-                <span style="font-size:20px">🏆</span>
+                <span style="font-size:20px">??</span>
                 <h4 style="font-size:13px;font-weight:600">Earn More Points</h4>
               </div>
               <div id="proj-earn-list"></div>
-              <a href="#" style="font-size:12px;color:var(--accent-light);margin-top:10px;display:block">Learn how points work →</a>
+              <a href="#" style="font-size:12px;color:var(--accent-light);margin-top:10px;display:block">Learn how points work ?</a>
             </div>
           </div>
         </div>
@@ -720,7 +720,7 @@
 
 
       <!-- PAGE: QUIZZES -->
-      <!-- ══ QUIZZES ══ -->
+      <!-- -- QUIZZES -- -->
       <div class="page" id="page-quizzes">
 
         <!-- LIST VIEW -->
@@ -742,7 +742,7 @@
               <button class="qz-ftab" data-qf="challenge" onclick="filterQuizList('challenge',this)">Challenges</button>
               <button class="qz-ftab" data-qf="favorite" onclick="filterQuizList('favorite',this)">Favorite</button>
             </div>
-            <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Latest</span> ▾</div>
+            <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Latest</span> ?</div>
           </div>
 
           <!-- Main layout: left content + right sidebar -->
@@ -759,7 +759,7 @@
                 <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Available Quizzes</h3>
                 <div id="qz-list"></div>
                 <button style="width:100%;padding:12px;background:none;border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:13px;cursor:pointer;margin-top:4px" onclick="loadMoreQuizzes(this)">
-                  View More Quizzes ▾
+                  View More Quizzes ?
                 </button>
               </div>
             </div>
@@ -800,7 +800,7 @@
 
               <!-- Keep Going -->
               <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(157,92,246,0.08));border-color:var(--border-accent)">
-                <div style="font-size:28px;margin-bottom:8px">🏆</div>
+                <div style="font-size:28px;margin-bottom:8px">??</div>
                 <div style="font-size:14px;font-weight:600;margin-bottom:6px">Keep Going!</div>
                 <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Complete 3 more quizzes to earn a new badge!</div>
                 <div class="progress-bar" style="height:6px;margin-bottom:6px">
@@ -835,7 +835,7 @@
 
 
       <!-- PAGE: COMMUNITY -->
-      <!-- ══ COMMUNITY ══ -->
+      <!-- -- COMMUNITY -- -->
       <div class="page" id="page-community">
 
         <!-- Header -->
@@ -860,7 +860,7 @@
             <button class="cm-ftab" onclick="filterCommunity('Computer Vision',this)">Computer Vision</button>
             <button class="cm-ftab" onclick="filterCommunity('Data Science',this)">Data Science</button>
             <button class="cm-ftab" onclick="filterCommunity('Beginner',this)">Beginner</button>
-            <button class="cm-ftab cm-ftab-more">···</button>
+            <button class="cm-ftab cm-ftab-more">���</button>
           </div>
         </div>
 
@@ -874,7 +874,7 @@
             <!-- Trending Discussions -->
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
               <div style="display:flex;align-items:center;gap:8px">
-                <span style="font-size:16px">🔥</span>
+                <span style="font-size:16px">??</span>
                 <span style="font-size:14px;font-weight:600">Trending Discussions</span>
               </div>
               <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)">
@@ -916,7 +916,7 @@
             <div class="card" style="margin-bottom:14px">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
                 <div style="display:flex;align-items:center;gap:6px">
-                  <span style="font-size:16px">🏆</span>
+                  <span style="font-size:16px">??</span>
                   <span style="font-size:13px;font-weight:600">Top Learners</span>
                 </div>
                 <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text-muted);font-size:11px;outline:none">
@@ -925,7 +925,7 @@
               </div>
               <div id="leaderboard-list"></div>
               <button style="width:100%;padding:8px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:12px;cursor:pointer;margin-top:10px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
-                View Leaderboard →
+                View Leaderboard ?
               </button>
             </div>
 
@@ -933,7 +933,7 @@
             <div class="card" style="margin-bottom:14px">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
                 <div style="display:flex;align-items:center;gap:6px">
-                  <span style="font-size:14px">🔥</span>
+                  <span style="font-size:14px">??</span>
                   <span style="font-size:13px;font-weight:600">Trending Topics</span>
                 </div>
                 <a href="#" style="font-size:11px;color:var(--accent-light)">View all</a>
@@ -944,7 +944,7 @@
             <!-- Weekly Challenge -->
             <div class="cm-challenge-card">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                <span style="font-size:18px">🎯</span>
+                <span style="font-size:18px">??</span>
                 <span style="font-size:13px;font-weight:600">Weekly Challenge</span>
               </div>
               <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px">
@@ -952,7 +952,7 @@
               </p>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
                 <span style="font-size:11px;color:var(--text-muted)">Reward</span>
-                <span style="font-size:12px;font-weight:600;color:#fbbf24">+150 XP ⭐</span>
+                <span style="font-size:12px;font-weight:600;color:#fbbf24">+150 XP ?</span>
               </div>
               <div class="progress-bar" style="height:5px;margin-bottom:6px">
                 <div class="progress-fill" style="width:33%"></div>
@@ -970,7 +970,7 @@
 
 
       <!-- PAGE: CERTIFICATES -->
-      <!-- ══ CERTIFICATES ══ -->
+      <!-- -- CERTIFICATES -- -->
       <div class="page" id="page-certificates">
 
         <!-- Header -->
@@ -1046,7 +1046,7 @@
 
 
       <!-- PAGE: ANALYTICS -->
-      <!-- ══ ANALYTICS ══ -->
+      <!-- -- ANALYTICS -- -->
       <div class="page" id="page-analytics">
 
         <!-- Header -->
@@ -1054,7 +1054,7 @@
           <div>
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
               <h2 style="font-size:20px;font-weight:700">Analytics</h2>
-              <span style="font-size:18px">✨</span>
+              <span style="font-size:18px">?</span>
             </div>
             <p style="font-size:13px;color:var(--text-secondary)">Track your learning journey and discover insights to help you grow faster.</p>
           </div>
@@ -1153,7 +1153,7 @@
             </div>
             <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Keep it up! Consistency is the key to mastery.</div>
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-              <div style="font-size:32px">🔥</div>
+              <div style="font-size:32px">??</div>
               <div>
                 <div style="font-size:24px;font-weight:700" id="an-streak-val">7 days</div>
                 <div style="font-size:11px;color:var(--text-muted)">Current Streak</div>
@@ -1223,7 +1223,7 @@
 
 
       <!-- PAGE: BOOKMARKS -->
-      <!-- ══ BOOKMARKS ══ -->
+      <!-- -- BOOKMARKS -- -->
       <div class="page" id="page-bookmarks">
 
         <!-- Header -->
@@ -1333,7 +1333,7 @@
             <!-- Tips -->
             <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(157,92,246,0.05));border-color:var(--border-accent)">
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
-                <span style="font-size:18px">💡</span>
+                <span style="font-size:18px">??</span>
                 <span style="font-size:13px;font-weight:600">Tips</span>
               </div>
               <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px">
@@ -1390,14 +1390,14 @@
 
 
       <!-- PAGE: SETTINGS -->
-      <!-- ══ SETTINGS ══ -->
+      <!-- -- SETTINGS -- -->
       <div class="page" id="page-settings">
 
         <!-- Header -->
         <div style="margin-bottom:20px">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
             <h2 style="font-size:20px;font-weight:700">Settings</h2>
-            <span style="font-size:18px">✨</span>
+            <span style="font-size:18px">?</span>
           </div>
           <p style="font-size:13px;color:var(--text-secondary)">Manage your preferences, account, and app settings to personalize your Lunetix experience.</p>
         </div>
@@ -1467,7 +1467,7 @@
                         <div class="st-pref-label">Language</div>
                         <div class="st-pref-sub">Pilih bahasa yang kamu nyaman gunakan.</div>
                       </div>
-                      <select class="st-select"><option>Indonesia</option><option>English</option><option>日本語</option></select>
+                      <select class="st-select"><option>Indonesia</option><option>English</option><option>???</option></select>
                     </div>
                     <div class="st-pref-item">
                       <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="clock" style="width:14px;height:14px;color:#34d399"></i></div>
@@ -1642,7 +1642,7 @@
 
             </div><!-- end st-general -->
 
-            <!-- ── ACCOUNT TAB ── -->
+            <!-- -- ACCOUNT TAB -- -->
             <div class="st-section" id="st-account">
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Account Information</div>
@@ -1702,7 +1702,7 @@
               </div>
             </div>
 
-            <!-- ── NOTIFICATIONS TAB ── -->
+            <!-- -- NOTIFICATIONS TAB -- -->
             <div class="st-section" id="st-notifications">
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Email Notifications</div>
@@ -1733,7 +1733,7 @@
               </div>
             </div>
 
-            <!-- ── PREFERENCES TAB ── -->
+            <!-- -- PREFERENCES TAB -- -->
             <div class="st-section" id="st-preferences">
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Learning Preferences</div>
@@ -1791,7 +1791,7 @@
               </div>
             </div>
 
-            <!-- ── PRIVACY & SECURITY TAB ── -->
+            <!-- -- PRIVACY & SECURITY TAB -- -->
             <div class="st-section" id="st-privacy">
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Change Password</div>
@@ -1864,7 +1864,7 @@
               </div>
             </div>
 
-            <!-- ── BILLING TAB ── -->
+            <!-- -- BILLING TAB -- -->
             <div class="st-section" id="st-billing">
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Current Plan</div>
@@ -1872,7 +1872,7 @@
                 <div style="background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
                   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
                     <div style="display:flex;align-items:center;gap:8px">
-                      <span style="font-size:20px">👑</span>
+                      <span style="font-size:20px">??</span>
                       <div>
                         <div style="font-size:15px;font-weight:700">Free Plan</div>
                         <div style="font-size:11px;color:var(--text-muted)">Basic access to Lunetix features</div>
@@ -1880,7 +1880,7 @@
                     </div>
                     <span class="badge badge-purple">Active</span>
                   </div>
-                  <div style="font-size:12px;color:var(--text-muted)">No billing cycle · Free forever</div>
+                  <div style="font-size:12px;color:var(--text-muted)">No billing cycle � Free forever</div>
                 </div>
                 <!-- Plan comparison -->
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" id="billing-plans"></div>
@@ -1903,7 +1903,7 @@
               </div>
             </div>
 
-            <!-- ── APPEARANCE TAB ── -->
+            <!-- -- APPEARANCE TAB -- -->
             <div class="st-section" id="st-appearance">
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Theme</div>
@@ -1929,7 +1929,7 @@
               </div>
               <div class="card" style="margin-bottom:14px">
                 <div style="font-size:14px;font-weight:600;margin-bottom:4px">Accent Color</div>
-                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Pilih warna aksen favoritmu — langsung diterapkan.</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Pilih warna aksen favoritmu � langsung diterapkan.</div>
                 <div class="st-color-row" id="app-color-row"></div>
               </div>
               <div class="card" style="margin-bottom:14px">
@@ -1937,7 +1937,7 @@
                 <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Sesuaikan ukuran teks untuk kenyamanan membaca.</div>
                 <div class="st-font-row" id="app-font-row"></div>
                 <div id="app-font-preview" style="margin-top:12px;padding:12px;background:var(--input-bg);border-radius:8px;font-size:14px;color:var(--text-secondary);line-height:1.6">
-                  Preview: Belajar AI dengan Lunetix — platform terbaik untuk menguasai Machine Learning dan Deep Learning.
+                  Preview: Belajar AI dengan Lunetix � platform terbaik untuk menguasai Machine Learning dan Deep Learning.
                 </div>
               </div>
               <div class="card" style="margin-bottom:14px">
@@ -2029,7 +2029,7 @@
             <div class="card">
               <div style="font-size:13px;font-weight:600;margin-bottom:12px">Your Plan</div>
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                <span style="font-size:18px">👑</span>
+                <span style="font-size:18px">??</span>
                 <div>
                   <div style="font-size:13px;font-weight:700">Free Plan</div>
                   <div style="font-size:10px;color:var(--text-muted)">Akses terbatas ke fitur dasar</div>
@@ -2042,7 +2042,7 @@
                 <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Sertifikat standar</div>
               </div>
               <button class="btn btn-primary btn-full" style="margin-top:12px;padding:10px;font-size:13px">Upgrade to Pro</button>
-              <a href="#" style="display:block;text-align:center;font-size:11px;color:var(--accent-light);margin-top:8px">Lihat semua fitur →</a>
+              <a href="#" style="display:block;text-align:center;font-size:11px;color:var(--accent-light);margin-top:8px">Lihat semua fitur ?</a>
             </div>
 
           </div>
@@ -2057,15 +2057,15 @@
 <div class="course-detail-overlay" id="course-modal">
   <div class="course-detail-modal">
     <div class="cd-hero">
-      <button class="cd-close" onclick="closeCourseModal()">✕</button>
-      <span class="cd-hero-emoji">🤖</span>
+      <button class="cd-close" onclick="closeCourseModal()">?</button>
+      <span class="cd-hero-emoji">??</span>
       <h1>Course Title</h1>
       <p>Course description goes here.</p>
       <div class="cd-hero-meta">
-        <span class="cd-meta-level">📊 Beginner</span>
-        <span class="cd-meta-duration">⏱️ 8h 30m</span>
-        <span class="cd-meta-students">👥 2.1k students</span>
-        <span class="cd-meta-rating">⭐ 4.8</span>
+        <span class="cd-meta-level">?? Beginner</span>
+        <span class="cd-meta-duration">?? 8h 30m</span>
+        <span class="cd-meta-students">?? 2.1k students</span>
+        <span class="cd-meta-rating">? 4.8</span>
       </div>
     </div>
     <div class="cd-tabs">
@@ -2093,35 +2093,37 @@
   </div>
 </div>
 
-<!-- ══ SCRIPTS ══ -->
-<script src="../js/auth.js"></script>
-<script src="../js/store.js"></script>
+<!-- -- SCRIPTS -- -->
+<script src="/frontend/js/auth.js"></script>
+<script src="/frontend/js/store.js"></script>
 <!-- Course content -->
-<script src="../js/content/course-ml.js"></script>
-<script src="../js/content/course-python-ai.js"></script>
-<script src="../js/content/course-deep-learning.js"></script>
-<script src="../js/content/course-nlp.js"></script>
-<script src="../js/content/course-computer-vision.js"></script>
-<script src="../js/content/course-data-science.js"></script>
-<script src="../js/content/course-rl.js"></script>
-<script src="../js/content/course-ai-ethics.js"></script>
+<script src="/frontend/js/content/course-ml.js"></script>
+<script src="/frontend/js/content/course-python-ai.js"></script>
+<script src="/frontend/js/content/course-deep-learning.js"></script>
+<script src="/frontend/js/content/course-nlp.js"></script>
+<script src="/frontend/js/content/course-computer-vision.js"></script>
+<script src="/frontend/js/content/course-data-science.js"></script>
+<script src="/frontend/js/content/course-rl.js"></script>
+<script src="/frontend/js/content/course-ai-ethics.js"></script>
 <!-- App modules -->
-<script src="../js/courses.js"></script>
-<script src="../js/course-detail.js"></script>
-<script src="../js/playground.js"></script>
-<script src="../js/projects.js"></script>
-<script src="../js/quizzes.js"></script>
-<script src="../js/community.js"></script>
-<script src="../js/certificates.js"></script>
-<script src="../js/analytics.js"></script>
-<script src="../js/bookmarks.js"></script>
-<script src="../js/dashboard-page.js"></script>
-<script src="../js/settings.js"></script>
-<script src="../js/upgrade.js"></script>
-<script src="../js/page-loader.js"></script>
-<script src="../js/pages.js"></script>
-<script src="../js/dashboard.js"></script>
+<script src="/frontend/js/courses.js"></script>
+<script src="/frontend/js/course-detail.js"></script>
+<script src="/frontend/js/playground.js"></script>
+<script src="/frontend/js/projects.js"></script>
+<script src="/frontend/js/quizzes.js"></script>
+<script src="/frontend/js/community.js"></script>
+<script src="/frontend/js/certificates.js"></script>
+<script src="/frontend/js/analytics.js"></script>
+<script src="/frontend/js/bookmarks.js"></script>
+<script src="/frontend/js/dashboard-page.js"></script>
+<script src="/frontend/js/settings.js"></script>
+<script src="/frontend/js/upgrade.js"></script>
+<script src="/frontend/js/page-loader.js"></script>
+<script src="/frontend/js/pages.js"></script>
+<script src="/frontend/js/dashboard.js"></script>
 <script>lucide.createIcons();</script>
 </body>
 </html>
+
+
 
