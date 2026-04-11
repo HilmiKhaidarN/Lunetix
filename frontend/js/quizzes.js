@@ -1,234 +1,209 @@
-﻿// ══════════════════════════════════════════════
-// KURSUS 7: REINFORCEMENT LEARNING
-// ══════════════════════════════════════════════
+// -- QUIZZES --
+// QUIZZES
+// ----------------------------------------------
+const quizBank = [
+  { id:'ml-basics', title:'Machine Learning Basics', desc:'Test your understanding of ML concepts.', icon:'cpu', iconBg:'linear-gradient(135deg,#1e1b4b,#312e81)', iconColor:'#a78bfa', category:'Machine Learning', questions:10, time:'15 min', difficulty:'Beginner', pts:100,
+    qs:[
+      {q:'Apa itu Machine Learning?',opts:['Pemrograman eksplisit','Komputer belajar dari data tanpa diprogram eksplisit','Jenis database','Bahasa pemrograman'],ans:1},
+      {q:'Mana yang termasuk Supervised Learning?',opts:['K-Means','PCA','Linear Regression','DBSCAN'],ans:2},
+      {q:'Apa itu overfitting?',opts:['Model terlalu sederhana','Model hafal training tapi buruk di data baru','Model tidak bisa dilatih','Model terlalu cepat'],ans:1},
+      {q:'Metrik untuk dataset imbalanced?',opts:['Accuracy','F1-Score','MSE','R-squared'],ans:1},
+      {q:'Fungsi Cross-Validation?',opts:['Mempercepat training','Evaluasi model lebih robust','Mengurangi dataset','Meningkatkan akurasi otomatis'],ans:1},
+      {q:'Algoritma cocok untuk klasifikasi teks?',opts:['Linear Regression','Naive Bayes','K-Means','PCA'],ans:1},
+      {q:'Apa itu feature scaling?',opts:['Menambah fitur baru','Normalisasi skala fitur agar seragam','Menghapus fitur','Membuat model lebih besar'],ans:1},
+      {q:'Random Forest adalah contoh dari?',opts:['Single model','Ensemble method','Unsupervised learning','Reinforcement learning'],ans:1},
+      {q:'Apa itu confusion matrix?',opts:['Matriks kebingungan','Tabel performa model klasifikasi','Teknik visualisasi','Metode training'],ans:1},
+      {q:'Perbedaan precision dan recall?',opts:['Tidak ada','Precision: ketepatan positif, Recall: kelengkapan deteksi positif','Precision lebih penting','Recall hanya untuk regresi'],ans:1},
+    ]},
+  { id:'python-ai', title:'Python for AI', desc:'Test your Python skills for AI development.', icon:'code-2', iconBg:'linear-gradient(135deg,#14532d,#166534)', iconColor:'#4ade80', category:'Machine Learning', questions:8, time:'20 min', difficulty:'Beginner', pts:150,
+    qs:[
+      {q:'Library Python untuk komputasi array numerik?',opts:['Pandas','Matplotlib','NumPy','Seaborn'],ans:2},
+      {q:'Output: np.array([1,2,3]).shape?',opts:['(1,3)','(3,)','[3]','3'],ans:1},
+      {q:'Fungsi Pandas untuk statistik deskriptif?',opts:['df.info()','df.describe()','df.head()','df.shape'],ans:1},
+      {q:'Apa itu Broadcasting dalam NumPy?',opts:['Kirim data ke server','Operasi array shape berbeda otomatis','Siarkan hasil','Kompresi data'],ans:1},
+      {q:'Library paling populer untuk deep learning?',opts:['Scikit-learn','Pandas','TensorFlow/PyTorch','Matplotlib'],ans:2},
+      {q:'Cara membaca CSV dengan Pandas?',opts:['pd.open_csv()','pd.read_csv()','pd.load_csv()','pd.import_csv()'],ans:1},
+      {q:'Apa itu list comprehension?',opts:['Cara membuat list panjang','Sintaks ringkas untuk membuat list dari iterable','Fungsi bawaan','Tipe data baru'],ans:1},
+      {q:'Fungsi train_test_split?',opts:['Melatih model','Membagi dataset menjadi training dan testing','Menguji model','Membagi fitur'],ans:1},
+    ]},
+  { id:'dl-basics', title:'Deep Learning Fundamentals', desc:'Challenge yourself with deep learning concepts.', icon:'network', iconBg:'linear-gradient(135deg,#1e3a5f,#1e40af)', iconColor:'#60a5fa', category:'Deep Learning', questions:10, time:'30 min', difficulty:'Intermediate', pts:200,
+    qs:[
+      {q:'Fungsi activation function?',opts:['Mempercepat training','Menambahkan non-linearitas','Mengurangi ukuran model','Inisialisasi weights'],ans:1},
+      {q:'Apa itu Backpropagation?',opts:['Forward pass data','Algoritma hitung gradient & update weights','Teknik regularisasi','Inisialisasi weights'],ans:1},
+      {q:'Mengapa LSTM lebih baik dari RNN biasa?',opts:['Lebih cepat','Memory cell mengatasi vanishing gradient','Lebih sedikit parameter','Tidak perlu training'],ans:1},
+      {q:'Apa itu Transfer Learning?',opts:['Pindah data antar server','Gunakan model pre-trained untuk task baru','Kompresi model','Augmentasi data'],ans:1},
+      {q:'Yang membedakan Transformer dari RNN?',opts:['Lebih banyak layer','Self-Attention Mechanism','Penggunaan CNN','Batch size lebih besar'],ans:1},
+      {q:'Apa itu Dropout?',opts:['Menghapus data','Mematikan neuron acak saat training untuk regularisasi','Teknik optimasi','Jenis activation function'],ans:1},
+      {q:'Apa itu Batch Normalization?',opts:['Normalisasi ukuran batch','Normalisasi aktivasi layer untuk mempercepat training','Teknik augmentasi','Metode inisialisasi'],ans:1},
+      {q:'Optimizer paling populer saat ini?',opts:['SGD','RMSprop','Adam','Adagrad'],ans:2},
+      {q:'Apa itu vanishing gradient?',opts:['Gradient terlalu besar','Gradient mengecil eksponensial saat backprop di layer dalam','Gradient hilang dari memori','Teknik regularisasi'],ans:1},
+      {q:'CNN cocok untuk data apa?',opts:['Time series','Teks','Gambar/data grid','Tabular'],ans:2},
+    ]},
+  { id:'nlp-basics', title:'Natural Language Processing', desc:'Test your NLP knowledge and text processing skills.', icon:'message-square', iconBg:'linear-gradient(135deg,#3b1f5e,#6d28d9)', iconColor:'#c084fc', category:'NLP', questions:8, time:'25 min', difficulty:'Intermediate', pts:150,
+    qs:[
+      {q:'Apa itu Tokenization?',opts:['Enkripsi teks','Memecah teks menjadi unit kecil','Menerjemahkan teks','Mengompres teks'],ans:1},
+      {q:'Perbedaan TF-IDF vs Bag of Words?',opts:['TF-IDF lebih lambat','TF-IDF mempertimbangkan frekuensi di seluruh dokumen','BoW lebih akurat','Tidak ada perbedaan'],ans:1},
+      {q:'Keunggulan Word2Vec dibanding BoW?',opts:['Lebih cepat','Menangkap makna semantik antar kata','Lebih sedikit memori','Tidak perlu training'],ans:1},
+      {q:'Apa itu Named Entity Recognition?',opts:['Mengenali nama file','Identifikasi entitas (orang, tempat, org) dalam teks','Memberi nama model','Teknik tokenisasi'],ans:1},
+      {q:'Apa itu RAG?',opts:['Teknik training baru','Gabungkan retrieval dokumen dengan generasi LLM','Jenis tokenizer','Metode fine-tuning'],ans:1},
+      {q:'BERT adalah model jenis apa?',opts:['Autoregressive decoder','Bidirectional encoder','CNN untuk teks','RNN biasa'],ans:1},
+      {q:'Apa itu stop words?',opts:['Kata yang menghentikan program','Kata umum yang sering dihapus saat preprocessing','Kata kunci penting','Kata asing'],ans:1},
+      {q:'Perbedaan stemming dan lemmatization?',opts:['Tidak ada','Stemming potong akhiran kasar, lemmatization kembalikan ke bentuk dasar kamus','Lemmatization lebih cepat','Stemming lebih akurat'],ans:1},
+    ]},
+  { id:'cv-basics', title:'Computer Vision Basics', desc:'Test your understanding of CV concepts.', icon:'eye', iconBg:'linear-gradient(135deg,#1c3a2e,#065f46)', iconColor:'#34d399', category:'Computer Vision', questions:5, time:'10 min', difficulty:'Beginner', pts:120,
+    qs:[
+      {q:'Berapa channel gambar RGB?',opts:['1','2','3','4'],ans:2},
+      {q:'Fungsi Pooling Layer dalam CNN?',opts:['Menambah parameter','Mengurangi dimensi spatial','Meningkatkan resolusi','Menambah channel'],ans:1},
+      {q:'YOLO terkenal karena?',opts:['Akurasi tertinggi','Kecepatan real-time detection','Ukuran model kecil','Mudah dilatih'],ans:1},
+      {q:'Apa itu Transfer Learning dalam CV?',opts:['Pindah gambar antar server','Gunakan model pre-trained ImageNet untuk task baru','Augmentasi data','Kompresi gambar'],ans:1},
+      {q:'Library Python paling populer untuk CV?',opts:['Pandas','NumPy','OpenCV','Matplotlib'],ans:2},
+    ]},
+];
 
-const courseRL = {
-  id: 7,
-  curriculum: [
-    {
-      title: "Modul 1: Fondasi Reinforcement Learning",
-      lessons: [
-        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
-        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
-        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
-        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
-      ]
-    },
-    {
-      title: "Modul 2: Tabular Methods",
-      lessons: [
-        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
-        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
-        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
-        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
-      ]
-    },
-    {
-      title: "Modul 3: Deep Reinforcement Learning",
-      lessons: [
-        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
-        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
-        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
-        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
-        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
-      ]
-    },
-    {
-      title: "Modul 4: Advanced RL",
-      lessons: [
-        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
-        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
-        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
-        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
-      ]
-    }
-  ],
-  quiz: [
-    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
-    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
-    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
-    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
-    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
-  ],
-  sources: [
-    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
-    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
-    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
-    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
-    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
-    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
-    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
-  ]
-};
+const quizCategories = [
+  { name:'Machine Learning', count:12, icon:'cpu',          bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+  { name:'Deep Learning',    count:8,  icon:'network',      bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+  { name:'NLP',              count:6,  icon:'message-square',bg:'rgba(168,85,247,0.15)',color:'#c084fc' },
+  { name:'Computer Vision',  count:7,  icon:'eye',          bg:'rgba(16,185,129,0.15)', color:'#34d399' },
+  { name:'AI Ethics',        count:4,  icon:'shield',       bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+];
+const quizRecentActivity = [
+  { text:'Scored 90% on Python for AI',              pts:'+150 pts', time:'2 hours ago', color:'#34d399' },
+  { text:'Completed Machine Learning Basics',        pts:'+100 pts', time:'1 day ago',   color:'#a78bfa' },
+  { text:'Scored 80% on Deep Learning Fundamentals', pts:'+160 pts', time:'2 days ago',  color:'#60a5fa' },
+  { text:'Started NLP Basics Quiz',                  pts:'+20 pts',  time:'3 days ago',  color:'#fbbf24' },
+];
 
-courseRL.materi = `
-<div class="materi-section">
-  <h2>🎮 Apa itu Reinforcement Learning?</h2>
-  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
-  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
-  <h3>Pencapaian Luar Biasa RL</h3>
-  <ul>
-    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
-    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
-    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
-    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
-    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
-  </ul>
-</div>
+let activeQuiz = null, quizCurrentQ = 0, quizScore = 0, quizAnswered = {}, activeQzCat = 'all';
 
-<div class="materi-section">
-  <h2>🏗️ Komponen Dasar RL</h2>
-  <ul>
-    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
-    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
-    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
-    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
-    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
-    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
-    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
-    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
-  </ul>
+function renderQuizCards() { renderQuizPage(); }
+function renderQuizPage() { renderQzStats(); renderQzCategories(); renderQzList(); renderQzRecentActivity(); }
 
-  <h3>Markov Decision Process (MDP)</h3>
-  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
-  <ul>
-    <li><strong>S:</strong> State space</li>
-    <li><strong>A:</strong> Action space</li>
-    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
-    <li><strong>R(s,a):</strong> Reward function</li>
-    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
-  </ul>
-  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
-</div>
+function renderQzStats() {
+  const el = document.getElementById('qz-stats-bar'); if (!el) return;
+  const scores = store.get('quiz_scores', {});
+  const completed = Object.keys(scores).length;
+  const avgScore = completed ? Math.round(Object.values(scores).reduce((a,b)=>a+b,0)/completed) : 85;
+  const session = getSession();
+  const stats = [
+    { val:avgScore+'%', label:'Avg. Score',        badge:'+12%', icon:'target',       bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+    { val:completed||12,label:'Quizzes Completed', badge:null,   icon:'check-circle', bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+    { val:session?.streak||5, label:'Day Streak',  badge:null,   icon:'flame',        bg:'rgba(239,68,68,0.15)',  color:'#f87171' },
+    { val:(session?.points||1200).toLocaleString(), label:'Total Points', badge:null, icon:'star', bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+  ];
+  el.innerHTML = stats.map(s=>`<div class="qz-stat-card"><div class="qz-stat-icon" style="background:${s.bg}"><i data-lucide="${s.icon}" style="width:22px;height:22px;color:${s.color}"></i></div><div><div style="display:flex;align-items:baseline;gap:8px"><div class="qz-stat-val">${s.val}</div>${s.badge?`<div class="qz-stat-badge">${s.badge}</div>`:''}</div><div class="qz-stat-label">${s.label}</div></div></div>`).join('');
+  lucide.createIcons();
+}
+function renderQzCategories() {
+  const el = document.getElementById('qz-cat-row'); if (!el) return;
+  el.innerHTML = quizCategories.map(c=>`<div class="qz-cat-card ${activeQzCat===c.name?'active':''}" onclick="filterQzCat('${c.name}')"><div class="qz-cat-icon" style="background:${c.bg}"><i data-lucide="${c.icon}" style="width:22px;height:22px;color:${c.color}"></i></div><div class="qz-cat-name">${c.name}</div><div class="qz-cat-count">${c.count} Quizzes</div></div>`).join('');
+  lucide.createIcons();
+}
+function filterQzCat(cat) { activeQzCat = activeQzCat===cat?'all':cat; renderQzCategories(); renderQzList(); }
+function filterQuizList(f, btn) { document.querySelectorAll('.qz-ftab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); renderQzList(); }
+function renderQzList() {
+  const el = document.getElementById('qz-list'); if (!el) return;
+  const scores = store.get('quiz_scores', {});
+  const list = activeQzCat==='all' ? quizBank : quizBank.filter(q=>q.category===activeQzCat);
+  el.innerHTML = list.map(q => {
+    const score = scores[q.id]; const done = score !== undefined;
+    return `<div class="qz-item" onclick="startQuiz('${q.id}')">
+      <div class="qz-item-thumb" style="background:${q.iconBg}"><i data-lucide="${q.icon}" style="width:26px;height:26px;color:${q.iconColor}"></i></div>
+      <div style="flex:1;min-width:0">
+        <div class="qz-item-title">${q.title}</div>
+        <div class="qz-item-desc">${q.desc}</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px">
+          <span class="badge ${q.difficulty==='Beginner'?'badge-green':'badge-purple'}" style="font-size:10px">${q.difficulty}</span>
+          ${done?`<div style="display:flex;align-items:center;gap:6px;flex:1;max-width:140px"><div class="progress-bar" style="height:4px;flex:1"><div class="progress-fill" style="width:${score}%"></div></div><span style="font-size:10px;color:var(--text-muted)">${score}%</span></div>`:''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:16px;flex-shrink:0">
+        <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px"><i data-lucide="help-circle" style="width:11px;height:11px"></i> ${q.questions} Questions</span>
+        <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px"><i data-lucide="clock" style="width:11px;height:11px"></i> ${q.time}</span>
+        <span class="qz-pts">+ ${q.pts} pts</span>
+      </div>
+      <div style="margin-left:14px;flex-shrink:0"><button class="btn btn-primary" style="padding:8px 18px;font-size:12px" onclick="event.stopPropagation();startQuiz('${q.id}')">${done?'Retry':'Start Quiz'}</button></div>
+    </div>`;
+  }).join('');
+  lucide.createIcons();
+}
+function renderQzRecentActivity() {
+  const el = document.getElementById('qz-recent-activity'); if (!el) return;
+  el.innerHTML = quizRecentActivity.map(a=>`<div class="qz-recent-item"><div class="qz-recent-dot" style="background:${a.color}20"><i data-lucide="zap" style="width:12px;height:12px;color:${a.color}"></i></div><div style="flex:1"><div class="qz-recent-text">${a.text}</div><div class="qz-recent-time">${a.time}</div></div><div class="qz-recent-pts">${a.pts}</div></div>`).join('');
+  lucide.createIcons();
+}
+function startQuiz(id) {
+  activeQuiz = quizBank.find(q=>q.id===id); if (!activeQuiz) return;
+  quizCurrentQ=0; quizScore=0; quizAnswered={};
+  document.getElementById('quiz-list-view').style.display='none';
+  document.getElementById('quiz-play-view').style.display='block';
+  document.getElementById('quiz-play-title').textContent=activeQuiz.title;
+  document.getElementById('quiz-play-subtitle').textContent=`${activeQuiz.questions} soal � ${activeQuiz.time} � ${activeQuiz.pts} pts`;
+  renderQuizQuestion();
+}
+function renderQuizQuestion() {
+  const q = activeQuiz.qs[quizCurrentQ]; const total = activeQuiz.qs.length;
+  document.getElementById('quiz-play-progress').style.width=((quizCurrentQ/total)*100)+'%';
+  document.getElementById('quiz-play-content').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span style="font-size:12px;color:var(--text-muted)">Soal ${quizCurrentQ+1} dari ${total}</span>
+      <span style="font-size:12px;color:var(--accent-light);font-weight:600">Skor: ${quizScore}</span>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <div class="quiz-play-q">${q.q}</div>
+      ${q.opts.map((opt,i)=>`<button class="quiz-play-option" onclick="answerQuizPlay(${i},${q.ans})" id="qopt-${i}" style="display:flex;align-items:center"><span style="width:26px;height:26px;border-radius:50%;background:var(--input-bg);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-right:10px;flex-shrink:0">${String.fromCharCode(65+i)}</span>${opt}</button>`).join('')}
+      <div id="quiz-feedback" style="display:none;margin-top:12px;padding:10px 14px;border-radius:8px;font-size:13px"></div>
+    </div>
+    <div class="quiz-play-nav" id="quiz-nav" style="display:none">
+      <span style="font-size:13px;color:var(--text-muted)">${quizCurrentQ+1} / ${total}</span>
+      <button class="btn btn-primary" style="padding:10px 24px;font-size:13px" onclick="nextQuizQ()">${quizCurrentQ+1<total?'Next ?':'See Results'}</button>
+    </div>`;
+}
+function answerQuizPlay(selected, correct) {
+  if (quizAnswered[quizCurrentQ]!==undefined) return;
+  quizAnswered[quizCurrentQ]=selected;
+  const isCorrect = selected===correct;
+  if (isCorrect) quizScore++;
+  document.querySelectorAll('.quiz-play-option').forEach((btn,i)=>{ btn.disabled=true; if(i===correct) btn.classList.add('correct'); else if(i===selected) btn.classList.add('wrong'); });
+  const fb = document.getElementById('quiz-feedback');
+  fb.style.display='block';
+  fb.style.background=isCorrect?'rgba(16,185,129,0.1)':'rgba(239,68,68,0.1)';
+  fb.style.border=`1px solid ${isCorrect?'rgba(16,185,129,0.3)':'rgba(239,68,68,0.3)'}`;
+  fb.style.color=isCorrect?'#34d399':'#fca5a5';
+  fb.innerHTML=isCorrect?'? Benar!':`? Salah. Jawaban benar: <strong>${String.fromCharCode(65+correct)}. ${activeQuiz.qs[quizCurrentQ].opts[correct]}</strong>`;
+  document.getElementById('quiz-nav').style.display='flex';
+}
+function nextQuizQ() { quizCurrentQ++; if(quizCurrentQ>=activeQuiz.qs.length){showQuizFinalResult();return;} renderQuizQuestion(); }
+function showQuizFinalResult() {
+  const total=activeQuiz.qs.length; const pct=Math.round((quizScore/total)*100);
+  const scores=store.get('quiz_scores',{}); const isNew=!scores[activeQuiz.id]||pct>scores[activeQuiz.id];
+  if(isNew){scores[activeQuiz.id]=pct;store.set('quiz_scores',scores);}
+  document.getElementById('quiz-play-progress').style.width='100%';
+  document.getElementById('quiz-play-content').innerHTML=`<div class="card" style="text-align:center;padding:40px 24px">
+    <div style="font-size:60px;margin-bottom:16px">${pct>=80?'??':pct>=60?'??':'??'}</div>
+    <div style="font-size:32px;font-weight:700;margin-bottom:4px">${quizScore}/${total}</div>
+    <div style="font-size:24px;color:var(--accent-light);font-weight:700;margin-bottom:8px">${pct}%</div>
+    ${isNew?'<div class="badge badge-green" style="margin-bottom:12px;display:inline-block">New Best Score!</div>':''}
+    <div style="font-size:14px;color:var(--text-secondary);margin-bottom:8px">${pct>=80?'Luar biasa!':pct>=60?'Bagus! Terus tingkatkan.':'Yuk pelajari lagi materinya.'}</div>
+    <div style="font-size:13px;color:var(--accent-light);font-weight:600;margin-bottom:24px">+${Math.round(activeQuiz.pts*pct/100)} pts earned</div>
+    <div style="display:flex;gap:10px;justify-content:center">
+      <button class="btn btn-outline" style="padding:10px 24px" onclick="startQuiz('${activeQuiz.id}')">Try Again</button>
+      <button class="btn btn-primary" style="padding:10px 24px" onclick="exitQuizPlay()">Done</button>
+    </div></div>`;
+}
+function exitQuizPlay() {
+  activeQuiz=null;
+  document.getElementById('quiz-list-view').style.display='block';
+  document.getElementById('quiz-play-view').style.display='none';
+  renderQuizPage();
+}
 
-<div class="materi-section">
-  <h2>📋 Q-Learning</h2>
-  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
-  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
-  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
 
-env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
-n_states = env.observation_space.n   <span class="cm"># 16</span>
-n_actions = env.action_space.n       <span class="cm"># 4</span>
-
-<span class="cm"># Inisialisasi Q-table</span>
-Q = np.zeros((n_states, n_actions))
-
-<span class="cm"># Hyperparameters</span>
-alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
-gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
-epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
-epsilon_decay = <span class="num">0.995</span>
-epsilon_min = <span class="num">0.01</span>
-n_episodes = <span class="num">10000</span>
-
-rewards_history = []
-
-<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
-    state, _ = env.reset()
-    total_reward = <span class="num">0</span>
-
-    <span class="kw">while</span> <span class="kw">True</span>:
-        <span class="cm"># Epsilon-greedy policy</span>
-        <span class="kw">if</span> np.random.random() < epsilon:
-            action = env.action_space.sample()  <span class="cm"># explore</span>
-        <span class="kw">else</span>:
-            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
-
-        next_state, reward, terminated, truncated, _ = env.step(action)
-        done = terminated <span class="kw">or</span> truncated
-
-        <span class="cm"># Q-Learning update</span>
-        Q[state, action] += alpha * (
-            reward + gamma * np.max(Q[next_state]) - Q[state, action]
-        )
-
-        state = next_state
-        total_reward += reward
-        <span class="kw">if</span> done: <span class="kw">break</span>
-
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-    rewards_history.append(total_reward)
-
-<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
-</div>
-
-<div class="materi-section">
-  <h2>🧠 Deep Q-Network (DQN)</h2>
-  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
-  <ul>
-    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
-    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
-  </ul>
-  <div class="code-block"><span class="kw">import</span> torch
-<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
-<span class="kw">from</span> collections <span class="kw">import</span> deque
-<span class="kw">import</span> random
-
-<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
-        <span class="fn">super</span>().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, action_dim)
-        )
-    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
-
-<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
-        self.buffer = deque(maxlen=capacity)
-    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
-    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
-    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
-
-<span class="cm"># Training loop DQN</span>
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net.load_state_dict(policy_net.state_dict())
-optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
-buffer = ReplayBuffer()</div>
-</div>
-
-<div class="materi-section">
-  <h2>🎯 Policy Gradient & PPO</h2>
-  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
-  <h3>PPO (Proximal Policy Optimization)</h3>
-  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
-  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
-<span class="cm"># pip install stable-baselines3</span>
-<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
-
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-
-<span class="cm"># Train PPO</span>
-model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
-            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
-            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
-model.learn(total_timesteps=<span class="num">100000</span>)
-model.save(<span class="str">"ppo_cartpole"</span>)
-
-<span class="cm"># Evaluasi</span>
-obs, _ = env.reset()
-<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
-    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
-    obs, reward, done, _, _ = env.step(action)
-    <span class="kw">if</span> done: obs, _ = env.reset()</div>
-
-  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
-  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
-  <ol>
-    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
-    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
-    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
-  </ol>
-</div>
-
-<div class="sources-section">
-  <h3>📚 Sumber Referensi</h3>
-  <ul id="rl-sources"></ul>
-</div>
-`;
+// Load more quizzes (show all categories)
+function loadMoreQuizzes(btn) {
+  activeQzCat = 'all';
+  renderQzCategories();
+  renderQzList();
+  btn.style.display = 'none';
+  showToast('Semua quiz ditampilkan!');
+}

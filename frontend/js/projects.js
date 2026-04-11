@@ -1,234 +1,149 @@
-﻿// ══════════════════════════════════════════════
-// KURSUS 7: REINFORCEMENT LEARNING
-// ══════════════════════════════════════════════
+// -- PROJECTS --
+// PROJECTS
+// ----------------------------------------------
+const defaultProjects = [
+  { id:1, name:'AI Image Classifier',  category:'Deep Learning',    desc:'A deep learning model to classify images into 10 different categories.', stack:['Python','TensorFlow'], status:'completed', progress:92, date:'2024-01-15', thumbBg:'linear-gradient(135deg,#1e1b4b,#312e81)', thumbIcon:'cpu',         thumbColor:'#a78bfa' },
+  { id:2, name:'Sentiment Analyzer',   category:'NLP',              desc:'Analyze text sentiment using NLP and transformer models.',               stack:['Python','PyTorch'],    status:'active',    progress:65, date:'2024-02-20', thumbBg:'linear-gradient(135deg,#064e3b,#065f46)', thumbIcon:'message-square',thumbColor:'#34d399' },
+  { id:3, name:'Chatbot Assistant',    category:'NLP',              desc:'An intelligent chatbot built with LLMs and conversational memory.',      stack:['Python','OpenAI API'], status:'completed', progress:100,date:'2024-03-05', thumbBg:'linear-gradient(135deg,#1e3a5f,#1e40af)', thumbIcon:'cpu',         thumbColor:'#60a5fa' },
+  { id:4, name:'Sales Predictor',      category:'Machine Learning', desc:'Predict sales trends using machine learning regression models.',         stack:['Python','Scikit-learn'],status:'active',   progress:40, date:'2024-03-20', thumbBg:'linear-gradient(135deg,#1a2e1a,#14532d)', thumbIcon:'trending-up', thumbColor:'#4ade80' },
+  { id:5, name:'Object Detection',     category:'Computer Vision',  desc:'Real-time object detection with YOLOv8 and OpenCV.',                    stack:['Python','YOLOv8'],     status:'completed', progress:88, date:'2024-04-01', thumbBg:'linear-gradient(135deg,#3b1f5e,#6d28d9)', thumbIcon:'eye',         thumbColor:'#c084fc' },
+];
+const exploreProjects = [
+  { title:'Weather Forecast',      author:'Sarah Lee',  desc:'Predict weather using time series analysis.', icon:'cloud',        bg:'rgba(59,130,246,0.15)',  color:'#60a5fa', rating:4.8, views:125 },
+  { title:'Handwritten OCR',       author:'John Doe',   desc:'Recognize handwritten digits using CNN.',     icon:'pen-tool',     bg:'rgba(168,85,247,0.15)', color:'#c084fc', rating:4.6, views:98  },
+  { title:'Stock Price Predictor', author:'Mia Chen',   desc:'Forecast stock prices with LSTM networks.',  icon:'trending-up',  bg:'rgba(16,185,129,0.15)', color:'#34d399', rating:4.7, views:196 },
+  { title:'AI Voice Assistant',    author:'David Kim',  desc:'Voice assistant with speech recognition.',   icon:'mic',          bg:'rgba(245,158,11,0.15)', color:'#fbbf24', rating:4.9, views:203 },
+];
+const projActivity = [
+  { text:'Project completed: AI Image Classifier', pts:'+160 pts', time:'2 hours ago', color:'#34d399' },
+  { text:'Code committed: Sentiment Analyzer',     pts:'+30 pts',  time:'5 hours ago', color:'#60a5fa' },
+  { text:'Milestone reached: Chatbot Assistant',   pts:'+200 pts', time:'1 day ago',   color:'#a78bfa' },
+  { text:'New project created: Sales Predictor',   pts:'+50 pts',  time:'2 days ago',  color:'#fbbf24' },
+];
+const projEarnItems = [
+  { label:'Complete a project', pts:'+100 pts', icon:'check-circle', bg:'rgba(16,185,129,0.15)', color:'#34d399' },
+  { label:'Share your project', pts:'+50 pts',  icon:'share-2',      bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+  { label:'Get upvoted',        pts:'+10 pts/upvote', icon:'thumbs-up', bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+];
 
-const courseRL = {
-  id: 7,
-  curriculum: [
-    {
-      title: "Modul 1: Fondasi Reinforcement Learning",
-      lessons: [
-        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
-        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
-        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
-        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
-      ]
-    },
-    {
-      title: "Modul 2: Tabular Methods",
-      lessons: [
-        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
-        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
-        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
-        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
-      ]
-    },
-    {
-      title: "Modul 3: Deep Reinforcement Learning",
-      lessons: [
-        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
-        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
-        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
-        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
-        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
-      ]
-    },
-    {
-      title: "Modul 4: Advanced RL",
-      lessons: [
-        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
-        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
-        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
-        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
-      ]
-    }
-  ],
-  quiz: [
-    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
-    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
-    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
-    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
-    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
-  ],
-  sources: [
-    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
-    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
-    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
-    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
-    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
-    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
-    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
-  ]
-};
+function getProjects() { return store.get('projects', defaultProjects); }
+function saveProjects(p) { store.set('projects', p); }
 
-courseRL.materi = `
-<div class="materi-section">
-  <h2>🎮 Apa itu Reinforcement Learning?</h2>
-  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
-  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
-  <h3>Pencapaian Luar Biasa RL</h3>
-  <ul>
-    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
-    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
-    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
-    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
-    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
-  </ul>
-</div>
+function renderProjects(filter='all') {
+  renderProjStats(); renderProjCards(filter); renderProjExplore(); renderProjActivity(); renderProjEarn();
+}
+function renderProjStats() {
+  const el = document.getElementById('proj-stats-bar'); if (!el) return;
+  const projects = getProjects();
+  const session = getSession();
+  const stats = [
+    { val:projects.length,                                    label:'Total Projects', icon:'folder',       bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+    { val:projects.filter(p=>p.status==='active').length,     label:'In Progress',    icon:'clock',        bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+    { val:projects.filter(p=>p.status==='completed').length,  label:'Completed',      icon:'check-circle', bg:'rgba(16,185,129,0.15)', color:'#34d399' },
+    { val:(session?.points||1200).toLocaleString(),           label:'Total Points',   icon:'star',         bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+  ];
+  el.innerHTML = stats.map(s=>`<div class="proj-stat-card"><div class="proj-stat-icon" style="background:${s.bg}"><i data-lucide="${s.icon}" style="width:22px;height:22px;color:${s.color}"></i></div><div><div class="proj-stat-val">${s.val}</div><div class="proj-stat-label">${s.label}</div></div></div>`).join('');
+  lucide.createIcons();
+}
+function renderProjCards(filter='all') {
+  const grid = document.getElementById('projects-grid'); if (!grid) return;
+  let projects = getProjects();
+  if (filter==='active') projects = projects.filter(p=>p.status==='active');
+  else if (filter==='completed') projects = projects.filter(p=>p.status==='completed');
+  const stackColors = { 'Python':'#3b82f6','TensorFlow':'#f97316','PyTorch':'#ef4444','Scikit-learn':'#f59e0b','OpenCV':'#10b981','YOLOv8':'#8b5cf6','OpenAI API':'#06b6d4' };
+  const cards = projects.map(p=>`
+    <div class="proj-card-new">
+      <div class="proj-card-thumb" style="background:${p.thumbBg}">
+        <i data-lucide="${p.thumbIcon}" style="width:52px;height:52px;color:${p.thumbColor};opacity:0.9"></i>
+        <div class="proj-card-status-badge ${p.status}"><i data-lucide="${p.status==='completed'?'check-circle':'clock'}" style="width:10px;height:10px"></i> ${p.status==='completed'?'Completed':'In Progress'}</div>
+        <button class="proj-card-menu" onclick="event.stopPropagation();projMenu(${p.id})">?</button>
+      </div>
+      <div class="proj-card-body">
+        <div class="proj-card-title">${p.name}</div>
+        <div class="proj-card-desc">${p.desc}</div>
+        <div class="proj-card-stack">${p.stack.map(s=>`<span class="proj-stack-tag" style="color:${stackColors[s]||'#a0a0c0'}"><i data-lucide="code-2" style="width:9px;height:9px"></i> ${s}</span>`).join('')}</div>
+        <div class="proj-card-progress"><div class="progress-bar"><div class="progress-fill" style="width:${p.progress}%"></div></div><div class="proj-card-pct">${p.progress}%</div></div>
+      </div>
+    </div>`).join('');
+  const addCard = `<div class="proj-card-add" onclick="showNewProjectModal()"><div class="proj-card-add-icon"><i data-lucide="plus" style="width:22px;height:22px"></i></div><div class="proj-card-add-title">New Project</div><div class="proj-card-add-sub">Start building something amazing.</div><button class="btn btn-primary" style="padding:8px 20px;font-size:12px;margin-top:4px" onclick="event.stopPropagation();showNewProjectModal()">Create Project</button></div>`;
+  grid.innerHTML = cards + addCard;
+  lucide.createIcons();
+}
+function renderProjExplore() {
+  const el = document.getElementById('proj-explore-grid'); if (!el) return;
+  el.innerHTML = exploreProjects.map(p=>`
+    <div class="proj-explore-card">
+      <div class="proj-explore-thumb" style="background:${p.bg}"><i data-lucide="${p.icon}" style="width:20px;height:20px;color:${p.color}"></i></div>
+      <div class="proj-explore-title">${p.title}</div>
+      <div class="proj-explore-author" style="display:flex;align-items:center;gap:4px"><i data-lucide="user" style="width:10px;height:10px"></i> ${p.author}</div>
+      <div class="proj-explore-desc">${p.desc}</div>
+      <div class="proj-explore-meta"><span>? ${p.rating}</span><span><i data-lucide="eye" style="width:10px;height:10px"></i> ${p.views}</span></div>
+    </div>`).join('');
+  lucide.createIcons();
+}
+function renderProjActivity() {
+  const el = document.getElementById('proj-activity-list'); if (!el) return;
+  el.innerHTML = projActivity.map(a=>`<div class="proj-activity-item"><div class="proj-activity-dot" style="background:${a.color}20"><i data-lucide="zap" style="width:12px;height:12px;color:${a.color}"></i></div><div style="flex:1"><div class="proj-activity-text">${a.text}</div><div class="proj-activity-time">${a.time}</div></div><div class="proj-activity-pts" style="color:${a.color}">${a.pts}</div></div>`).join('');
+  lucide.createIcons();
+}
+function renderProjEarn() {
+  const el = document.getElementById('proj-earn-list'); if (!el) return;
+  el.innerHTML = projEarnItems.map(e=>`<div class="proj-earn-item"><div class="proj-earn-icon" style="background:${e.bg}"><i data-lucide="${e.icon}" style="width:14px;height:14px;color:${e.color}"></i></div><div class="proj-earn-label">${e.label}</div><div class="proj-earn-pts">${e.pts}</div></div>`).join('');
+  lucide.createIcons();
+}
+function filterProjects(f, btn) {
+  document.querySelectorAll('.proj-ftab').forEach(t=>t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderProjCards(f);
+}
+function projMenu(id) {
+  const choice = prompt('1. Mark as Completed\n2. Delete\n\nKetik nomor:');
+  if (choice==='2') deleteProject(id);
+  else if (choice==='1') toggleProjectStatus(id);
+}
+function showNewProjectModal() {
+  const m = document.getElementById('new-project-modal');
+  if (m) { m.style.display='flex'; lucide.createIcons(); }
+}
+function closeNewProjectModal() {
+  const m = document.getElementById('new-project-modal');
+  if (m) m.style.display='none';
+}
+function createProject() {
+  const name  = document.getElementById('proj-name')?.value.trim();
+  const cat   = document.getElementById('proj-cat')?.value;
+  const stack = document.getElementById('proj-stack')?.value.trim();
+  const desc  = document.getElementById('proj-desc')?.value.trim();
+  if (!name) { showToast('Nama project wajib diisi.'); return; }
+  const thumbMap = {
+    'Machine Learning':{'bg':'linear-gradient(135deg,#1e1b4b,#312e81)','icon':'cpu','color':'#a78bfa'},
+    'Deep Learning':   {'bg':'linear-gradient(135deg,#1e3a5f,#1e40af)','icon':'network','color':'#60a5fa'},
+    'NLP':             {'bg':'linear-gradient(135deg,#3b1f5e,#6d28d9)','icon':'message-square','color':'#c084fc'},
+    'Computer Vision': {'bg':'linear-gradient(135deg,#1c3a2e,#065f46)','icon':'eye','color':'#34d399'},
+    'Data Science':    {'bg':'linear-gradient(135deg,#1c2a4a,#1e3a8a)','icon':'database','color':'#818cf8'},
+    'Reinforcement Learning':{'bg':'linear-gradient(135deg,#3b1a1a,#7f1d1d)','icon':'gamepad','color':'#f87171'},
+  };
+  const thumb = thumbMap[cat] || thumbMap['Machine Learning'];
+  const stackArr = stack ? stack.split(',').map(s=>s.trim()).filter(Boolean) : [cat];
+  const projects = getProjects();
+  projects.unshift({ id:Date.now(), name, category:cat, desc:desc||'No description.', stack:stackArr, status:'active', progress:0, date:new Date().toISOString().split('T')[0], thumbBg:thumb.bg, thumbIcon:thumb.icon, thumbColor:thumb.color });
+  saveProjects(projects);
+  closeNewProjectModal();
+  ['proj-name','proj-desc','proj-stack'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  renderProjects();
+  showToast('Project berhasil dibuat! ??');
+}
+function deleteProject(id) {
+  if (!confirm('Hapus project ini?')) return;
+  saveProjects(getProjects().filter(p=>p.id!==id));
+  renderProjects();
+  showToast('Project dihapus.');
+}
+function toggleProjectStatus(id) {
+  const projects = getProjects();
+  const p = projects.find(x=>x.id===id);
+  if (p) { p.status = p.status==='active'?'completed':'active'; if(p.status==='completed') p.progress=100; }
+  saveProjects(projects);
+  renderProjects();
+}
 
-<div class="materi-section">
-  <h2>🏗️ Komponen Dasar RL</h2>
-  <ul>
-    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
-    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
-    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
-    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
-    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
-    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
-    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
-    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
-  </ul>
-
-  <h3>Markov Decision Process (MDP)</h3>
-  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
-  <ul>
-    <li><strong>S:</strong> State space</li>
-    <li><strong>A:</strong> Action space</li>
-    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
-    <li><strong>R(s,a):</strong> Reward function</li>
-    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
-  </ul>
-  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
-</div>
-
-<div class="materi-section">
-  <h2>📋 Q-Learning</h2>
-  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
-  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
-  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
-
-env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
-n_states = env.observation_space.n   <span class="cm"># 16</span>
-n_actions = env.action_space.n       <span class="cm"># 4</span>
-
-<span class="cm"># Inisialisasi Q-table</span>
-Q = np.zeros((n_states, n_actions))
-
-<span class="cm"># Hyperparameters</span>
-alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
-gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
-epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
-epsilon_decay = <span class="num">0.995</span>
-epsilon_min = <span class="num">0.01</span>
-n_episodes = <span class="num">10000</span>
-
-rewards_history = []
-
-<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
-    state, _ = env.reset()
-    total_reward = <span class="num">0</span>
-
-    <span class="kw">while</span> <span class="kw">True</span>:
-        <span class="cm"># Epsilon-greedy policy</span>
-        <span class="kw">if</span> np.random.random() < epsilon:
-            action = env.action_space.sample()  <span class="cm"># explore</span>
-        <span class="kw">else</span>:
-            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
-
-        next_state, reward, terminated, truncated, _ = env.step(action)
-        done = terminated <span class="kw">or</span> truncated
-
-        <span class="cm"># Q-Learning update</span>
-        Q[state, action] += alpha * (
-            reward + gamma * np.max(Q[next_state]) - Q[state, action]
-        )
-
-        state = next_state
-        total_reward += reward
-        <span class="kw">if</span> done: <span class="kw">break</span>
-
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-    rewards_history.append(total_reward)
-
-<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
-</div>
-
-<div class="materi-section">
-  <h2>🧠 Deep Q-Network (DQN)</h2>
-  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
-  <ul>
-    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
-    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
-  </ul>
-  <div class="code-block"><span class="kw">import</span> torch
-<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
-<span class="kw">from</span> collections <span class="kw">import</span> deque
-<span class="kw">import</span> random
-
-<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
-        <span class="fn">super</span>().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, action_dim)
-        )
-    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
-
-<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
-        self.buffer = deque(maxlen=capacity)
-    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
-    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
-    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
-
-<span class="cm"># Training loop DQN</span>
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net.load_state_dict(policy_net.state_dict())
-optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
-buffer = ReplayBuffer()</div>
-</div>
-
-<div class="materi-section">
-  <h2>🎯 Policy Gradient & PPO</h2>
-  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
-  <h3>PPO (Proximal Policy Optimization)</h3>
-  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
-  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
-<span class="cm"># pip install stable-baselines3</span>
-<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
-
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-
-<span class="cm"># Train PPO</span>
-model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
-            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
-            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
-model.learn(total_timesteps=<span class="num">100000</span>)
-model.save(<span class="str">"ppo_cartpole"</span>)
-
-<span class="cm"># Evaluasi</span>
-obs, _ = env.reset()
-<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
-    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
-    obs, reward, done, _, _ = env.step(action)
-    <span class="kw">if</span> done: obs, _ = env.reset()</div>
-
-  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
-  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
-  <ol>
-    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
-    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
-    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
-  </ol>
-</div>
-
-<div class="sources-section">
-  <h3>📚 Sumber Referensi</h3>
-  <ul id="rl-sources"></ul>
-</div>
-`;

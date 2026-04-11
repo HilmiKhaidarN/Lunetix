@@ -1,234 +1,231 @@
-﻿// ══════════════════════════════════════════════
-// KURSUS 7: REINFORCEMENT LEARNING
+// ══════════════════════════════════════════════
+// COURSE DETAIL MODAL LOGIC
 // ══════════════════════════════════════════════
 
-const courseRL = {
-  id: 7,
-  curriculum: [
-    {
-      title: "Modul 1: Fondasi Reinforcement Learning",
-      lessons: [
-        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
-        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
-        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
-        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
-      ]
-    },
-    {
-      title: "Modul 2: Tabular Methods",
-      lessons: [
-        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
-        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
-        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
-        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
-      ]
-    },
-    {
-      title: "Modul 3: Deep Reinforcement Learning",
-      lessons: [
-        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
-        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
-        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
-        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
-        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
-      ]
-    },
-    {
-      title: "Modul 4: Advanced RL",
-      lessons: [
-        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
-        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
-        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
-        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
-      ]
-    }
-  ],
-  quiz: [
-    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
-    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
-    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
-    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
-    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
-  ],
-  sources: [
-    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
-    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
-    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
-    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
-    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
-    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
-    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
-  ]
+// Map course id → content object
+const courseRegistry = {
+  1: courseML,
+  2: coursePythonAI,
+  3: courseDeepLearning,
+  4: courseNLP,
+  5: courseComputerVision,
+  6: courseDataScience,
+  7: courseRL,
+  8: courseAIEthics,
 };
 
-courseRL.materi = `
-<div class="materi-section">
-  <h2>🎮 Apa itu Reinforcement Learning?</h2>
-  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
-  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
-  <h3>Pencapaian Luar Biasa RL</h3>
-  <ul>
-    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
-    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
-    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
-    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
-    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
-  </ul>
-</div>
+let activeQuizAnswers = {};
 
-<div class="materi-section">
-  <h2>🏗️ Komponen Dasar RL</h2>
-  <ul>
-    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
-    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
-    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
-    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
-    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
-    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
-    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
-    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
-  </ul>
+function openCourse(id) {
+  const course = coursesData.find(c => c.id === id);
+  const content = courseRegistry[id];
 
-  <h3>Markov Decision Process (MDP)</h3>
-  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
-  <ul>
-    <li><strong>S:</strong> State space</li>
-    <li><strong>A:</strong> Action space</li>
-    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
-    <li><strong>R(s,a):</strong> Reward function</li>
-    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
-  </ul>
-  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
-</div>
+  if (!course) return;
+  if (course.status === 'coming') {
+    showToast(`"${course.title}" akan segera hadir! 🚀`);
+    return;
+  }
+  if (!content) {
+    showToast('Konten kursus sedang disiapkan.');
+    return;
+  }
 
-<div class="materi-section">
-  <h2>📋 Q-Learning</h2>
-  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
-  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
-  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+  buildModal(course, content);
+  document.getElementById('course-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
-env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
-n_states = env.observation_space.n   <span class="cm"># 16</span>
-n_actions = env.action_space.n       <span class="cm"># 4</span>
+function closeCourseModal() {
+  document.getElementById('course-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  activeQuizAnswers = {};
+}
 
-<span class="cm"># Inisialisasi Q-table</span>
-Q = np.zeros((n_states, n_actions))
+function buildModal(course, content) {
+  const modal = document.getElementById('course-modal');
 
-<span class="cm"># Hyperparameters</span>
-alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
-gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
-epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
-epsilon_decay = <span class="num">0.995</span>
-epsilon_min = <span class="num">0.01</span>
-n_episodes = <span class="num">10000</span>
+  // Hero
+  modal.querySelector('.cd-hero-emoji').innerHTML = `<i data-lucide="${course.thumbIcon}" style="width:52px;height:52px;color:${course.thumbColor}"></i>`;
+  modal.querySelector('.cd-hero h1').textContent = course.title;
+  modal.querySelector('.cd-hero p').textContent = getCourseDescription(course.id);
+  modal.querySelector('.cd-meta-level').innerHTML = `<i data-lucide="bar-chart" style="width:13px;height:13px"></i> ${course.level}`;
+  modal.querySelector('.cd-meta-duration').innerHTML = `<i data-lucide="clock" style="width:13px;height:13px"></i> ${course.duration}`;
+  modal.querySelector('.cd-meta-students').innerHTML = `<i data-lucide="users" style="width:13px;height:13px"></i> ${course.students} students`;
+  modal.querySelector('.cd-meta-rating').innerHTML = `<i data-lucide="star" style="width:13px;height:13px;color:#eab308"></i> ${course.rating}`;
 
-rewards_history = []
+  // Curriculum
+  buildCurriculum(content.curriculum);
 
-<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
-    state, _ = env.reset()
-    total_reward = <span class="num">0</span>
+  // Materi
+  document.getElementById('cd-materi').innerHTML = content.materi || '<p style="color:var(--text-muted)">Materi sedang disiapkan.</p>';
 
-    <span class="kw">while</span> <span class="kw">True</span>:
-        <span class="cm"># Epsilon-greedy policy</span>
-        <span class="kw">if</span> np.random.random() < epsilon:
-            action = env.action_space.sample()  <span class="cm"># explore</span>
-        <span class="kw">else</span>:
-            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
+  // Inject sources into materi
+  injectSources(content.sources);
 
-        next_state, reward, terminated, truncated, _ = env.step(action)
-        done = terminated <span class="kw">or</span> truncated
+  // Quiz
+  buildQuiz(content.quiz);
 
-        <span class="cm"># Q-Learning update</span>
-        Q[state, action] += alpha * (
-            reward + gamma * np.max(Q[next_state]) - Q[state, action]
-        )
+  // Reset to first tab
+  switchCDTab('curriculum');
+  lucide.createIcons();
+}
 
-        state = next_state
-        total_reward += reward
-        <span class="kw">if</span> done: <span class="kw">break</span>
+function buildCurriculum(curriculum) {
+  const container = document.getElementById('cd-curriculum');
+  container.innerHTML = curriculum.map((mod, mi) => `
+    <div class="curriculum-module">
+      <div class="curriculum-module-title" onclick="toggleModule(${mi})">
+        <span><i data-lucide="folder" style="width:14px;height:14px;margin-right:6px;vertical-align:middle"></i>${mod.title}</span>
+        <span class="mod-meta">${mod.lessons.length} lessons · ${calcModDuration(mod.lessons)}</span>
+      </div>
+      <div class="curriculum-lessons" id="mod-${mi}">
+        ${mod.lessons.map(l => `
+          <div class="lesson-item">
+            <span class="lesson-icon">${l.icon}</span>
+            <span>${l.title}</span>
+            <span class="lesson-duration">${l.duration}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
 
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-    rewards_history.append(total_reward)
+function calcModDuration(lessons) {
+  const total = lessons.reduce((sum, l) => {
+    const m = parseInt(l.duration);
+    return sum + (isNaN(m) ? 0 : m);
+  }, 0);
+  return total >= 60 ? `${Math.floor(total/60)}h ${total%60}m` : `${total} min`;
+}
 
-<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
-</div>
+function toggleModule(idx) {
+  const el = document.getElementById('mod-' + idx);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
 
-<div class="materi-section">
-  <h2>🧠 Deep Q-Network (DQN)</h2>
-  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
-  <ul>
-    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
-    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
-  </ul>
-  <div class="code-block"><span class="kw">import</span> torch
-<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
-<span class="kw">from</span> collections <span class="kw">import</span> deque
-<span class="kw">import</span> random
+function injectSources(sources) {
+  if (!sources || !sources.length) return;
+  const sourceContainers = document.querySelectorAll('#cd-materi [id$="-sources"]');
+  const html = sources.map(s =>
+    `<li>🔗 <a href="${s.url}" target="_blank" rel="noopener">${s.label}</a></li>`
+  ).join('');
+  sourceContainers.forEach(el => el.innerHTML = html);
+}
 
-<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
-        <span class="fn">super</span>().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, action_dim)
-        )
-    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
+function buildQuiz(quizData) {
+  const container = document.getElementById('cd-quiz');
+  if (!quizData || !quizData.length) {
+    container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px">Quiz belum tersedia.</p>';
+    return;
+  }
+  container.innerHTML = `
+    <div style="margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:4px">🧠 Quiz: Uji Pemahamanmu</h3>
+      <p style="font-size:13px;color:var(--text-secondary)">${quizData.length} pertanyaan · Klik jawaban untuk memeriksa</p>
+    </div>
+    ${quizData.map((q, qi) => `
+      <div class="quiz-item" id="quiz-${qi}">
+        <div class="quiz-q">${qi + 1}. ${q.q}</div>
+        <div class="quiz-options">
+          ${q.options.map((opt, oi) => `
+            <button class="quiz-option" onclick="answerQuiz(${qi}, ${oi}, ${q.answer})">
+              ${String.fromCharCode(65+oi)}. ${opt}
+            </button>
+          `).join('')}
+        </div>
+      </div>
+    `).join('')}
+    <div id="quiz-result" style="display:none;margin-top:20px;text-align:center;padding:20px;background:var(--bg-card);border-radius:var(--radius);border:1px solid var(--border)"></div>
+    <button class="btn btn-outline" style="margin-top:12px;width:100%" onclick="resetQuiz()">
+      <i data-lucide="rotate-ccw" style="width:14px;height:14px"></i> Reset Quiz
+    </button>
+  `;
+}
 
-<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
-        self.buffer = deque(maxlen=capacity)
-    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
-    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
-    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
+function answerQuiz(qi, selected, correct) {
+  if (activeQuizAnswers[qi] !== undefined) return; // already answered
+  activeQuizAnswers[qi] = selected;
 
-<span class="cm"># Training loop DQN</span>
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net.load_state_dict(policy_net.state_dict())
-optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
-buffer = ReplayBuffer()</div>
-</div>
+  const item = document.getElementById('quiz-' + qi);
+  const buttons = item.querySelectorAll('.quiz-option');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === correct) btn.classList.add('correct');
+    else if (i === selected) btn.classList.add('wrong');
+  });
 
-<div class="materi-section">
-  <h2>🎯 Policy Gradient & PPO</h2>
-  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
-  <h3>PPO (Proximal Policy Optimization)</h3>
-  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
-  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
-<span class="cm"># pip install stable-baselines3</span>
-<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+  // Check if all answered
+  const quizItems = document.querySelectorAll('.quiz-item');
+  if (Object.keys(activeQuizAnswers).length === quizItems.length) {
+    showQuizResult(quizItems.length);
+  }
+}
 
-env = gym.make(<span class="str">'CartPole-v1'</span>)
+function showQuizResult(total) {
+  const correct = Object.entries(activeQuizAnswers).filter(([qi, ans]) => {
+    const item = document.getElementById('quiz-' + qi);
+    const correctBtn = item.querySelector('.quiz-option.correct');
+    const buttons = item.querySelectorAll('.quiz-option');
+    return Array.from(buttons).indexOf(correctBtn) === ans;
+  }).length;
 
-<span class="cm"># Train PPO</span>
-model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
-            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
-            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
-model.learn(total_timesteps=<span class="num">100000</span>)
-model.save(<span class="str">"ppo_cartpole"</span>)
+  const pct = Math.round((correct / total) * 100);
+  const emoji = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📚';
+  const msg = pct >= 80 ? 'Luar biasa!' : pct >= 60 ? 'Bagus, terus belajar!' : 'Yuk pelajari lagi materinya!';
 
-<span class="cm"># Evaluasi</span>
-obs, _ = env.reset()
-<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
-    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
-    obs, reward, done, _, _ = env.step(action)
-    <span class="kw">if</span> done: obs, _ = env.reset()</div>
+  const result = document.getElementById('quiz-result');
+  result.style.display = 'block';
+  result.innerHTML = `
+    <div style="font-size:36px;margin-bottom:8px">${emoji}</div>
+    <div style="font-size:20px;font-weight:700;margin-bottom:4px">${correct}/${total} Benar (${pct}%)</div>
+    <div style="font-size:13px;color:var(--text-secondary)">${msg}</div>
+  `;
+}
 
-  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
-  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
-  <ol>
-    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
-    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
-    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
-  </ol>
-</div>
+function resetQuiz() {
+  activeQuizAnswers = {};
+  const quizItems = document.querySelectorAll('.quiz-item');
+  quizItems.forEach(item => {
+    item.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.disabled = false;
+      btn.classList.remove('correct', 'wrong');
+    });
+  });
+  const result = document.getElementById('quiz-result');
+  if (result) result.style.display = 'none';
+}
 
-<div class="sources-section">
-  <h3>📚 Sumber Referensi</h3>
-  <ul id="rl-sources"></ul>
-</div>
-`;
+function switchCDTab(tab) {
+  document.querySelectorAll('.cd-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.cd-section').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.cd-tab[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('cd-' + tab).classList.add('active');
+}
+
+function getCourseDescription(id) {
+  const descs = {
+    1: 'Pelajari fondasi Machine Learning dari nol: algoritma klasik, evaluasi model, dan feature engineering dengan Python & Scikit-learn.',
+    2: 'Kuasai Python untuk AI: NumPy, Pandas, Matplotlib, Scikit-learn, TensorFlow, dan PyTorch dalam satu kursus komprehensif.',
+    3: 'Dari neural network dasar hingga Transformer modern: CNN, LSTM, BERT, dan Generative AI dengan implementasi praktis.',
+    4: 'Pahami cara mesin memproses bahasa manusia: dari tokenization hingga Large Language Models dan RAG.',
+    5: 'Bangun sistem computer vision dengan OpenCV, CNN, YOLO, dan face recognition menggunakan Python.',
+    6: 'Kuasai data science end-to-end: statistik, EDA, feature engineering, visualisasi, dan deployment.',
+    7: 'Pelajari RL dari Q-Learning hingga PPO — algoritma yang digunakan AlphaGo dan ChatGPT.',
+    8: 'Pahami bias, fairness, explainability, dan safety dalam AI untuk membangun sistem yang bertanggung jawab.',
+  };
+  return descs[id] || '';
+}
+
+// showToast is defined in store.js
+
+// Close on overlay click
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.getElementById('course-modal');
+  if (overlay) {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) closeCourseModal();
+    });
+  }
+});
+
