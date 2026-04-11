@@ -1,19 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/frontend/html/login.html"
-    }
+  "rewrites": [
+    { "source": "/", "destination": "/frontend/html/login.html" },
+    { "source": "/login", "destination": "/frontend/html/login.html" },
+    { "source": "/register", "destination": "/frontend/html/register.html" },
+    { "source": "/dashboard", "destination": "/frontend/html/dashboard.html" }
   ]
 }
