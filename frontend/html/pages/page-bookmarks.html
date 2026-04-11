@@ -1,0 +1,165 @@
+      <!-- ══ BOOKMARKS ══ -->
+      <div class="page" id="page-bookmarks">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <h2 style="font-size:20px;font-weight:700">Bookmarks</h2>
+              <i data-lucide="bookmark" style="width:18px;height:18px;color:#a78bfa"></i>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary)">Simpan kursus, pelajaran, atau konten penting untuk akses cepat nanti.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" style="padding:8px 16px;font-size:13px" onclick="toggleBmFilterPanel()">
+              <i data-lucide="filter" style="width:14px;height:14px"></i> Filter
+            </button>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:13px" onclick="showAddBookmarkModal()">
+              <i data-lucide="plus" style="width:14px;height:14px"></i> Tambah Bookmark
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="bm-filter-row" style="margin-bottom:20px">
+          <div class="bm-filter-tabs" id="bm-filter-tabs">
+            <button class="bm-ftab active" onclick="filterBookmarks('all',this)">
+              <i data-lucide="layout-grid" style="width:13px;height:13px"></i> Semua
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('course',this)">
+              <i data-lucide="book-open" style="width:13px;height:13px"></i> Kursus
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('lesson',this)">
+              <i data-lucide="play-circle" style="width:13px;height:13px"></i> Pelajaran
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('article',this)">
+              <i data-lucide="file-text" style="width:13px;height:13px"></i> Artikel
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('project',this)">
+              <i data-lucide="folder" style="width:13px;height:13px"></i> Proyek
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('quiz',this)">
+              <i data-lucide="help-circle" style="width:13px;height:13px"></i> Quiz
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('discussion',this)">
+              <i data-lucide="message-circle" style="width:13px;height:13px"></i> Diskusi
+            </button>
+          </div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="bm-layout">
+          <div class="bm-main">
+
+            <!-- Stats Bar -->
+            <div class="bm-stats-bar" id="bm-stats-bar"></div>
+
+            <!-- Featured Cards (horizontal scroll) -->
+            <div style="margin-bottom:20px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Tersimpan Baru-baru Ini</div>
+              <div class="bm-cards-row" id="bm-cards-row"></div>
+            </div>
+
+            <!-- List View -->
+            <div class="card" style="padding:0;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)">
+                <div class="bm-list-tabs">
+                  <button class="bm-ltab active" onclick="switchBmListTab('all',this)">Semua Bookmark</button>
+                  <button class="bm-ltab" onclick="switchBmListTab('recent',this)">Baru Ditambahkan</button>
+                </div>
+                <div class="bm-search">
+                  <i data-lucide="search" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                  <input type="text" id="bm-search-input" placeholder="Cari bookmark..." oninput="searchBookmarks(this.value)">
+                </div>
+              </div>
+              <!-- Table header -->
+              <div class="bm-table-header">
+                <div style="flex:2">Item</div>
+                <div style="flex:1">Tipe</div>
+                <div style="flex:1">Kategori</div>
+                <div style="flex:1">Disimpan Pada</div>
+                <div style="flex:0.5;text-align:right">Aksi</div>
+              </div>
+              <div id="bm-list"></div>
+            </div>
+
+          </div>
+
+          <!-- Sidebar -->
+          <div class="bm-sidebar-col">
+
+            <!-- Ringkasan Chart -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:14px">Ringkasan</div>
+              <div id="bm-chart" style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:8px"></div>
+              <div id="bm-chart-labels" style="display:flex;gap:6px;margin-bottom:8px"></div>
+              <div style="font-size:11px;color:var(--accent-light);text-align:center" id="bm-chart-tip"></div>
+            </div>
+
+            <!-- Kategori Terpopuler -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="font-size:13px;font-weight:600">Kategori Terpopuler</div>
+              </div>
+              <div id="bm-categories"></div>
+              <a href="#" style="font-size:11px;color:var(--accent-light);display:block;margin-top:10px;text-align:center">Lihat semua</a>
+            </div>
+
+            <!-- Tips -->
+            <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(157,92,246,0.05));border-color:var(--border-accent)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="font-size:18px">💡</span>
+                <span style="font-size:13px;font-weight:600">Tips</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px">
+                Gunakan bookmark untuk menandai materi penting dan kembali kapan saja!
+              </p>
+              <button class="btn btn-primary btn-full" style="padding:9px;font-size:12px" onclick="document.querySelector('[data-page=courses]').click()">
+                Pelajari Fitur Lainnya
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Add Bookmark Modal -->
+        <div id="add-bookmark-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;padding:20px">
+          <div class="card" style="width:100%;max-width:440px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+              <h3 style="font-size:16px;font-weight:700">Tambah Bookmark</h3>
+              <button onclick="closeAddBookmarkModal()" style="background:none;border:none;color:var(--text-muted);cursor:pointer"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Judul *</label>
+              <input id="bm-title" type="text" placeholder="Nama bookmark..." style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Tipe</label>
+              <select id="bm-type" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">
+                <option value="course">Kursus</option>
+                <option value="lesson">Pelajaran</option>
+                <option value="article">Artikel</option>
+                <option value="project">Proyek</option>
+                <option value="quiz">Quiz</option>
+                <option value="discussion">Diskusi</option>
+              </select>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Kategori</label>
+              <select id="bm-category" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">
+                <option>Machine Learning</option><option>Deep Learning</option><option>NLP</option>
+                <option>Computer Vision</option><option>Data Science</option><option>Python</option>
+              </select>
+            </div>
+            <div style="margin-bottom:20px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Deskripsi</label>
+              <textarea id="bm-desc" placeholder="Catatan singkat..." rows="2" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;resize:none;font-family:inherit"></textarea>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="addBookmarkItem()">
+              <i data-lucide="bookmark-plus" style="width:14px;height:14px"></i> Simpan Bookmark
+            </button>
+          </div>
+        </div>
+
+      </div>
+

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Lunetix</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/login.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-container">
+      <div class="auth-box">
+
+        <div class="auth-logo">
+          <div class="logo-icon">
+            <i data-lucide="moon" style="width:18px;height:18px;color:#fff"></i>
+          </div>
+          <span>Lunetix</span>
+        </div>
+
+        <div class="auth-title">
+          <h1>Welcome Back to<br><span>Lunetix</span></h1>
+          <p>Continue your AI learning journey</p>
+        </div>
+
+        <div id="error-msg" class="error-msg"></div>
+
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-wrap">
+              <input type="email" id="email" placeholder="Enter your email" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" />
+              <button type="button" class="toggle-pw" onclick="togglePassword('password', this)">
+                <i data-lucide="eye" style="width:15px;height:15px"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="remember" />
+              Remember me
+            </label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full">
+            Log In <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+          </button>
+        </form>
+
+        <div class="divider">or continue with</div>
+
+        <div class="social-btns">
+          <button class="btn-social" onclick="alert('Social login belum tersedia.')">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="16" height="16" alt="Google" />
+            Google
+          </button>
+          <button class="btn-social" onclick="alert('Social login belum tersedia.')">
+            <img src="https://www.svgrepo.com/show/512317/github-142.svg" width="16" height="16" alt="GitHub" style="filter:invert(1)" />
+            GitHub
+          </button>
+        </div>
+
+        <div class="auth-footer">
+          Don't have an account? <a href="register.html">Sign up</a>
+        </div>
+
+        <div class="auth-footer" style="margin-top:10px;font-size:11px;color:var(--text-muted)">
+          Demo: demo@lunetix.ai / demo1234
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script>requireGuest(); lucide.createIcons();</script>
+</body>
+</html>

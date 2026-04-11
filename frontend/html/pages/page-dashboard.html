@@ -1,0 +1,115 @@
+      <!-- DASHBOARD PAGE -->
+      <div class="page" id="page-dashboard">
+        <div class="db-layout">
+
+          <!-- LEFT/MAIN -->
+          <div class="db-main">
+            <!-- Greeting -->
+            <div style="margin-bottom:20px">
+              <h1 id="greeting" style="font-size:24px;font-weight:700;margin-bottom:4px">Good morning! 👋</h1>
+              <p style="font-size:13px;color:var(--text-secondary)">Ready to level up your AI skills today?</p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="db-stats-bar" id="db-stats-bar-dynamic"></div>
+
+            <!-- Continue Learning -->
+            <div class="section-header" style="margin-bottom:14px">
+              <h2 style="font-size:15px;font-weight:600">Continue Learning</h2>
+              <a href="#" onclick="window.navigateTo&&navigateTo('courses');return false;" style="font-size:12px;color:var(--accent-light);display:flex;align-items:center;gap:4px">View all courses <i data-lucide="arrow-right" style="width:12px;height:12px"></i></a>
+            </div>
+            <div class="db-courses-row" id="db-courses-row"></div>
+
+            <!-- Bottom 3-col grid -->
+            <div class="db-bottom-grid">
+              <!-- Your Progress -->
+              <div class="card db-progress-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                  <div><div style="font-size:14px;font-weight:600">Your Progress</div><div style="font-size:11px;color:var(--text-muted)">Track your learning journey</div></div>
+                  <select id="db-progress-period" onchange="renderDbProgressBars()" style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-secondary);font-size:11px;outline:none">
+                    <option value="week">This Week</option><option value="month">This Month</option>
+                  </select>
+                </div>
+                <div style="display:flex;gap:16px;align-items:center">
+                  <div style="position:relative;width:100px;height:100px;flex-shrink:0">
+                    <svg width="100" height="100" style="transform:rotate(-90deg)">
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="url(#db-ring)" stroke-width="8" stroke-dasharray="251" id="db-ring-offset" stroke-dashoffset="75" stroke-linecap="round"/>
+                      <defs><linearGradient id="db-ring" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs>
+                    </svg>
+                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                      <div id="db-ring-pct" style="font-size:18px;font-weight:700">70%</div>
+                      <div style="font-size:9px;color:var(--text-muted)">Overall</div>
+                    </div>
+                  </div>
+                  <div style="flex:1" id="db-progress-bars"></div>
+                </div>
+                <div class="db-progress-stats" id="db-progress-stats"></div>
+              </div>
+              <!-- Upcoming -->
+              <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600">Upcoming</div>
+                  <a href="#" onclick="window.navigateTo&&navigateTo('analytics');return false;" style="font-size:11px;color:var(--accent-light);display:flex;align-items:center;gap:3px">View Calendar <i data-lucide="arrow-right" style="width:11px;height:11px"></i></a>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Your next learning goals</div>
+                <div id="db-upcoming-list"></div>
+                <div id="db-mini-calendar"></div>
+              </div>
+              <!-- Achievements -->
+              <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600">Achievements</div>
+                  <a href="#" onclick="window.navigateTo&&navigateTo('certificates');return false;" style="font-size:11px;color:var(--accent-light)">See all</a>
+                </div>
+                <div id="db-achievements-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDEBAR -->
+          <div class="db-sidebar">
+            <!-- AI Study Tip -->
+            <div class="db-study-tip-card">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <span style="font-size:14px;font-weight:600">AI Study Tip</span>
+                <span style="font-size:14px">✨</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px" id="db-study-tip">Loading tip...</p>
+              <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;width:100%" onclick="window.navigateTo&&navigateTo('playground')">
+                Start AI Tutor <i data-lucide="arrow-right" style="width:12px;height:12px"></i>
+              </button>
+              <button class="btn btn-outline" style="padding:6px 16px;font-size:11px;width:100%;margin-top:6px" onclick="renderDbStudyTip()">
+                <i data-lucide="refresh-cw" style="width:11px;height:11px"></i> New Tip
+              </button>
+              <div style="text-align:center;margin-top:12px">
+                <i data-lucide="cpu" style="width:56px;height:56px;color:var(--accent-light);opacity:0.7"></i>
+              </div>
+            </div>
+            <!-- Recent Activity -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <div style="font-size:13px;font-weight:600">Recent Activity</div>
+                <a href="#" onclick="window.navigateTo&&navigateTo('analytics');return false;" style="font-size:11px;color:var(--accent-light)">View all</a>
+              </div>
+              <div id="db-recent-activity"></div>
+            </div>
+            <!-- 7 Day Streak -->
+            <div class="card db-streak-card">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                <span style="font-size:18px">🔥</span>
+                <div>
+                  <div style="font-size:13px;font-weight:600">7 Day Streak</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Keep it up, you're on fire!</div>
+                </div>
+              </div>
+              <div id="db-streak-dots"></div>
+              <button class="btn btn-outline" style="width:100%;padding:7px;font-size:11px;margin-top:10px" onclick="window.navigateTo&&navigateTo('analytics')">
+                View Full Analytics →
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+

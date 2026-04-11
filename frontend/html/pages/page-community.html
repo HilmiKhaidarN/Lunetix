@@ -1,0 +1,133 @@
+      <!-- ══ COMMUNITY ══ -->
+      <div class="page" id="page-community">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+          <div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Community</h2>
+            <p style="font-size:13px;color:var(--text-secondary)">Connect, share, and grow together with AI learners worldwide.</p>
+          </div>
+          <button class="btn btn-primary" style="padding:9px 18px;font-size:13px" onclick="showPostForm()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> New Post
+          </button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="cm-filter-row" style="margin-bottom:16px">
+          <div class="cm-filter-tabs" id="cm-filter-tabs">
+            <button class="cm-ftab active" onclick="filterCommunity('all',this)">All</button>
+            <button class="cm-ftab" onclick="filterCommunity('all',this)">All Topics</button>
+            <button class="cm-ftab" onclick="filterCommunity('Machine Learning',this)">Machine Learning</button>
+            <button class="cm-ftab" onclick="filterCommunity('Deep Learning',this)">Deep Learning</button>
+            <button class="cm-ftab" onclick="filterCommunity('NLP',this)">NLP</button>
+            <button class="cm-ftab" onclick="filterCommunity('Computer Vision',this)">Computer Vision</button>
+            <button class="cm-ftab" onclick="filterCommunity('Data Science',this)">Data Science</button>
+            <button class="cm-ftab" onclick="filterCommunity('Beginner',this)">Beginner</button>
+            <button class="cm-ftab cm-ftab-more">···</button>
+          </div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="cm-layout">
+          <div class="cm-main">
+
+            <!-- Stats Bar -->
+            <div class="cm-stats-bar" id="cm-stats-bar"></div>
+
+            <!-- Trending Discussions -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:16px">🔥</span>
+                <span style="font-size:14px;font-weight:600">Trending Discussions</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)">
+                Sort by:
+                <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-secondary);font-size:12px;outline:none">
+                  <option>Latest</option><option>Popular</option><option>Unanswered</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- New Post Form -->
+            <div id="post-form" style="display:none;margin-bottom:14px" class="card" style="padding:16px">
+              <div style="display:flex;gap:10px;margin-bottom:10px">
+                <div class="avatar" style="width:36px;height:36px;font-size:14px;flex-shrink:0" id="cm-post-avatar">A</div>
+                <textarea id="post-input" placeholder="Bagikan pertanyaan, insight, atau progress belajarmu..." rows="3" style="flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#fff;font-size:13px;outline:none;resize:none;font-family:inherit"></textarea>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <select id="post-tag" style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text-secondary);font-size:12px;outline:none">
+                  <option value="">Select topic...</option>
+                  <option>Machine Learning</option><option>Deep Learning</option><option>NLP</option>
+                  <option>Computer Vision</option><option>Data Science</option><option>General</option>
+                </select>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline" style="padding:7px 14px;font-size:12px" onclick="hidePostForm()">Cancel</button>
+                  <button class="btn btn-primary" style="padding:7px 14px;font-size:12px" onclick="submitPost()">Post</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feed -->
+            <div id="community-feed"></div>
+
+          </div>
+
+          <!-- Sidebar -->
+          <div class="cm-sidebar">
+
+            <!-- Top Learners -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:16px">🏆</span>
+                  <span style="font-size:13px;font-weight:600">Top Learners</span>
+                </div>
+                <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text-muted);font-size:11px;outline:none">
+                  <option>This month</option><option>This week</option><option>All time</option>
+                </select>
+              </div>
+              <div id="leaderboard-list"></div>
+              <button style="width:100%;padding:8px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:12px;cursor:pointer;margin-top:10px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                View Leaderboard →
+              </button>
+            </div>
+
+            <!-- Trending Topics -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:14px">🔥</span>
+                  <span style="font-size:13px;font-weight:600">Trending Topics</span>
+                </div>
+                <a href="#" style="font-size:11px;color:var(--accent-light)">View all</a>
+              </div>
+              <div id="trending-tags"></div>
+            </div>
+
+            <!-- Weekly Challenge -->
+            <div class="cm-challenge-card">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <span style="font-size:18px">🎯</span>
+                <span style="font-size:13px;font-weight:600">Weekly Challenge</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px">
+                Buat project image classifier dengan 10 kelas berbeda
+              </p>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <span style="font-size:11px;color:var(--text-muted)">Reward</span>
+                <span style="font-size:12px;font-weight:600;color:#fbbf24">+150 XP ⭐</span>
+              </div>
+              <div class="progress-bar" style="height:5px;margin-bottom:6px">
+                <div class="progress-fill" style="width:33%"></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:10px;color:var(--text-muted)">120 / 60 XP</span>
+                <span style="font-size:10px;color:var(--danger)">4 days left</span>
+              </div>
+              <button class="btn btn-primary" style="width:100%;padding:9px;font-size:13px">Join Challenge</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+

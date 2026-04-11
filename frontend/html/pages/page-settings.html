@@ -1,0 +1,697 @@
+      <!-- ══ SETTINGS ══ -->
+      <div class="page" id="page-settings">
+
+        <!-- Header -->
+        <div style="margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <h2 style="font-size:20px;font-weight:700">Settings</h2>
+            <span style="font-size:18px">✨</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-secondary)">Manage your preferences, account, and app settings to personalize your Lunetix experience.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="st-tabs" id="st-tabs">
+          <button class="st-tab active" onclick="switchSettingsTab('general',this)">General</button>
+          <button class="st-tab" onclick="switchSettingsTab('account',this)">Account</button>
+          <button class="st-tab" onclick="switchSettingsTab('notifications',this)">Notifications</button>
+          <button class="st-tab" onclick="switchSettingsTab('preferences',this)">Preferences</button>
+          <button class="st-tab" onclick="switchSettingsTab('privacy',this)">Privacy &amp; Security</button>
+          <button class="st-tab" onclick="switchSettingsTab('billing',this)">Billing</button>
+          <button class="st-tab" onclick="switchSettingsTab('appearance',this)">Appearance</button>
+        </div>
+
+        <!-- Main layout -->
+        <div class="st-layout">
+          <div class="st-main">
+
+            <!-- GENERAL TAB -->
+            <div class="st-section active" id="st-general">
+
+              <div class="st-grid-2">
+                <!-- Profile Information -->
+                <div class="card">
+                  <div style="margin-bottom:14px">
+                    <div style="font-size:14px;font-weight:600;margin-bottom:3px">Profile Information</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Manage your personal information and how it appears on Lunetix.</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+                    <div style="position:relative">
+                      <div class="avatar user-avatar" style="width:64px;height:64px;font-size:24px">A</div>
+                      <button style="position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--bg-card);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="triggerAvatarUpload()">
+                        <i data-lucide="camera" style="width:10px;height:10px;color:#fff"></i>
+                      </button>
+                    </div>
+                    <div style="flex:1">
+                      <div class="st-field">
+                        <label class="st-label">Display Name</label>
+                        <input id="settings-name-input" type="text" class="st-input" placeholder="Your name">
+                      </div>
+                      <div class="st-field" style="margin-top:8px">
+                        <label class="st-label">Email</label>
+                        <input id="settings-email-input" type="email" class="st-input" placeholder="email@lunetix.ai" readonly style="opacity:0.6;cursor:not-allowed">
+                      </div>
+                      <div class="st-field" style="margin-top:8px">
+                        <label class="st-label">Plan</label>
+                        <span class="badge badge-purple" style="font-size:11px">Free Plan</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" style="padding:9px 20px;font-size:13px" onclick="saveSettings()">
+                    <i data-lucide="save" style="width:13px;height:13px"></i> Edit Profile
+                  </button>
+                </div>
+
+                <!-- Preferences -->
+                <div class="card">
+                  <div style="margin-bottom:14px">
+                    <div style="font-size:14px;font-weight:600;margin-bottom:3px">Preferences</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Customize your learning experience.</div>
+                  </div>
+                  <div class="st-pref-list">
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="globe" style="width:14px;height:14px;color:#60a5fa"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Language</div>
+                        <div class="st-pref-sub">Pilih bahasa yang kamu nyaman gunakan.</div>
+                      </div>
+                      <select class="st-select"><option>Indonesia</option><option>English</option><option>日本語</option></select>
+                    </div>
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="clock" style="width:14px;height:14px;color:#34d399"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Timezone</div>
+                        <div class="st-pref-sub">Waktu untuk jadwal dan laporan.</div>
+                      </div>
+                      <select class="st-select"><option>(GMT+7) Jakarta</option><option>(GMT+8) Singapore</option><option>(GMT+0) UTC</option></select>
+                    </div>
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="bar-chart" style="width:14px;height:14px;color:#fbbf24"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Difficulty Level</div>
+                        <div class="st-pref-sub">Sesuaikan rekomendasi materi dengan levelmu.</div>
+                      </div>
+                      <select class="st-select"><option>Intermediate</option><option>Beginner</option><option>Advanced</option></select>
+                    </div>
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="target" style="width:14px;height:14px;color:#a78bfa"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Learning Goal</div>
+                        <div class="st-pref-sub">Fokus utama belajarmu saat ini.</div>
+                      </div>
+                      <select class="st-select"><option>AI Engineer</option><option>Data Scientist</option><option>ML Researcher</option></select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notification Settings -->
+              <div class="card" style="margin-top:14px">
+                <div style="margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600;margin-bottom:3px">Notification Settings</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Choose what you want to be notified about.</div>
+                </div>
+                <div class="st-notif-grid">
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="mail" style="width:14px;height:14px;color:#a78bfa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Email Notifications</div>
+                      <div class="st-pref-sub">Receive updates about your progress and new courses.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-notif" onclick="togglePref('notif')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="book-open" style="width:14px;height:14px;color:#60a5fa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Course Reminders</div>
+                      <div class="st-pref-sub">Get reminded to continue your learning.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-reminder" onclick="togglePref('reminder')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="help-circle" style="width:14px;height:14px;color:#34d399"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Quiz Results</div>
+                      <div class="st-pref-sub">Notify me when quiz results are available.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-quiz" onclick="togglePref('quiz')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="users" style="width:14px;height:14px;color:#fbbf24"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Community Activity</div>
+                      <div class="st-pref-sub">Updates from discussions and replies.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-community" onclick="togglePref('community')" data-on="false"><div class="toggle-thumb"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Privacy & Security -->
+              <div class="card" style="margin-top:14px">
+                <div style="margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600;margin-bottom:3px">Privacy &amp; Security</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Manage your privacy and keep your account secure.</div>
+                </div>
+                <div class="st-security-list">
+                  <div class="st-security-item" onclick="switchSettingsTab('privacy',document.querySelector('.st-tab:nth-child(5)'))">
+                    <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="lock" style="width:14px;height:14px;color:#a78bfa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Change Password</div>
+                      <div class="st-pref-sub">Update your password regularly.</div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted)"></i>
+                  </div>
+                  <div class="st-security-item" onclick="switchSettingsTab('privacy',document.querySelector('.st-tab:nth-child(5)'))">
+                    <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="shield" style="width:14px;height:14px;color:#34d399"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Two-Factor Authentication</div>
+                      <div class="st-pref-sub">Tambahkan lapisan keamanan ekstra.</div>
+                    </div>
+                    <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.07);color:var(--text-muted)">Inactive</span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);margin-left:8px"></i>
+                  </div>
+                  <div class="st-security-item" onclick="downloadUserData()">
+                    <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="download" style="width:14px;height:14px;color:#60a5fa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Download Your Data</div>
+                      <div class="st-pref-sub">Unduh semua data dan progres kamu.</div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted)"></i>
+                  </div>
+                  <div class="st-security-item st-danger-item" onclick="confirmDeleteAccount()">
+                    <div class="st-pref-icon" style="background:rgba(239,68,68,0.15)"><i data-lucide="trash-2" style="width:14px;height:14px;color:#f87171"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label" style="color:var(--danger)">Delete Account</div>
+                      <div class="st-pref-sub">Hapus akun dan semua data secara permanen.</div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--danger)"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Appearance -->
+              <div class="card" style="margin-top:14px">
+                <div style="margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600;margin-bottom:3px">Appearance</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Customize how Lunetix looks and feels.</div>
+                </div>
+                <!-- Theme -->
+                <div class="st-theme-row">
+                  <div class="st-theme-card" id="theme-light" onclick="setTheme('light')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                      <i data-lucide="sun" style="width:16px;height:16px;color:#f59e0b"></i>
+                    </div>
+                    <div style="font-size:12px;font-weight:600">Light Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan terang yang nyaman.</div>
+                  </div>
+                  <div class="st-theme-card active" id="theme-dark" onclick="setTheme('dark')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1e1b4b,#312e81);display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                      <i data-lucide="moon" style="width:16px;height:16px;color:#a78bfa"></i>
+                    </div>
+                    <div style="font-size:12px;font-weight:600">Dark Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan gelap yang ramah mata.</div>
+                    <div style="position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center">
+                      <i data-lucide="check" style="width:10px;height:10px;color:#fff"></i>
+                    </div>
+                  </div>
+                  <div class="st-theme-card" id="theme-system" onclick="setTheme('system')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#374151,#1f2937);display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                      <i data-lucide="monitor" style="width:16px;height:16px;color:#9ca3af"></i>
+                    </div>
+                    <div style="font-size:12px;font-weight:600">System</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Ikuti pengaturan sistem perangkat.</div>
+                  </div>
+                </div>
+                <!-- Accent Color -->
+                <div style="margin-top:16px">
+                  <div style="font-size:12px;font-weight:600;margin-bottom:4px">Accent Color</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Pilih warna aksen favoritmu.</div>
+                  <div class="st-color-row" id="st-color-row"></div>
+                </div>
+                <!-- Font Size -->
+                <div style="margin-top:16px">
+                  <div style="font-size:12px;font-weight:600;margin-bottom:4px">Font Size</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Sesuaikan ukuran teks untuk kenyamanan.</div>
+                  <div class="st-font-row">
+                    <button class="st-font-btn" onclick="setFontSize('small')">A-</button>
+                    <button class="st-font-btn active" onclick="setFontSize('medium')">A</button>
+                    <button class="st-font-btn" onclick="setFontSize('large')">A+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Danger Zone -->
+              <div class="card" style="margin-top:14px;border-color:rgba(239,68,68,0.2)">
+                <button id="logout-btn" class="btn btn-outline btn-full" style="border-color:var(--danger);color:var(--danger)">
+                  <i data-lucide="log-out" style="width:15px;height:15px"></i> Logout
+                </button>
+              </div>
+
+            </div><!-- end st-general -->
+
+            <!-- ── ACCOUNT TAB ── -->
+            <div class="st-section" id="st-account">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Account Information</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Manage your account details and credentials.</div>
+                <div style="display:grid;gap:14px">
+                  <div>
+                    <label class="st-label">Full Name</label>
+                    <input id="acc-name" type="text" class="st-input" placeholder="Your full name">
+                  </div>
+                  <div>
+                    <label class="st-label">Email Address</label>
+                    <input id="acc-email" type="email" class="st-input" placeholder="email@lunetix.ai">
+                  </div>
+                  <div>
+                    <label class="st-label">Username</label>
+                    <div style="position:relative">
+                      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px">@</span>
+                      <input id="acc-username" type="text" class="st-input" style="padding-left:28px" placeholder="username">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Bio</label>
+                    <textarea id="acc-bio" class="st-input" rows="3" style="resize:none" placeholder="Tell us about yourself..."></textarea>
+                  </div>
+                  <div>
+                    <label class="st-label">Website / Portfolio</label>
+                    <input id="acc-website" type="url" class="st-input" placeholder="https://yourportfolio.com">
+                  </div>
+                  <div>
+                    <label class="st-label">LinkedIn</label>
+                    <input id="acc-linkedin" type="url" class="st-input" placeholder="https://linkedin.com/in/username">
+                  </div>
+                  <div>
+                    <label class="st-label">GitHub</label>
+                    <input id="acc-github" type="url" class="st-input" placeholder="https://github.com/username">
+                  </div>
+                  <button class="btn btn-primary" style="width:fit-content;padding:9px 24px;font-size:13px" onclick="saveAccountInfo()">
+                    <i data-lucide="save" style="width:13px;height:13px"></i> Save Account Info
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Connected Accounts</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Link your social accounts for quick login.</div>
+                <div class="st-pref-list">
+                  <div class="st-pref-item">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="22" height="22" alt="Google">
+                    <div style="flex:1"><div class="st-pref-label">Google</div><div class="st-pref-sub">Connect your Google account</div></div>
+                    <button class="btn btn-outline" style="padding:5px 14px;font-size:11px" onclick="connectSocialAccount('Google')">Connect</button>
+                  </div>
+                  <div class="st-pref-item">
+                    <img src="https://www.svgrepo.com/show/512317/github-142.svg" width="22" height="22" alt="GitHub" style="filter:invert(1)">
+                    <div style="flex:1"><div class="st-pref-label">GitHub</div><div class="st-pref-sub">Connect your GitHub account</div></div>
+                    <button class="btn btn-outline" style="padding:5px 14px;font-size:11px" onclick="connectSocialAccount('GitHub')">Connect</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── NOTIFICATIONS TAB ── -->
+            <div class="st-section" id="st-notifications">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Email Notifications</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Choose which emails you want to receive from Lunetix.</div>
+                <div class="st-pref-list" id="notif-email-list"></div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Push Notifications</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Real-time alerts in your browser.</div>
+                <div class="st-pref-list" id="notif-push-list"></div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Notification Schedule</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Set quiet hours when you don't want to be disturbed.</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div>
+                    <label class="st-label">Quiet Hours Start</label>
+                    <input type="time" id="quiet-start" class="st-input" value="22:00">
+                  </div>
+                  <div>
+                    <label class="st-label">Quiet Hours End</label>
+                    <input type="time" id="quiet-end" class="st-input" value="08:00">
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:14px;padding:9px 24px;font-size:13px" onclick="saveNotifSchedule()">
+                  <i data-lucide="save" style="width:13px;height:13px"></i> Save Schedule
+                </button>
+              </div>
+            </div>
+
+            <!-- ── PREFERENCES TAB ── -->
+            <div class="st-section" id="st-preferences">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Learning Preferences</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Customize how you learn on Lunetix.</div>
+                <div style="display:grid;gap:14px">
+                  <div>
+                    <label class="st-label">Daily Learning Goal (minutes)</label>
+                    <input id="pref-daily-goal" type="range" min="15" max="180" step="15" value="60" style="width:100%;accent-color:var(--accent)" oninput="document.getElementById('pref-goal-val').textContent=this.value+' min'">
+                    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:4px">
+                      <span>15 min</span><span id="pref-goal-val" style="color:var(--accent-light);font-weight:600">60 min</span><span>180 min</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Preferred Learning Time</label>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap" id="pref-time-slots"></div>
+                  </div>
+                  <div>
+                    <label class="st-label">Content Language</label>
+                    <select class="st-input" id="pref-lang">
+                      <option value="id">Bahasa Indonesia</option>
+                      <option value="en">English</option>
+                      <option value="mixed">Mixed (ID + EN)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="st-label">Autoplay Videos</label>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <span style="font-size:12px;color:var(--text-secondary)">Automatically play next video in a course</span>
+                      <div class="toggle-switch" id="toggle-autoplay" onclick="togglePref('autoplay')" data-on="true"><div class="toggle-thumb"></div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Show Subtitles by Default</label>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <span style="font-size:12px;color:var(--text-secondary)">Display subtitles when available</span>
+                      <div class="toggle-switch" id="toggle-subtitles" onclick="togglePref('subtitles')" data-on="false"><div class="toggle-thumb"></div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Playback Speed</label>
+                    <div style="display:flex;gap:8px" id="pref-speed-btns"></div>
+                  </div>
+                  <button class="btn btn-primary" style="width:fit-content;padding:9px 24px;font-size:13px" onclick="savePreferences()">
+                    <i data-lucide="save" style="width:13px;height:13px"></i> Save Preferences
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Course Recommendations</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Topics you're interested in (affects recommendations).</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px" id="pref-topics"></div>
+                <button class="btn btn-primary" style="margin-top:14px;padding:9px 24px;font-size:13px" onclick="saveTopics()">
+                  <i data-lucide="save" style="width:13px;height:13px"></i> Save Topics
+                </button>
+              </div>
+            </div>
+
+            <!-- ── PRIVACY & SECURITY TAB ── -->
+            <div class="st-section" id="st-privacy">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Change Password</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Update your password to keep your account secure.</div>
+                <div style="display:grid;gap:12px">
+                  <div>
+                    <label class="st-label">Current Password</label>
+                    <div style="position:relative">
+                      <input id="pw-current" type="password" class="st-input" placeholder="Enter current password">
+                      <button type="button" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="togglePwField('pw-current',this)"><i data-lucide="eye" style="width:14px;height:14px"></i></button>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">New Password</label>
+                    <div style="position:relative">
+                      <input id="pw-new" type="password" class="st-input" placeholder="Min. 8 characters" oninput="checkPwStrength(this.value)">
+                      <button type="button" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="togglePwField('pw-new',this)"><i data-lucide="eye" style="width:14px;height:14px"></i></button>
+                    </div>
+                    <div id="pw-strength-bar" style="height:3px;border-radius:2px;margin-top:6px;background:var(--border);overflow:hidden"><div id="pw-strength-fill" style="height:100%;width:0%;transition:width 0.3s,background 0.3s;border-radius:2px"></div></div>
+                    <div id="pw-strength-label" style="font-size:10px;color:var(--text-muted);margin-top:3px"></div>
+                  </div>
+                  <div>
+                    <label class="st-label">Confirm New Password</label>
+                    <div style="position:relative">
+                      <input id="pw-confirm" type="password" class="st-input" placeholder="Repeat new password">
+                      <button type="button" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="togglePwField('pw-confirm',this)"><i data-lucide="eye" style="width:14px;height:14px"></i></button>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" style="width:fit-content;padding:9px 24px;font-size:13px" onclick="changePassword()">
+                    <i data-lucide="lock" style="width:13px;height:13px"></i> Update Password
+                  </button>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Two-Factor Authentication</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Add an extra layer of security to your account.</div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px;background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.2);border-radius:8px;margin-bottom:12px">
+                  <i data-lucide="shield" style="width:24px;height:24px;color:#34d399;flex-shrink:0"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;margin-bottom:2px">Authenticator App</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Use Google Authenticator or Authy to generate codes.</div>
+                  </div>
+                  <button class="btn btn-primary" style="padding:7px 16px;font-size:12px" onclick="setup2FA()">Enable</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px">
+                  <i data-lucide="smartphone" style="width:24px;height:24px;color:#60a5fa;flex-shrink:0"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;margin-bottom:2px">SMS Authentication</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Receive a code via SMS to your phone number.</div>
+                  </div>
+                  <button class="btn btn-outline" style="padding:7px 16px;font-size:12px" onclick="setupSMS2FA()">Setup</button>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Active Sessions</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Devices currently logged into your account.</div>
+                <div id="active-sessions-list"></div>
+              </div>
+              <div class="card" style="border-color:rgba(239,68,68,0.2)">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px;color:var(--danger)">Danger Zone</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">These actions are irreversible. Please be careful.</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                  <button class="btn btn-outline" style="border-color:var(--warning);color:var(--warning);padding:9px 20px;font-size:13px" onclick="deactivateAccount()">
+                    <i data-lucide="pause-circle" style="width:14px;height:14px"></i> Deactivate Account
+                  </button>
+                  <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger);padding:9px 20px;font-size:13px" onclick="confirmDeleteAccount()">
+                    <i data-lucide="trash-2" style="width:14px;height:14px"></i> Delete Account
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── BILLING TAB ── -->
+            <div class="st-section" id="st-billing">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Current Plan</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Your active subscription details.</div>
+                <div style="background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <span style="font-size:20px">👑</span>
+                      <div>
+                        <div style="font-size:15px;font-weight:700">Free Plan</div>
+                        <div style="font-size:11px;color:var(--text-muted)">Basic access to Lunetix features</div>
+                      </div>
+                    </div>
+                    <span class="badge badge-purple">Active</span>
+                  </div>
+                  <div style="font-size:12px;color:var(--text-muted)">No billing cycle · Free forever</div>
+                </div>
+                <!-- Plan comparison -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" id="billing-plans"></div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Payment Methods</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Manage your payment methods for Pro subscription.</div>
+                <div style="text-align:center;padding:24px;border:2px dashed var(--border);border-radius:10px">
+                  <i data-lucide="credit-card" style="width:32px;height:32px;color:var(--text-muted);margin-bottom:8px"></i>
+                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">No payment method added yet.</div>
+                  <button class="btn btn-primary" style="padding:8px 20px;font-size:13px" onclick="addPaymentMethod()">
+                    <i data-lucide="plus" style="width:13px;height:13px"></i> Add Payment Method
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Billing History</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Your past transactions and invoices.</div>
+                <div id="billing-history"></div>
+              </div>
+            </div>
+
+            <!-- ── APPEARANCE TAB ── -->
+            <div class="st-section" id="st-appearance">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Theme</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Choose how Lunetix looks.</div>
+                <div class="st-theme-row">
+                  <div class="st-theme-card" id="app-theme-light" onclick="setTheme('light')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;margin-bottom:8px"><i data-lucide="sun" style="width:16px;height:16px;color:#f59e0b"></i></div>
+                    <div style="font-size:12px;font-weight:600">Light Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan terang yang nyaman.</div>
+                  </div>
+                  <div class="st-theme-card active" id="app-theme-dark" onclick="setTheme('dark')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1e1b4b,#312e81);display:flex;align-items:center;justify-content:center;margin-bottom:8px"><i data-lucide="moon" style="width:16px;height:16px;color:#a78bfa"></i></div>
+                    <div style="font-size:12px;font-weight:600">Dark Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan gelap yang ramah mata.</div>
+                    <div style="position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center"><i data-lucide="check" style="width:10px;height:10px;color:#fff"></i></div>
+                  </div>
+                  <div class="st-theme-card" id="app-theme-system" onclick="setTheme('system')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#374151,#1f2937);display:flex;align-items:center;justify-content:center;margin-bottom:8px"><i data-lucide="monitor" style="width:16px;height:16px;color:#9ca3af"></i></div>
+                    <div style="font-size:12px;font-weight:600">System</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Ikuti pengaturan sistem perangkat.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Accent Color</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Pilih warna aksen favoritmu — langsung diterapkan.</div>
+                <div class="st-color-row" id="app-color-row"></div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Font Size</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Sesuaikan ukuran teks untuk kenyamanan membaca.</div>
+                <div class="st-font-row" id="app-font-row"></div>
+                <div id="app-font-preview" style="margin-top:12px;padding:12px;background:var(--input-bg);border-radius:8px;font-size:14px;color:var(--text-secondary);line-height:1.6">
+                  Preview: Belajar AI dengan Lunetix — platform terbaik untuk menguasai Machine Learning dan Deep Learning.
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Sidebar</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Customize sidebar behavior.</div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Compact Sidebar</div><div style="font-size:11px;color:var(--text-muted)">Show only icons without labels</div></div>
+                    <div class="toggle-switch" id="toggle-compact" onclick="togglePref('compact')" data-on="false"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Show Upgrade Banner</div><div style="font-size:11px;color:var(--text-muted)">Display Pro upgrade card in sidebar</div></div>
+                    <div class="toggle-switch" id="toggle-upgrade-banner" onclick="togglePref('upgrade_banner')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Animations</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Control motion and transition effects.</div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Enable Animations</div><div style="font-size:11px;color:var(--text-muted)">Smooth transitions and hover effects</div></div>
+                    <div class="toggle-switch" id="toggle-animations" onclick="togglePref('animations')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Reduce Motion</div><div style="font-size:11px;color:var(--text-muted)">For users sensitive to motion</div></div>
+                    <div class="toggle-switch" id="toggle-reduce-motion" onclick="togglePref('reduce_motion')" data-on="false"><div class="toggle-thumb"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </div><!-- end st-main -->
+
+          <!-- Right Sidebar -->
+          <div class="st-sidebar">
+
+            <!-- Profile Card -->
+            <div class="st-profile-card">
+              <div style="position:relative;width:64px;height:64px;margin:0 auto 12px">
+                <div class="avatar user-avatar" style="width:64px;height:64px;font-size:24px">A</div>
+                <div style="position:absolute;bottom:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#34d399;border:2px solid var(--bg-card)"></div>
+              </div>
+              <div class="user-name" style="font-size:16px;font-weight:700;text-align:center;margin-bottom:2px">Arman</div>
+              <div id="st-sidebar-email" style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:8px">demo@lunetix.ai</div>
+              <span class="badge badge-purple" style="display:block;text-align:center;font-size:11px">Free Plan</span>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Quick Actions</div>
+              <div class="st-quick-list">
+                <div class="st-quick-item" onclick="saveSettings()">
+                  <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="user" style="width:13px;height:13px;color:#a78bfa"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Edit Profile</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Perbarui informasi akunmu.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+                <div class="st-quick-item" onclick="showUpgradeModal()">
+                  <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="credit-card" style="width:13px;height:13px;color:#60a5fa"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Manage Billing</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Lihat detail langgananmu.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+                <div class="st-quick-item" onclick="showRedeemModal()">
+                  <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="gift" style="width:13px;height:13px;color:#34d399"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Redeem Code</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Gunakan kode untuk rewards.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+                <div class="st-quick-item" onclick="showHelpCenter()">
+                  <div class="st-pref-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="help-circle" style="width:13px;height:13px;color:#fbbf24"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Help Center</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Dapatkan bantuan kapan saja.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Your Plan -->
+            <div class="card">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Your Plan</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <span style="font-size:18px">👑</span>
+                <div>
+                  <div style="font-size:13px;font-weight:700">Free Plan</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Akses terbatas ke fitur dasar</div>
+                </div>
+              </div>
+              <div class="st-plan-features">
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Akses semua kursus gratis</div>
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Quiz harian terbatas</div>
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Proyek publik</div>
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Sertifikat standar</div>
+              </div>
+              <button class="btn btn-primary btn-full" style="margin-top:12px;padding:10px;font-size:13px">Upgrade to Pro</button>
+              <a href="#" style="display:block;text-align:center;font-size:11px;color:var(--accent-light);margin-top:8px">Lihat semua fitur →</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Course Detail Modal -->
+<div class="course-detail-overlay" id="course-modal">
+  <div class="course-detail-modal">
+    <div class="cd-hero">
+      <button class="cd-close" onclick="closeCourseModal()">✕</button>
+      <span class="cd-hero-emoji">🤖</span>
+      <h1>Course Title</h1>
+      <p>Course description goes here.</p>
+      <div class="cd-hero-meta">
+        <span class="cd-meta-level">📊 Beginner</span>
+        <span class="cd-meta-duration">⏱️ 8h 30m</span>
+        <span class="cd-meta-students">👥 2.1k students</span>
+        <span class="cd-meta-rating">⭐ 4.8</span>
+      </div>
+    </div>
+    <div class="cd-tabs">
+      <button class="cd-tab active" data-tab="curriculum" onclick="switchCDTab('curriculum')">
+        <i data-lucide="list" style="width:14px;height:14px"></i> Kurikulum
+      </button>
+      <button class="cd-tab" data-tab="materi" onclick="switchCDTab('materi')">
+        <i data-lucide="book-open" style="width:14px;height:14px"></i> Materi
+      </button>
+      <button class="cd-tab" data-tab="quiz" onclick="switchCDTab('quiz')">
+        <i data-lucide="brain" style="width:14px;height:14px"></i> Quiz
+      </button>
+    </div>
+    <div class="cd-body">
+      <div class="cd-section active" id="cd-curriculum"></div>
+      <div class="cd-section" id="cd-materi"></div>
+      <div class="cd-section" id="cd-quiz"></div>
+    </div>
+  </div>
+</div>
+

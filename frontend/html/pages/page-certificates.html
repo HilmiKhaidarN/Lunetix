@@ -1,0 +1,74 @@
+      <!-- ══ CERTIFICATES ══ -->
+      <div class="page" id="page-certificates">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+              <h2 style="font-size:20px;font-weight:700">Certificates</h2>
+              <i data-lucide="award" style="width:20px;height:20px;color:#fbbf24"></i>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary)">Celebrate your achievements and showcase your AI skills to the world.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" style="padding:8px 16px;font-size:13px" onclick="shareCertProfile()">
+              <i data-lucide="share-2" style="width:14px;height:14px"></i> Share Profile
+            </button>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:13px" onclick="downloadAllCerts()">
+              <i data-lucide="download" style="width:14px;height:14px"></i> Download All
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="cert-stats-bar" id="cert-stats-bar"></div>
+
+        <!-- Filter Tabs + Sort -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+          <div class="cert-filter-tabs" id="cert-filter-tabs">
+            <button class="cert-ftab active" onclick="filterCerts('all',this)">All Certificates</button>
+            <button class="cert-ftab" onclick="filterCerts('earned',this)">Earned</button>
+            <button class="cert-ftab" onclick="filterCerts('progress',this)">In Progress</button>
+            <button class="cert-ftab" onclick="filterCerts('locked',this)">Locked</button>
+            <button class="cert-ftab" onclick="filterCerts('expired',this)">Expired</button>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted)">Sort by:
+            <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-secondary);font-size:12px;outline:none;margin-left:4px">
+              <option>Newest</option><option>Oldest</option><option>A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Cert Grid -->
+        <div class="cert-cards-grid" id="cert-grid"></div>
+
+        <!-- Bottom Section -->
+        <div class="cert-bottom-grid" style="margin-top:24px">
+
+          <!-- Showcase -->
+          <div class="card">
+            <h4 style="font-size:14px;font-weight:600;margin-bottom:6px">Showcase Your Achievements</h4>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px">Share your certificates on LinkedIn, Twitter, or your portfolio to demonstrate your skills to the world.</p>
+            <div style="display:flex;gap:10px">
+              <button class="cert-share-btn" style="background:#0077b5" onclick="shareCertToLinkedIn()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="cert-share-btn" style="background:#1da1f2" onclick="shareCertToTwitter()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </button>
+              <button class="cert-share-btn" style="background:var(--input-bg);border:1px solid var(--border)" onclick="copyCertLink()">
+                <i data-lucide="link" style="width:16px;height:16px;color:var(--text-secondary)"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Certificate Journey -->
+          <div class="card">
+            <h4 style="font-size:14px;font-weight:600;margin-bottom:6px">Certificate Journey</h4>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px">Your learning milestone timeline</p>
+            <div id="cert-journey"></div>
+          </div>
+
+        </div>
+      </div>
+

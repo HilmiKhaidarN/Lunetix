@@ -1,0 +1,2127 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Lunetix</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/course-detail.css" />
+  <link rel="stylesheet" href="../css/playground.css" />
+  <link rel="stylesheet" href="../css/projects.css" />
+  <link rel="stylesheet" href="../css/quizzes.css" />
+  <link rel="stylesheet" href="../css/community.css" />
+  <link rel="stylesheet" href="../css/certificates.css" />
+  <link rel="stylesheet" href="../css/analytics.css" />
+  <link rel="stylesheet" href="../css/settings.css" />
+  <link rel="stylesheet" href="../css/bookmarks.css" />
+  <link rel="stylesheet" href="../css/dashboard-page.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <i data-lucide="moon" style="width:18px;height:18px;color:#fff"></i>
+      </div>
+      <span>Lunetix</span>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a class="nav-item" data-page="dashboard"><span class="nav-icon"><i data-lucide="layout-dashboard"></i></span> Dashboard</a></li>
+        <li><a class="nav-item" data-page="courses"><span class="nav-icon"><i data-lucide="book-open"></i></span> Courses</a></li>
+        <li><a class="nav-item" data-page="playground"><span class="nav-icon"><i data-lucide="cpu"></i></span> AI Playground</a></li>
+        <li><a class="nav-item" data-page="projects"><span class="nav-icon"><i data-lucide="folder"></i></span> Projects</a></li>
+        <li><a class="nav-item" data-page="quizzes"><span class="nav-icon"><i data-lucide="help-circle"></i></span> Quizzes</a></li>
+        <li><a class="nav-item" data-page="community"><span class="nav-icon"><i data-lucide="users"></i></span> Community</a></li>
+        <li><a class="nav-item" data-page="certificates"><span class="nav-icon"><i data-lucide="award"></i></span> Certificates</a></li>
+      </ul>
+      <div class="nav-section-label">My Space</div>
+      <ul>
+        <li><a class="nav-item" data-page="analytics"><span class="nav-icon"><i data-lucide="bar-chart"></i></span> Analytics</a></li>
+        <li><a class="nav-item" data-page="bookmarks"><span class="nav-icon"><i data-lucide="bookmark"></i></span> Bookmarks</a></li>
+        <li><a class="nav-item" data-page="settings"><span class="nav-icon"><i data-lucide="settings"></i></span> Settings</a></li>
+      </ul>
+    </nav>
+    <div class="sidebar-upgrade">
+      <div style="font-size:18px;margin-bottom:6px">👑</div>
+      <h4>Upgrade to Pro</h4>
+      <p>Unlock all courses, AI tools, and advanced analytics.</p>
+      <button class="btn btn-primary" onclick="showUpgradeModal()">Upgrade Now</button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- ══ UPGRADE MODAL ══ -->
+  <div id="upgrade-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:400;align-items:center;justify-content:center;padding:20px">
+    <div class="upgrade-modal-box">
+      <button onclick="closeUpgradeModal()" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+      <div class="upgrade-header">
+        <div style="font-size:32px;margin-bottom:8px">👑</div>
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:6px">Upgrade to <span style="background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Pro</span></h2>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6)">Unlock the full Lunetix experience</p>
+      </div>
+      <div class="upgrade-toggle">
+        <button class="upgrade-period-btn active" id="btn-monthly" onclick="setUpgradePeriod('monthly')">Monthly</button>
+        <button class="upgrade-period-btn" id="btn-yearly" onclick="setUpgradePeriod('yearly')">Yearly <span class="upgrade-save-badge">Save 40%</span></button>
+      </div>
+      <div class="upgrade-plans">
+        <div class="upgrade-plan">
+          <div class="upgrade-plan-name">Free</div>
+          <div class="upgrade-plan-price">Rp 0<span>/bulan</span></div>
+          <div class="upgrade-plan-features">
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Semua kursus gratis</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Quiz harian terbatas</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Proyek publik</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Sertifikat standar</div>
+            <div class="upgrade-feat muted"><i data-lucide="x" style="width:13px;height:13px;color:#6b7280"></i> AI Playground penuh</div>
+            <div class="upgrade-feat muted"><i data-lucide="x" style="width:13px;height:13px;color:#6b7280"></i> Analytics lanjutan</div>
+            <div class="upgrade-feat muted"><i data-lucide="x" style="width:13px;height:13px;color:#6b7280"></i> Priority support</div>
+          </div>
+          <button class="btn btn-outline btn-full" disabled style="opacity:0.5;cursor:not-allowed">Current Plan</button>
+        </div>
+        <div class="upgrade-plan upgrade-plan-pro">
+          <div class="upgrade-plan-popular">Most Popular</div>
+          <div class="upgrade-plan-name" style="color:#a78bfa">Pro</div>
+          <div class="upgrade-plan-price" id="pro-price">Rp 99K<span>/bulan</span></div>
+          <div class="upgrade-plan-features">
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Semua kursus + premium</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Quiz unlimited</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> AI Playground penuh</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Sertifikat premium</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Analytics lanjutan</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Priority support</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Download materi offline</div>
+          </div>
+          <button class="btn btn-primary btn-full" onclick="startCheckout('pro')" style="font-size:14px;padding:12px">
+            <i data-lucide="zap" style="width:14px;height:14px"></i> Upgrade to Pro
+          </button>
+        </div>
+        <div class="upgrade-plan">
+          <div class="upgrade-plan-name">Team</div>
+          <div class="upgrade-plan-price" id="team-price">Rp 299K<span>/bulan</span></div>
+          <div class="upgrade-plan-features">
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Semua fitur Pro</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Hingga 10 anggota</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Dashboard tim</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Laporan progress tim</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Custom learning path</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Dedicated support</div>
+            <div class="upgrade-feat"><i data-lucide="check" style="width:13px;height:13px;color:#34d399"></i> Invoice & billing</div>
+          </div>
+          <button class="btn btn-outline btn-full" onclick="startCheckout('team')">Choose Team</button>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px">Metode pembayaran yang diterima</div>
+        <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap">
+          <span class="upgrade-pay-badge">💳 Kartu Kredit</span>
+          <span class="upgrade-pay-badge">🏦 Transfer Bank</span>
+          <span class="upgrade-pay-badge">📱 GoPay</span>
+          <span class="upgrade-pay-badge">📱 OVO</span>
+          <span class="upgrade-pay-badge">📱 DANA</span>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.3)">
+        🔒 Pembayaran aman · Batalkan kapan saja · Garansi 7 hari
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CHECKOUT MODAL ══ -->
+  <div id="checkout-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;align-items:center;justify-content:center;padding:20px">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:420px;padding:28px;position:relative">
+      <button onclick="closeCheckoutModal()" style="position:absolute;top:14px;right:14px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">✕</button>
+      <h3 style="font-size:16px;font-weight:700;margin-bottom:4px" id="checkout-title">Upgrade to Pro</h3>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:20px" id="checkout-subtitle">Rp 99.000 / bulan</div>
+      <div style="display:grid;gap:12px;margin-bottom:20px">
+        <div>
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Nama Lengkap</label>
+          <input id="co-name" type="text" placeholder="Nama sesuai kartu" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Email</label>
+          <input id="co-email" type="email" placeholder="email@example.com" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px">Metode Pembayaran</label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="co-methods"></div>
+        </div>
+        <div>
+          <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Kode Promo (opsional)</label>
+          <div style="display:flex;gap:8px">
+            <input id="co-promo" type="text" placeholder="Masukkan kode..." style="flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:13px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            <button onclick="applyPromo()" style="background:var(--accent);border:none;color:#fff;padding:10px 16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600">Apply</button>
+          </div>
+          <div id="co-promo-msg" style="font-size:11px;margin-top:4px"></div>
+        </div>
+      </div>
+      <div style="background:var(--input-bg);border-radius:8px;padding:12px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:6px">
+          <span id="co-plan-label">Pro Plan (Monthly)</span><span id="co-plan-price">Rp 99.000</span>
+        </div>
+        <div id="co-discount-row" style="display:none;justify-content:space-between;font-size:12px;color:var(--success);margin-bottom:6px">
+          <span>Diskon promo</span><span id="co-discount-val">-Rp 0</span>
+        </div>
+        <div style="border-top:1px solid var(--border);padding-top:8px;display:flex;justify-content:space-between;font-size:14px;font-weight:700">
+          <span>Total</span><span id="co-total" style="color:var(--accent-light)">Rp 99.000</span>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" style="padding:12px;font-size:14px" onclick="processPayment()">
+        <i data-lucide="lock" style="width:14px;height:14px"></i> Bayar Sekarang
+      </button>
+      <div style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:8px">🔒 Transaksi aman · SSL encrypted</div>
+    </div>
+  </div>
+
+  <!-- ══ COURSE DETAIL MODAL ══ -->
+  <div class="course-detail-overlay" id="course-modal">
+    <div class="course-detail-modal">
+      <div class="cd-hero">
+        <button class="cd-close" onclick="closeCourseModal()">✕</button>
+        <span class="cd-hero-emoji">🤖</span>
+        <h1>Course Title</h1>
+        <p>Course description goes here.</p>
+        <div class="cd-hero-meta">
+          <span class="cd-meta-level">📊 Beginner</span>
+          <span class="cd-meta-duration">⏱️ 8h 30m</span>
+          <span class="cd-meta-students">👥 2.1k students</span>
+          <span class="cd-meta-rating">⭐ 4.8</span>
+        </div>
+      </div>
+      <div class="cd-tabs">
+        <button class="cd-tab active" data-tab="curriculum" onclick="switchCDTab('curriculum')">
+          <i data-lucide="list" style="width:14px;height:14px"></i> Kurikulum
+        </button>
+        <button class="cd-tab" data-tab="materi" onclick="switchCDTab('materi')">
+          <i data-lucide="book-open" style="width:14px;height:14px"></i> Materi
+        </button>
+        <button class="cd-tab" data-tab="quiz" onclick="switchCDTab('quiz')">
+          <i data-lucide="brain" style="width:14px;height:14px"></i> Quiz
+        </button>
+      </div>
+      <div class="cd-body">
+        <div class="cd-section active" id="cd-curriculum"></div>
+        <div class="cd-section" id="cd-materi"></div>
+        <div class="cd-section" id="cd-quiz"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menu-toggle"><i data-lucide="menu"></i></button>
+        <h2 id="page-title">Dashboard</h2>
+      </div>
+      <div class="search-bar" id="topbar-search-wrap">
+        <span class="search-icon"><i data-lucide="search" style="width:14px;height:14px"></i></span>
+        <input type="text" id="topbar-search" placeholder="Search anything..." onkeydown="handleTopbarSearch(event)" oninput="showSearchSuggestions(this.value)" autocomplete="off" />
+        <kbd style="font-size:10px;color:var(--text-muted);background:var(--input-bg);border:1px solid var(--border);border-radius:4px;padding:1px 5px">⌘K</kbd>
+        <div id="search-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);left:0;right:0;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;box-shadow:0 16px 40px rgba(0,0,0,0.5);z-index:200;overflow:hidden"></div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-stat" onclick="window.navigateTo&&navigateTo('analytics')" title="Learning Streak" style="cursor:pointer">
+          <span class="stat-icon"><i data-lucide="flame" style="width:16px;height:16px;color:#f97316"></i></span>
+          <span class="user-streak">7</span>
+        </div>
+        <div class="topbar-stat" onclick="window.navigateTo&&navigateTo('analytics')" title="Total Points" style="cursor:pointer">
+          <span class="stat-icon"><i data-lucide="star" style="width:16px;height:16px;color:#eab308"></i></span>
+          <span class="user-points">1,250</span>
+        </div>
+        <div class="tb-notif-wrap" id="tb-notif-wrap">
+          <button class="notif-btn" id="notif-btn" onclick="toggleNotifDropdown()">
+            <i data-lucide="bell" style="width:16px;height:16px"></i>
+            <span class="notif-dot" id="notif-dot"></span>
+          </button>
+          <div class="tb-dropdown notif-dropdown" id="notif-dropdown" style="display:none">
+            <div class="tb-dd-header">
+              <span style="font-size:13px;font-weight:600">Notifikasi</span>
+              <button onclick="markAllRead()" style="font-size:11px;color:var(--accent-light);background:none;border:none;cursor:pointer">Tandai semua dibaca</button>
+            </div>
+            <div id="notif-list"></div>
+            <div class="tb-dd-footer" onclick="window.navigateTo&&navigateTo('analytics');closeAllDropdowns()">Lihat semua aktivitas →</div>
+          </div>
+        </div>
+        <div class="tb-profile-wrap" id="tb-profile-wrap">
+          <div class="tb-avatar-btn" id="tb-avatar-btn" onclick="toggleProfileDropdown()">
+            <div class="avatar user-avatar">A</div>
+            <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--text-muted)"></i>
+          </div>
+          <div class="tb-dropdown profile-dropdown" id="profile-dropdown" style="display:none">
+            <div class="tb-dd-profile-header">
+              <div class="avatar user-avatar" style="width:40px;height:40px;font-size:16px">A</div>
+              <div>
+                <div class="user-name" style="font-size:13px;font-weight:600"></div>
+                <div id="tb-email" style="font-size:11px;color:var(--text-muted)"></div>
+                <span class="badge badge-purple" style="font-size:10px;margin-top:4px;display:inline-block">Free Plan</span>
+              </div>
+            </div>
+            <div class="tb-dd-divider"></div>
+            <div class="tb-dd-menu">
+              <div class="tb-dd-item" onclick="window.navigateTo&&navigateTo('settings');closeAllDropdowns()"><i data-lucide="user" style="width:14px;height:14px"></i> Edit Profile</div>
+              <div class="tb-dd-item" onclick="window.navigateTo&&navigateTo('analytics');closeAllDropdowns()"><i data-lucide="bar-chart" style="width:14px;height:14px"></i> Analytics</div>
+              <div class="tb-dd-item" onclick="window.navigateTo&&navigateTo('certificates');closeAllDropdowns()"><i data-lucide="award" style="width:14px;height:14px"></i> Certificates</div>
+              <div class="tb-dd-item" onclick="window.navigateTo&&navigateTo('bookmarks');closeAllDropdowns()"><i data-lucide="bookmark" style="width:14px;height:14px"></i> Bookmarks</div>
+            </div>
+            <div class="tb-dd-divider"></div>
+            <div class="tb-dd-menu">
+              <div class="tb-dd-item" onclick="window.navigateTo&&navigateTo('settings');closeAllDropdowns()"><i data-lucide="settings" style="width:14px;height:14px"></i> Settings</div>
+              <div class="tb-dd-item tb-dd-danger" onclick="doLogout()"><i data-lucide="log-out" style="width:14px;height:14px"></i> Logout</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGES -->
+    <main class="page-content" id="page-content-root">
+      <!-- PAGE: DASHBOARD -->
+      <!-- DASHBOARD PAGE -->
+      <div class="page" id="page-dashboard">
+        <div class="db-layout">
+
+          <!-- LEFT/MAIN -->
+          <div class="db-main">
+            <!-- Greeting -->
+            <div style="margin-bottom:20px">
+              <h1 id="greeting" style="font-size:24px;font-weight:700;margin-bottom:4px">Good morning! 👋</h1>
+              <p style="font-size:13px;color:var(--text-secondary)">Ready to level up your AI skills today?</p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="db-stats-bar" id="db-stats-bar-dynamic"></div>
+
+            <!-- Continue Learning -->
+            <div class="section-header" style="margin-bottom:14px">
+              <h2 style="font-size:15px;font-weight:600">Continue Learning</h2>
+              <a href="#" onclick="window.navigateTo&&navigateTo('courses');return false;" style="font-size:12px;color:var(--accent-light);display:flex;align-items:center;gap:4px">View all courses <i data-lucide="arrow-right" style="width:12px;height:12px"></i></a>
+            </div>
+            <div class="db-courses-row" id="db-courses-row"></div>
+
+            <!-- Bottom 3-col grid -->
+            <div class="db-bottom-grid">
+              <!-- Your Progress -->
+              <div class="card db-progress-card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                  <div><div style="font-size:14px;font-weight:600">Your Progress</div><div style="font-size:11px;color:var(--text-muted)">Track your learning journey</div></div>
+                  <select id="db-progress-period" onchange="renderDbProgressBars()" style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-secondary);font-size:11px;outline:none">
+                    <option value="week">This Week</option><option value="month">This Month</option>
+                  </select>
+                </div>
+                <div style="display:flex;gap:16px;align-items:center">
+                  <div style="position:relative;width:100px;height:100px;flex-shrink:0">
+                    <svg width="100" height="100" style="transform:rotate(-90deg)">
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="8"/>
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="url(#db-ring)" stroke-width="8" stroke-dasharray="251" id="db-ring-offset" stroke-dashoffset="75" stroke-linecap="round"/>
+                      <defs><linearGradient id="db-ring" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs>
+                    </svg>
+                    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                      <div id="db-ring-pct" style="font-size:18px;font-weight:700">70%</div>
+                      <div style="font-size:9px;color:var(--text-muted)">Overall</div>
+                    </div>
+                  </div>
+                  <div style="flex:1" id="db-progress-bars"></div>
+                </div>
+                <div class="db-progress-stats" id="db-progress-stats"></div>
+              </div>
+              <!-- Upcoming -->
+              <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600">Upcoming</div>
+                  <a href="#" onclick="window.navigateTo&&navigateTo('analytics');return false;" style="font-size:11px;color:var(--accent-light);display:flex;align-items:center;gap:3px">View Calendar <i data-lucide="arrow-right" style="width:11px;height:11px"></i></a>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Your next learning goals</div>
+                <div id="db-upcoming-list"></div>
+                <div id="db-mini-calendar"></div>
+              </div>
+              <!-- Achievements -->
+              <div class="card">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600">Achievements</div>
+                  <a href="#" onclick="window.navigateTo&&navigateTo('certificates');return false;" style="font-size:11px;color:var(--accent-light)">See all</a>
+                </div>
+                <div id="db-achievements-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDEBAR -->
+          <div class="db-sidebar">
+            <!-- AI Study Tip -->
+            <div class="db-study-tip-card">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <span style="font-size:14px;font-weight:600">AI Study Tip</span>
+                <span style="font-size:14px">✨</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px" id="db-study-tip">Loading tip...</p>
+              <button class="btn btn-primary" style="padding:8px 16px;font-size:12px;width:100%" onclick="window.navigateTo&&navigateTo('playground')">
+                Start AI Tutor <i data-lucide="arrow-right" style="width:12px;height:12px"></i>
+              </button>
+              <button class="btn btn-outline" style="padding:6px 16px;font-size:11px;width:100%;margin-top:6px" onclick="renderDbStudyTip()">
+                <i data-lucide="refresh-cw" style="width:11px;height:11px"></i> New Tip
+              </button>
+              <div style="text-align:center;margin-top:12px">
+                <i data-lucide="cpu" style="width:56px;height:56px;color:var(--accent-light);opacity:0.7"></i>
+              </div>
+            </div>
+            <!-- Recent Activity -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <div style="font-size:13px;font-weight:600">Recent Activity</div>
+                <a href="#" onclick="window.navigateTo&&navigateTo('analytics');return false;" style="font-size:11px;color:var(--accent-light)">View all</a>
+              </div>
+              <div id="db-recent-activity"></div>
+            </div>
+            <!-- 7 Day Streak -->
+            <div class="card db-streak-card">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                <span style="font-size:18px">🔥</span>
+                <div>
+                  <div style="font-size:13px;font-weight:600">7 Day Streak</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Keep it up, you're on fire!</div>
+                </div>
+              </div>
+              <div id="db-streak-dots"></div>
+              <button class="btn btn-outline" style="width:100%;padding:7px;font-size:11px;margin-top:10px" onclick="window.navigateTo&&navigateTo('analytics')">
+                View Full Analytics →
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- PAGE: COURSES -->
+      <!-- COURSES PAGE -->
+      <div class="page" id="page-courses">
+        <div class="courses-toolbar">
+          <div class="level-tabs">
+            <button class="level-tab active" data-level="All">All</button>
+            <button class="level-tab" data-level="Beginner">Beginner</button>
+            <button class="level-tab" data-level="Intermediate">Intermediate</button>
+            <button class="level-tab" data-level="Advanced">Advanced</button>
+          </div>
+          <div class="courses-search">
+            <span><i data-lucide="search" style="width:14px;height:14px;color:var(--text-muted)"></i></span>
+            <input type="text" id="courses-search" placeholder="Search courses..." />
+          </div>
+        </div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-cat="All">All</button>
+          <button class="filter-tab" data-cat="Machine Learning">Machine Learning</button>
+          <button class="filter-tab" data-cat="Deep Learning">Deep Learning</button>
+          <button class="filter-tab" data-cat="NLP">NLP</button>
+          <button class="filter-tab" data-cat="Computer Vision">Computer Vision</button>
+          <button class="filter-tab" data-cat="Data Science">Data Science</button>
+        </div>
+        <div class="grid-4" id="courses-grid"></div>
+      </div>
+
+
+      <!-- PAGE: PLAYGROUND -->
+      <!-- ══ AI PLAYGROUND ══ -->
+      <div class="page" id="page-playground">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">AI Playground</h2>
+            <p style="font-size:13px;color:var(--text-secondary)">Experiment with AI models in real-time. Ask questions, generate content, analyze data, and more.</p>
+          </div>
+          <button class="btn btn-primary" style="padding:9px 18px;font-size:13px" onclick="pgNewSession()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> New Session
+          </button>
+        </div>
+
+        <!-- Feature Badges -->
+        <div class="pg-feature-row">
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="layers" style="width:18px;height:18px;color:#a78bfa"></i></div>
+            <div><div class="pg-feature-title">Multi-Model</div><div class="pg-feature-sub">Choose from powerful AI models</div></div>
+          </div>
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="zap" style="width:18px;height:18px;color:#fbbf24"></i></div>
+            <div><div class="pg-feature-title">Real-time</div><div class="pg-feature-sub">Get instant responses</div></div>
+          </div>
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="code-2" style="width:18px;height:18px;color:#60a5fa"></i></div>
+            <div><div class="pg-feature-title">Code Interpreter</div><div class="pg-feature-sub">Run code and analyze data</div></div>
+          </div>
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="upload" style="width:18px;height:18px;color:#34d399"></i></div>
+            <div><div class="pg-feature-title">File Support</div><div class="pg-feature-sub">Upload files and images</div></div>
+          </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="pg-layout">
+
+          <!-- Left: Input + Output + Bottom panels -->
+          <div class="pg-main">
+
+            <!-- Input / Output split -->
+            <div class="pg-io-grid">
+
+              <!-- Input Panel -->
+              <div class="pg-panel">
+                <div class="pg-panel-header">
+                  <span class="pg-panel-title">Your Input</span>
+                  <div class="pg-input-tabs">
+                    <button class="pg-itab active" id="itab-text" onclick="pgSwitchInputTab('text')">Text</button>
+                    <button class="pg-itab" id="itab-code" onclick="pgSwitchInputTab('code')">⌥ Code</button>
+                  </div>
+                </div>
+                <textarea id="pg-input" class="pg-textarea" placeholder="Explain how neural networks work in simple terms, and give me an example with Python code" onkeydown="pgHandleKey(event)" oninput="pgAutoResize(this)"></textarea>
+                <div class="pg-input-footer">
+                  <div style="display:flex;gap:8px">
+                    <button class="pg-icon-btn" title="Attach file"><i data-lucide="paperclip" style="width:15px;height:15px"></i></button>
+                    <button class="pg-icon-btn" title="Voice input"><i data-lucide="mic" style="width:15px;height:15px"></i></button>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <button class="pg-clear-btn" onclick="pgClearInput()">Clear</button>
+                    <button class="btn btn-primary" style="padding:8px 20px;font-size:13px" onclick="pgSend()" id="pg-send-btn">
+                      Run <i data-lucide="play" style="width:13px;height:13px"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Output Panel -->
+              <div class="pg-panel">
+                <div class="pg-panel-header">
+                  <span class="pg-panel-title">AI Response</span>
+                  <div class="pg-model-badge" id="pg-model-badge">
+                    <i data-lucide="cpu" style="width:12px;height:12px;color:#a78bfa"></i>
+                    <span id="pg-active-model-label">GPT-4o</span>
+                    <i data-lucide="chevron-down" style="width:12px;height:12px"></i>
+                  </div>
+                </div>
+                <div class="pg-output-area" id="pg-output-area">
+                  <div class="pg-output-placeholder">
+                    <i data-lucide="sparkles" style="width:32px;height:32px;color:var(--accent-light);margin-bottom:10px"></i>
+                    <p style="font-size:13px;color:var(--text-muted)">Run a prompt to see the AI response here.</p>
+                  </div>
+                </div>
+                <div class="pg-output-footer" id="pg-output-footer" style="display:none">
+                  <span id="pg-gen-time" style="font-size:11px;color:var(--text-muted)">Generated in 2.3s · 512 tokens</span>
+                  <div style="display:flex;gap:8px">
+                    <button class="pg-icon-btn" title="Copy" onclick="pgCopyOutput()"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
+                    <button class="pg-icon-btn" title="Thumbs up"><i data-lucide="thumbs-up" style="width:14px;height:14px"></i></button>
+                    <button class="pg-icon-btn" title="Thumbs down"><i data-lucide="thumbs-down" style="width:14px;height:14px"></i></button>
+                    <button class="pg-icon-btn" title="Download"><i data-lucide="download" style="width:14px;height:14px"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom: Example Prompts + Sessions -->
+            <div class="pg-bottom-grid">
+
+              <!-- Example Prompts -->
+              <div class="pg-panel" style="padding:16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <span class="pg-panel-title">Example Prompts</span>
+                  <button class="pg-icon-btn" onclick="pgRefreshPrompts()" title="Refresh">
+                    <i data-lucide="refresh-cw" style="width:13px;height:13px"></i> Refresh
+                  </button>
+                </div>
+                <div id="pg-prompts-list"></div>
+              </div>
+
+              <!-- My Sessions -->
+              <div class="pg-panel" style="padding:16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <span class="pg-panel-title">My Sessions</span>
+                  <a href="#" style="font-size:11px;color:var(--accent-light)">View All</a>
+                </div>
+                <div id="pg-sessions-list"></div>
+                <button class="pg-new-session-btn" onclick="pgNewSession()">
+                  <i data-lucide="plus" style="width:13px;height:13px"></i> New Session
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class="pg-sidebar">
+
+            <!-- Model Selector -->
+            <div class="pg-panel" style="padding:16px;margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Model</div>
+              <div id="pg-model-list"></div>
+              <a href="#" style="font-size:11px;color:var(--accent-light);display:block;margin-top:10px">View all models →</a>
+            </div>
+
+            <!-- Tools -->
+            <div class="pg-panel" style="padding:16px;margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Tools</div>
+              <div id="pg-tools-list"></div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="pg-panel" style="padding:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="font-size:13px;font-weight:600">Recent Activity</div>
+                <a href="#" style="font-size:11px;color:var(--accent-light)">View All</a>
+              </div>
+              <div id="pg-recent-list"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- PAGE: PROJECTS -->
+      <!-- ══ PROJECTS ══ -->
+      <div class="page" id="page-projects">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Projects</h2>
+            <p style="font-size:13px;color:var(--text-secondary)">Build, experiment, and showcase your AI projects.</p>
+          </div>
+          <button class="btn btn-primary" style="padding:9px 18px;font-size:13px" onclick="showNewProjectModal()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> New Project
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="proj-stats-bar" id="proj-stats-bar"></div>
+
+        <!-- Filter Tabs + Sort -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+          <div class="proj-filter-tabs">
+            <button class="proj-ftab active" onclick="filterProjects('all',this)">All</button>
+            <button class="proj-ftab" onclick="filterProjects('active',this)">
+              <i data-lucide="clock" style="width:12px;height:12px"></i> In Progress
+            </button>
+            <button class="proj-ftab" onclick="filterProjects('completed',this)">Completed</button>
+            <button class="proj-ftab" onclick="filterProjects('collab',this)">Collaborations</button>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Recent</span> ▾</div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="proj-layout">
+          <div>
+            <!-- Your Projects -->
+            <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Your Projects</h3>
+            <div class="proj-cards-grid" id="projects-grid"></div>
+
+            <!-- Explore Projects -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px">
+              <h3 style="font-size:14px;font-weight:600">Explore Projects</h3>
+              <a href="#" style="font-size:13px;color:var(--accent-light)">View All</a>
+            </div>
+            <div class="proj-explore-grid" id="proj-explore-grid"></div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="proj-sidebar">
+            <!-- Progress Ring -->
+            <div class="card" style="margin-bottom:16px;text-align:center">
+              <h4 style="font-size:13px;font-weight:600;margin-bottom:16px;text-align:left">Your Progress</h4>
+              <div style="position:relative;width:120px;height:120px;margin:0 auto 14px">
+                <svg width="120" height="120" style="transform:rotate(-90deg)">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="url(#proj-pg)" stroke-width="10"
+                    stroke-dasharray="314" stroke-dashoffset="94" stroke-linecap="round"/>
+                  <defs>
+                    <linearGradient id="proj-pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#7c3aed"/>
+                      <stop offset="100%" stop-color="#9d5cf6"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <div style="font-size:22px;font-weight:700">70%</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Overall</div>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">12 / 17 Projects Completed</div>
+              <div class="progress-bar" style="height:5px;margin-bottom:6px">
+                <div class="progress-fill" style="width:70%"></div>
+              </div>
+              <div style="font-size:11px;color:var(--accent-light)">Keep building to unlock rewards!</div>
+            </div>
+
+            <!-- Activity -->
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h4 style="font-size:13px;font-weight:600">Activity</h4>
+                <a href="#" style="font-size:11px;color:var(--accent-light)">View All</a>
+              </div>
+              <div id="proj-activity-list"></div>
+            </div>
+
+            <!-- Earn More Points -->
+            <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(157,92,246,0.05));border-color:var(--border-accent)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+                <span style="font-size:20px">🏆</span>
+                <h4 style="font-size:13px;font-weight:600">Earn More Points</h4>
+              </div>
+              <div id="proj-earn-list"></div>
+              <a href="#" style="font-size:12px;color:var(--accent-light);margin-top:10px;display:block">Learn how points work →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Project Modal -->
+        <div id="new-project-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;padding:20px">
+          <div class="card" style="width:100%;max-width:460px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+              <h3 style="font-size:16px;font-weight:700">New Project</h3>
+              <button onclick="closeNewProjectModal()" style="background:none;border:none;color:var(--text-muted);cursor:pointer">
+                <i data-lucide="x" style="width:18px;height:18px"></i>
+              </button>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Project Name *</label>
+              <input id="proj-name" type="text" placeholder="e.g. AI Image Classifier" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Category</label>
+              <select id="proj-cat" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">
+                <option>Machine Learning</option>
+                <option>Deep Learning</option>
+                <option>NLP</option>
+                <option>Computer Vision</option>
+                <option>Data Science</option>
+                <option>Reinforcement Learning</option>
+              </select>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Tech Stack</label>
+              <input id="proj-stack" type="text" placeholder="e.g. Python, TensorFlow, OpenCV" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div style="margin-bottom:20px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Description</label>
+              <textarea id="proj-desc" placeholder="Describe what your project does..." rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;resize:none;font-family:inherit"></textarea>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="createProject()">
+              <i data-lucide="plus" style="width:14px;height:14px"></i> Create Project
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- PAGE: QUIZZES -->
+      <!-- ══ QUIZZES ══ -->
+      <div class="page" id="page-quizzes">
+
+        <!-- LIST VIEW -->
+        <div id="quiz-list-view">
+          <div style="margin-bottom:6px">
+            <h2 style="font-size:20px;font-weight:700">Quizzes</h2>
+            <p style="font-size:13px;color:var(--text-secondary);margin-top:2px">Test your knowledge, track your progress, and level up your AI skills.</p>
+          </div>
+
+          <!-- Stats Bar -->
+          <div class="qz-stats-bar" id="qz-stats-bar"></div>
+
+          <!-- Filter Tabs -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+            <div class="qz-filter-tabs" id="qz-filter-tabs">
+              <button class="qz-ftab active" data-qf="all" onclick="filterQuizList('all',this)">All Quizzes</button>
+              <button class="qz-ftab" data-qf="beginner" onclick="filterQuizList('beginner',this)">By Course</button>
+              <button class="qz-ftab" data-qf="practice" onclick="filterQuizList('practice',this)">Practice</button>
+              <button class="qz-ftab" data-qf="challenge" onclick="filterQuizList('challenge',this)">Challenges</button>
+              <button class="qz-ftab" data-qf="favorite" onclick="filterQuizList('favorite',this)">Favorite</button>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Latest</span> ▾</div>
+          </div>
+
+          <!-- Main layout: left content + right sidebar -->
+          <div class="qz-layout">
+            <div>
+              <!-- Category Cards -->
+              <div style="margin-bottom:20px">
+                <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Quiz Categories</h3>
+                <div class="qz-cat-row" id="qz-cat-row"></div>
+              </div>
+
+              <!-- Available Quizzes List -->
+              <div>
+                <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Available Quizzes</h3>
+                <div id="qz-list"></div>
+                <button style="width:100%;padding:12px;background:none;border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:13px;cursor:pointer;margin-top:4px" onclick="loadMoreQuizzes(this)">
+                  View More Quizzes ▾
+                </button>
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="qz-sidebar">
+              <!-- Progress Ring -->
+              <div class="card" style="margin-bottom:16px;text-align:center">
+                <h4 style="font-size:13px;font-weight:600;margin-bottom:16px;text-align:left">Your Progress</h4>
+                <div style="position:relative;width:120px;height:120px;margin:0 auto 14px">
+                  <svg width="120" height="120" style="transform:rotate(-90deg)">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="url(#pg)" stroke-width="10"
+                      stroke-dasharray="314" id="qz-ring-fill" stroke-dashoffset="94" stroke-linecap="round"/>
+                    <defs>
+                      <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#7c3aed"/>
+                        <stop offset="100%" stop-color="#9d5cf6"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                    <div id="qz-ring-pct" style="font-size:22px;font-weight:700">70%</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Overall</div>
+                  </div>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted)" id="qz-ring-label">42 / 60 Quizzes Completed</div>
+                <div class="progress-bar" style="margin-top:12px;height:5px">
+                  <div class="progress-fill" style="width:70%"></div>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="card" style="margin-bottom:16px">
+                <h4 style="font-size:13px;font-weight:600;margin-bottom:14px">Recent Activity</h4>
+                <div id="qz-recent-activity"></div>
+              </div>
+
+              <!-- Keep Going -->
+              <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(157,92,246,0.08));border-color:var(--border-accent)">
+                <div style="font-size:28px;margin-bottom:8px">🏆</div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:6px">Keep Going!</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Complete 3 more quizzes to earn a new badge!</div>
+                <div class="progress-bar" style="height:6px;margin-bottom:6px">
+                  <div class="progress-fill" id="qz-badge-progress" style="width:60%"></div>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted)" id="qz-badge-label">3 / 5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLAY VIEW -->
+        <div id="quiz-play-view" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <button onclick="exitQuizPlay()" class="btn btn-outline" style="padding:8px 14px;font-size:13px">
+              <i data-lucide="arrow-left" style="width:14px;height:14px"></i> Back
+            </button>
+            <div>
+              <h3 id="quiz-play-title" style="font-size:16px;font-weight:600"></h3>
+              <div id="quiz-play-subtitle" style="font-size:12px;color:var(--text-muted)"></div>
+            </div>
+          </div>
+          <div style="max-width:680px">
+            <div class="progress-bar" style="margin-bottom:6px;height:6px">
+              <div class="progress-fill" id="quiz-play-progress" style="width:0%;transition:width 0.4s"></div>
+            </div>
+            <div id="quiz-play-content"></div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- PAGE: COMMUNITY -->
+      <!-- ══ COMMUNITY ══ -->
+      <div class="page" id="page-community">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+          <div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Community</h2>
+            <p style="font-size:13px;color:var(--text-secondary)">Connect, share, and grow together with AI learners worldwide.</p>
+          </div>
+          <button class="btn btn-primary" style="padding:9px 18px;font-size:13px" onclick="showPostForm()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> New Post
+          </button>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="cm-filter-row" style="margin-bottom:16px">
+          <div class="cm-filter-tabs" id="cm-filter-tabs">
+            <button class="cm-ftab active" onclick="filterCommunity('all',this)">All</button>
+            <button class="cm-ftab" onclick="filterCommunity('all',this)">All Topics</button>
+            <button class="cm-ftab" onclick="filterCommunity('Machine Learning',this)">Machine Learning</button>
+            <button class="cm-ftab" onclick="filterCommunity('Deep Learning',this)">Deep Learning</button>
+            <button class="cm-ftab" onclick="filterCommunity('NLP',this)">NLP</button>
+            <button class="cm-ftab" onclick="filterCommunity('Computer Vision',this)">Computer Vision</button>
+            <button class="cm-ftab" onclick="filterCommunity('Data Science',this)">Data Science</button>
+            <button class="cm-ftab" onclick="filterCommunity('Beginner',this)">Beginner</button>
+            <button class="cm-ftab cm-ftab-more">···</button>
+          </div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="cm-layout">
+          <div class="cm-main">
+
+            <!-- Stats Bar -->
+            <div class="cm-stats-bar" id="cm-stats-bar"></div>
+
+            <!-- Trending Discussions -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:16px">🔥</span>
+                <span style="font-size:14px;font-weight:600">Trending Discussions</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted)">
+                Sort by:
+                <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-secondary);font-size:12px;outline:none">
+                  <option>Latest</option><option>Popular</option><option>Unanswered</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- New Post Form -->
+            <div id="post-form" style="display:none;margin-bottom:14px" class="card" style="padding:16px">
+              <div style="display:flex;gap:10px;margin-bottom:10px">
+                <div class="avatar" style="width:36px;height:36px;font-size:14px;flex-shrink:0" id="cm-post-avatar">A</div>
+                <textarea id="post-input" placeholder="Bagikan pertanyaan, insight, atau progress belajarmu..." rows="3" style="flex:1;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:#fff;font-size:13px;outline:none;resize:none;font-family:inherit"></textarea>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <select id="post-tag" style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text-secondary);font-size:12px;outline:none">
+                  <option value="">Select topic...</option>
+                  <option>Machine Learning</option><option>Deep Learning</option><option>NLP</option>
+                  <option>Computer Vision</option><option>Data Science</option><option>General</option>
+                </select>
+                <div style="display:flex;gap:8px">
+                  <button class="btn btn-outline" style="padding:7px 14px;font-size:12px" onclick="hidePostForm()">Cancel</button>
+                  <button class="btn btn-primary" style="padding:7px 14px;font-size:12px" onclick="submitPost()">Post</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Feed -->
+            <div id="community-feed"></div>
+
+          </div>
+
+          <!-- Sidebar -->
+          <div class="cm-sidebar">
+
+            <!-- Top Learners -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:16px">🏆</span>
+                  <span style="font-size:13px;font-weight:600">Top Learners</span>
+                </div>
+                <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text-muted);font-size:11px;outline:none">
+                  <option>This month</option><option>This week</option><option>All time</option>
+                </select>
+              </div>
+              <div id="leaderboard-list"></div>
+              <button style="width:100%;padding:8px;background:none;border:1px solid var(--border);border-radius:8px;color:var(--text-muted);font-size:12px;cursor:pointer;margin-top:10px;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">
+                View Leaderboard →
+              </button>
+            </div>
+
+            <!-- Trending Topics -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-size:14px">🔥</span>
+                  <span style="font-size:13px;font-weight:600">Trending Topics</span>
+                </div>
+                <a href="#" style="font-size:11px;color:var(--accent-light)">View all</a>
+              </div>
+              <div id="trending-tags"></div>
+            </div>
+
+            <!-- Weekly Challenge -->
+            <div class="cm-challenge-card">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <span style="font-size:18px">🎯</span>
+                <span style="font-size:13px;font-weight:600">Weekly Challenge</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.5;margin-bottom:12px">
+                Buat project image classifier dengan 10 kelas berbeda
+              </p>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <span style="font-size:11px;color:var(--text-muted)">Reward</span>
+                <span style="font-size:12px;font-weight:600;color:#fbbf24">+150 XP ⭐</span>
+              </div>
+              <div class="progress-bar" style="height:5px;margin-bottom:6px">
+                <div class="progress-fill" style="width:33%"></div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:10px;color:var(--text-muted)">120 / 60 XP</span>
+                <span style="font-size:10px;color:var(--danger)">4 days left</span>
+              </div>
+              <button class="btn btn-primary" style="width:100%;padding:9px;font-size:13px">Join Challenge</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- PAGE: CERTIFICATES -->
+      <!-- ══ CERTIFICATES ══ -->
+      <div class="page" id="page-certificates">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+              <h2 style="font-size:20px;font-weight:700">Certificates</h2>
+              <i data-lucide="award" style="width:20px;height:20px;color:#fbbf24"></i>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary)">Celebrate your achievements and showcase your AI skills to the world.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" style="padding:8px 16px;font-size:13px" onclick="shareCertProfile()">
+              <i data-lucide="share-2" style="width:14px;height:14px"></i> Share Profile
+            </button>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:13px" onclick="downloadAllCerts()">
+              <i data-lucide="download" style="width:14px;height:14px"></i> Download All
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="cert-stats-bar" id="cert-stats-bar"></div>
+
+        <!-- Filter Tabs + Sort -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+          <div class="cert-filter-tabs" id="cert-filter-tabs">
+            <button class="cert-ftab active" onclick="filterCerts('all',this)">All Certificates</button>
+            <button class="cert-ftab" onclick="filterCerts('earned',this)">Earned</button>
+            <button class="cert-ftab" onclick="filterCerts('progress',this)">In Progress</button>
+            <button class="cert-ftab" onclick="filterCerts('locked',this)">Locked</button>
+            <button class="cert-ftab" onclick="filterCerts('expired',this)">Expired</button>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted)">Sort by:
+            <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--text-secondary);font-size:12px;outline:none;margin-left:4px">
+              <option>Newest</option><option>Oldest</option><option>A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Cert Grid -->
+        <div class="cert-cards-grid" id="cert-grid"></div>
+
+        <!-- Bottom Section -->
+        <div class="cert-bottom-grid" style="margin-top:24px">
+
+          <!-- Showcase -->
+          <div class="card">
+            <h4 style="font-size:14px;font-weight:600;margin-bottom:6px">Showcase Your Achievements</h4>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px">Share your certificates on LinkedIn, Twitter, or your portfolio to demonstrate your skills to the world.</p>
+            <div style="display:flex;gap:10px">
+              <button class="cert-share-btn" style="background:#0077b5" onclick="shareCertToLinkedIn()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              </button>
+              <button class="cert-share-btn" style="background:#1da1f2" onclick="shareCertToTwitter()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </button>
+              <button class="cert-share-btn" style="background:var(--input-bg);border:1px solid var(--border)" onclick="copyCertLink()">
+                <i data-lucide="link" style="width:16px;height:16px;color:var(--text-secondary)"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Certificate Journey -->
+          <div class="card">
+            <h4 style="font-size:14px;font-weight:600;margin-bottom:6px">Certificate Journey</h4>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:16px">Your learning milestone timeline</p>
+            <div id="cert-journey"></div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- PAGE: ANALYTICS -->
+      <!-- ══ ANALYTICS ══ -->
+      <div class="page" id="page-analytics">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <h2 style="font-size:20px;font-weight:700">Analytics</h2>
+              <span style="font-size:18px">✨</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary)">Track your learning journey and discover insights to help you grow faster.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <select id="an-period" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text-primary);font-size:13px;outline:none;cursor:pointer" onchange="renderAnalytics()">
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
+            </select>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:13px" onclick="exportReport()">
+              <i data-lucide="download" style="width:14px;height:14px"></i> Export Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="an-stats-bar" id="an-stats-bar"></div>
+
+        <!-- Row 1: Activity Chart + Skill Mastery + Course Progress -->
+        <div class="an-row1" style="margin-bottom:16px">
+
+          <!-- Learning Activity Bar Chart -->
+          <div class="card an-activity-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:13px;font-weight:600">Learning Activity</span>
+                <i data-lucide="info" style="width:13px;height:13px;color:var(--text-muted)"></i>
+              </div>
+              <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text-secondary);font-size:11px;outline:none">
+                <option>This Week</option><option>Last Week</option>
+              </select>
+            </div>
+            <div id="an-bar-chart" style="display:flex;align-items:flex-end;gap:6px;height:140px;padding:0 4px"></div>
+            <div id="an-bar-labels" style="display:flex;gap:6px;margin-top:6px;padding:0 4px"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+              <div style="font-size:11px;color:var(--text-muted)">Most Productive Day: <span id="an-best-day" style="color:var(--accent-light);font-weight:600"></span></div>
+              <div id="an-peak-time" style="font-size:12px;font-weight:600;color:var(--text-primary)"></div>
+            </div>
+            <div id="an-productivity-tip" style="margin-top:8px;font-size:11px;color:var(--success);display:flex;align-items:center;gap:4px">
+              <i data-lucide="trending-up" style="width:12px;height:12px"></i>
+            </div>
+          </div>
+
+          <!-- Skill Mastery Radar -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:13px;font-weight:600">Skill Mastery</span>
+                <i data-lucide="info" style="width:13px;height:13px;color:var(--text-muted)"></i>
+              </div>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">See Details</a>
+            </div>
+            <div style="display:flex;justify-content:center">
+              <canvas id="an-radar" width="200" height="200"></canvas>
+            </div>
+            <div style="display:flex;justify-content:center;gap:16px;margin-top:10px">
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted)">
+                <div style="width:10px;height:10px;border-radius:2px;background:rgba(124,58,237,0.6)"></div> Kamu
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted)">
+                <div style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,0.15)"></div> Rata-rata Pengguna
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Progress -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:13px;font-weight:600">Course Progress</span>
+                <i data-lucide="info" style="width:13px;height:13px;color:var(--text-muted)"></i>
+              </div>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">See All</a>
+            </div>
+            <div id="an-course-progress"></div>
+            <div style="margin-top:14px;padding:12px;background:rgba(124,58,237,0.08);border-radius:8px;border:1px solid rgba(124,58,237,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">68%</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600">Overall Progress</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Sangat baik! Terus pertahankan momentum belajarmu.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Streak + Time Distribution + Performance Trend -->
+        <div class="an-row2" style="margin-bottom:16px">
+
+          <!-- Learning Streak -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Learning Streak</span>
+              <span style="font-size:11px;color:var(--success);font-weight:600">Best: 12 days</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Keep it up! Consistency is the key to mastery.</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <div style="font-size:32px">🔥</div>
+              <div>
+                <div style="font-size:24px;font-weight:700" id="an-streak-val">7 days</div>
+                <div style="font-size:11px;color:var(--text-muted)">Current Streak</div>
+              </div>
+            </div>
+            <div id="an-streak-week" style="display:flex;gap:6px;justify-content:space-between"></div>
+          </div>
+
+          <!-- Time Distribution Donut -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Time Distribution</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Where you spend your learning time.</div>
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="position:relative;flex-shrink:0">
+                <canvas id="an-donut" width="120" height="120"></canvas>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <div style="font-size:14px;font-weight:700">47h 32m</div>
+                  <div style="font-size:9px;color:var(--text-muted)">Total</div>
+                </div>
+              </div>
+              <div id="an-donut-legend" style="flex:1"></div>
+            </div>
+          </div>
+
+          <!-- Performance Trend Line Chart -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Performance Trend</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Your quiz scores over time.</div>
+            <canvas id="an-line" width="260" height="120"></canvas>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+              <div style="display:flex;gap:12px;font-size:10px;color:var(--text-muted)">
+                <span>Minggu 1</span><span>Minggu 2</span><span>Minggu 3</span><span>Minggu 4</span>
+              </div>
+              <div style="font-size:12px;font-weight:600;color:var(--success)">+15% Peningkatan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Recent Activity + AI Insights -->
+        <div class="an-row3">
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <span style="font-size:13px;font-weight:600">Recent Activity</span>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">Lihat semua</a>
+            </div>
+            <div id="an-recent-list"></div>
+          </div>
+
+          <!-- AI Insights -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Insights for You</span>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">See All</a>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">AI-powered insights based on your learning data</div>
+            <div id="an-insights-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"></div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- PAGE: BOOKMARKS -->
+      <!-- ══ BOOKMARKS ══ -->
+      <div class="page" id="page-bookmarks">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <h2 style="font-size:20px;font-weight:700">Bookmarks</h2>
+              <i data-lucide="bookmark" style="width:18px;height:18px;color:#a78bfa"></i>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary)">Simpan kursus, pelajaran, atau konten penting untuk akses cepat nanti.</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-outline" style="padding:8px 16px;font-size:13px" onclick="toggleBmFilterPanel()">
+              <i data-lucide="filter" style="width:14px;height:14px"></i> Filter
+            </button>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:13px" onclick="showAddBookmarkModal()">
+              <i data-lucide="plus" style="width:14px;height:14px"></i> Tambah Bookmark
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="bm-filter-row" style="margin-bottom:20px">
+          <div class="bm-filter-tabs" id="bm-filter-tabs">
+            <button class="bm-ftab active" onclick="filterBookmarks('all',this)">
+              <i data-lucide="layout-grid" style="width:13px;height:13px"></i> Semua
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('course',this)">
+              <i data-lucide="book-open" style="width:13px;height:13px"></i> Kursus
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('lesson',this)">
+              <i data-lucide="play-circle" style="width:13px;height:13px"></i> Pelajaran
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('article',this)">
+              <i data-lucide="file-text" style="width:13px;height:13px"></i> Artikel
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('project',this)">
+              <i data-lucide="folder" style="width:13px;height:13px"></i> Proyek
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('quiz',this)">
+              <i data-lucide="help-circle" style="width:13px;height:13px"></i> Quiz
+            </button>
+            <button class="bm-ftab" onclick="filterBookmarks('discussion',this)">
+              <i data-lucide="message-circle" style="width:13px;height:13px"></i> Diskusi
+            </button>
+          </div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="bm-layout">
+          <div class="bm-main">
+
+            <!-- Stats Bar -->
+            <div class="bm-stats-bar" id="bm-stats-bar"></div>
+
+            <!-- Featured Cards (horizontal scroll) -->
+            <div style="margin-bottom:20px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Tersimpan Baru-baru Ini</div>
+              <div class="bm-cards-row" id="bm-cards-row"></div>
+            </div>
+
+            <!-- List View -->
+            <div class="card" style="padding:0;overflow:hidden">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)">
+                <div class="bm-list-tabs">
+                  <button class="bm-ltab active" onclick="switchBmListTab('all',this)">Semua Bookmark</button>
+                  <button class="bm-ltab" onclick="switchBmListTab('recent',this)">Baru Ditambahkan</button>
+                </div>
+                <div class="bm-search">
+                  <i data-lucide="search" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                  <input type="text" id="bm-search-input" placeholder="Cari bookmark..." oninput="searchBookmarks(this.value)">
+                </div>
+              </div>
+              <!-- Table header -->
+              <div class="bm-table-header">
+                <div style="flex:2">Item</div>
+                <div style="flex:1">Tipe</div>
+                <div style="flex:1">Kategori</div>
+                <div style="flex:1">Disimpan Pada</div>
+                <div style="flex:0.5;text-align:right">Aksi</div>
+              </div>
+              <div id="bm-list"></div>
+            </div>
+
+          </div>
+
+          <!-- Sidebar -->
+          <div class="bm-sidebar-col">
+
+            <!-- Ringkasan Chart -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:14px">Ringkasan</div>
+              <div id="bm-chart" style="display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:8px"></div>
+              <div id="bm-chart-labels" style="display:flex;gap:6px;margin-bottom:8px"></div>
+              <div style="font-size:11px;color:var(--accent-light);text-align:center" id="bm-chart-tip"></div>
+            </div>
+
+            <!-- Kategori Terpopuler -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="font-size:13px;font-weight:600">Kategori Terpopuler</div>
+              </div>
+              <div id="bm-categories"></div>
+              <a href="#" style="font-size:11px;color:var(--accent-light);display:block;margin-top:10px;text-align:center">Lihat semua</a>
+            </div>
+
+            <!-- Tips -->
+            <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(157,92,246,0.05));border-color:var(--border-accent)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="font-size:18px">💡</span>
+                <span style="font-size:13px;font-weight:600">Tips</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px">
+                Gunakan bookmark untuk menandai materi penting dan kembali kapan saja!
+              </p>
+              <button class="btn btn-primary btn-full" style="padding:9px;font-size:12px" onclick="document.querySelector('[data-page=courses]').click()">
+                Pelajari Fitur Lainnya
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Add Bookmark Modal -->
+        <div id="add-bookmark-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;padding:20px">
+          <div class="card" style="width:100%;max-width:440px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+              <h3 style="font-size:16px;font-weight:700">Tambah Bookmark</h3>
+              <button onclick="closeAddBookmarkModal()" style="background:none;border:none;color:var(--text-muted);cursor:pointer"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Judul *</label>
+              <input id="bm-title" type="text" placeholder="Nama bookmark..." style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;font-family:inherit" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Tipe</label>
+              <select id="bm-type" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">
+                <option value="course">Kursus</option>
+                <option value="lesson">Pelajaran</option>
+                <option value="article">Artikel</option>
+                <option value="project">Proyek</option>
+                <option value="quiz">Quiz</option>
+                <option value="discussion">Diskusi</option>
+              </select>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Kategori</label>
+              <select id="bm-category" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">
+                <option>Machine Learning</option><option>Deep Learning</option><option>NLP</option>
+                <option>Computer Vision</option><option>Data Science</option><option>Python</option>
+              </select>
+            </div>
+            <div style="margin-bottom:20px">
+              <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:6px">Deskripsi</label>
+              <textarea id="bm-desc" placeholder="Catatan singkat..." rows="2" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;resize:none;font-family:inherit"></textarea>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="addBookmarkItem()">
+              <i data-lucide="bookmark-plus" style="width:14px;height:14px"></i> Simpan Bookmark
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- PAGE: SETTINGS -->
+      <!-- ══ SETTINGS ══ -->
+      <div class="page" id="page-settings">
+
+        <!-- Header -->
+        <div style="margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <h2 style="font-size:20px;font-weight:700">Settings</h2>
+            <span style="font-size:18px">✨</span>
+          </div>
+          <p style="font-size:13px;color:var(--text-secondary)">Manage your preferences, account, and app settings to personalize your Lunetix experience.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="st-tabs" id="st-tabs">
+          <button class="st-tab active" onclick="switchSettingsTab('general',this)">General</button>
+          <button class="st-tab" onclick="switchSettingsTab('account',this)">Account</button>
+          <button class="st-tab" onclick="switchSettingsTab('notifications',this)">Notifications</button>
+          <button class="st-tab" onclick="switchSettingsTab('preferences',this)">Preferences</button>
+          <button class="st-tab" onclick="switchSettingsTab('privacy',this)">Privacy &amp; Security</button>
+          <button class="st-tab" onclick="switchSettingsTab('billing',this)">Billing</button>
+          <button class="st-tab" onclick="switchSettingsTab('appearance',this)">Appearance</button>
+        </div>
+
+        <!-- Main layout -->
+        <div class="st-layout">
+          <div class="st-main">
+
+            <!-- GENERAL TAB -->
+            <div class="st-section active" id="st-general">
+
+              <div class="st-grid-2">
+                <!-- Profile Information -->
+                <div class="card">
+                  <div style="margin-bottom:14px">
+                    <div style="font-size:14px;font-weight:600;margin-bottom:3px">Profile Information</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Manage your personal information and how it appears on Lunetix.</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
+                    <div style="position:relative">
+                      <div class="avatar user-avatar" style="width:64px;height:64px;font-size:24px">A</div>
+                      <button style="position:absolute;bottom:0;right:0;width:22px;height:22px;border-radius:50%;background:var(--accent);border:2px solid var(--bg-card);display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="triggerAvatarUpload()">
+                        <i data-lucide="camera" style="width:10px;height:10px;color:#fff"></i>
+                      </button>
+                    </div>
+                    <div style="flex:1">
+                      <div class="st-field">
+                        <label class="st-label">Display Name</label>
+                        <input id="settings-name-input" type="text" class="st-input" placeholder="Your name">
+                      </div>
+                      <div class="st-field" style="margin-top:8px">
+                        <label class="st-label">Email</label>
+                        <input id="settings-email-input" type="email" class="st-input" placeholder="email@lunetix.ai" readonly style="opacity:0.6;cursor:not-allowed">
+                      </div>
+                      <div class="st-field" style="margin-top:8px">
+                        <label class="st-label">Plan</label>
+                        <span class="badge badge-purple" style="font-size:11px">Free Plan</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" style="padding:9px 20px;font-size:13px" onclick="saveSettings()">
+                    <i data-lucide="save" style="width:13px;height:13px"></i> Edit Profile
+                  </button>
+                </div>
+
+                <!-- Preferences -->
+                <div class="card">
+                  <div style="margin-bottom:14px">
+                    <div style="font-size:14px;font-weight:600;margin-bottom:3px">Preferences</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Customize your learning experience.</div>
+                  </div>
+                  <div class="st-pref-list">
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="globe" style="width:14px;height:14px;color:#60a5fa"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Language</div>
+                        <div class="st-pref-sub">Pilih bahasa yang kamu nyaman gunakan.</div>
+                      </div>
+                      <select class="st-select"><option>Indonesia</option><option>English</option><option>日本語</option></select>
+                    </div>
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="clock" style="width:14px;height:14px;color:#34d399"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Timezone</div>
+                        <div class="st-pref-sub">Waktu untuk jadwal dan laporan.</div>
+                      </div>
+                      <select class="st-select"><option>(GMT+7) Jakarta</option><option>(GMT+8) Singapore</option><option>(GMT+0) UTC</option></select>
+                    </div>
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="bar-chart" style="width:14px;height:14px;color:#fbbf24"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Difficulty Level</div>
+                        <div class="st-pref-sub">Sesuaikan rekomendasi materi dengan levelmu.</div>
+                      </div>
+                      <select class="st-select"><option>Intermediate</option><option>Beginner</option><option>Advanced</option></select>
+                    </div>
+                    <div class="st-pref-item">
+                      <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="target" style="width:14px;height:14px;color:#a78bfa"></i></div>
+                      <div style="flex:1">
+                        <div class="st-pref-label">Learning Goal</div>
+                        <div class="st-pref-sub">Fokus utama belajarmu saat ini.</div>
+                      </div>
+                      <select class="st-select"><option>AI Engineer</option><option>Data Scientist</option><option>ML Researcher</option></select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notification Settings -->
+              <div class="card" style="margin-top:14px">
+                <div style="margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600;margin-bottom:3px">Notification Settings</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Choose what you want to be notified about.</div>
+                </div>
+                <div class="st-notif-grid">
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="mail" style="width:14px;height:14px;color:#a78bfa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Email Notifications</div>
+                      <div class="st-pref-sub">Receive updates about your progress and new courses.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-notif" onclick="togglePref('notif')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="book-open" style="width:14px;height:14px;color:#60a5fa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Course Reminders</div>
+                      <div class="st-pref-sub">Get reminded to continue your learning.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-reminder" onclick="togglePref('reminder')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="help-circle" style="width:14px;height:14px;color:#34d399"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Quiz Results</div>
+                      <div class="st-pref-sub">Notify me when quiz results are available.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-quiz" onclick="togglePref('quiz')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div class="st-notif-item">
+                    <div class="st-pref-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="users" style="width:14px;height:14px;color:#fbbf24"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Community Activity</div>
+                      <div class="st-pref-sub">Updates from discussions and replies.</div>
+                    </div>
+                    <div class="toggle-switch" id="toggle-community" onclick="togglePref('community')" data-on="false"><div class="toggle-thumb"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Privacy & Security -->
+              <div class="card" style="margin-top:14px">
+                <div style="margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600;margin-bottom:3px">Privacy &amp; Security</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Manage your privacy and keep your account secure.</div>
+                </div>
+                <div class="st-security-list">
+                  <div class="st-security-item" onclick="switchSettingsTab('privacy',document.querySelector('.st-tab:nth-child(5)'))">
+                    <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="lock" style="width:14px;height:14px;color:#a78bfa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Change Password</div>
+                      <div class="st-pref-sub">Update your password regularly.</div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted)"></i>
+                  </div>
+                  <div class="st-security-item" onclick="switchSettingsTab('privacy',document.querySelector('.st-tab:nth-child(5)'))">
+                    <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="shield" style="width:14px;height:14px;color:#34d399"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Two-Factor Authentication</div>
+                      <div class="st-pref-sub">Tambahkan lapisan keamanan ekstra.</div>
+                    </div>
+                    <span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(255,255,255,0.07);color:var(--text-muted)">Inactive</span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted);margin-left:8px"></i>
+                  </div>
+                  <div class="st-security-item" onclick="downloadUserData()">
+                    <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="download" style="width:14px;height:14px;color:#60a5fa"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label">Download Your Data</div>
+                      <div class="st-pref-sub">Unduh semua data dan progres kamu.</div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--text-muted)"></i>
+                  </div>
+                  <div class="st-security-item st-danger-item" onclick="confirmDeleteAccount()">
+                    <div class="st-pref-icon" style="background:rgba(239,68,68,0.15)"><i data-lucide="trash-2" style="width:14px;height:14px;color:#f87171"></i></div>
+                    <div style="flex:1">
+                      <div class="st-pref-label" style="color:var(--danger)">Delete Account</div>
+                      <div class="st-pref-sub">Hapus akun dan semua data secara permanen.</div>
+                    </div>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--danger)"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Appearance -->
+              <div class="card" style="margin-top:14px">
+                <div style="margin-bottom:14px">
+                  <div style="font-size:14px;font-weight:600;margin-bottom:3px">Appearance</div>
+                  <div style="font-size:11px;color:var(--text-muted)">Customize how Lunetix looks and feels.</div>
+                </div>
+                <!-- Theme -->
+                <div class="st-theme-row">
+                  <div class="st-theme-card" id="theme-light" onclick="setTheme('light')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                      <i data-lucide="sun" style="width:16px;height:16px;color:#f59e0b"></i>
+                    </div>
+                    <div style="font-size:12px;font-weight:600">Light Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan terang yang nyaman.</div>
+                  </div>
+                  <div class="st-theme-card active" id="theme-dark" onclick="setTheme('dark')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1e1b4b,#312e81);display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                      <i data-lucide="moon" style="width:16px;height:16px;color:#a78bfa"></i>
+                    </div>
+                    <div style="font-size:12px;font-weight:600">Dark Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan gelap yang ramah mata.</div>
+                    <div style="position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center">
+                      <i data-lucide="check" style="width:10px;height:10px;color:#fff"></i>
+                    </div>
+                  </div>
+                  <div class="st-theme-card" id="theme-system" onclick="setTheme('system')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#374151,#1f2937);display:flex;align-items:center;justify-content:center;margin-bottom:8px">
+                      <i data-lucide="monitor" style="width:16px;height:16px;color:#9ca3af"></i>
+                    </div>
+                    <div style="font-size:12px;font-weight:600">System</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Ikuti pengaturan sistem perangkat.</div>
+                  </div>
+                </div>
+                <!-- Accent Color -->
+                <div style="margin-top:16px">
+                  <div style="font-size:12px;font-weight:600;margin-bottom:4px">Accent Color</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Pilih warna aksen favoritmu.</div>
+                  <div class="st-color-row" id="st-color-row"></div>
+                </div>
+                <!-- Font Size -->
+                <div style="margin-top:16px">
+                  <div style="font-size:12px;font-weight:600;margin-bottom:4px">Font Size</div>
+                  <div style="font-size:11px;color:var(--text-muted);margin-bottom:10px">Sesuaikan ukuran teks untuk kenyamanan.</div>
+                  <div class="st-font-row">
+                    <button class="st-font-btn" onclick="setFontSize('small')">A-</button>
+                    <button class="st-font-btn active" onclick="setFontSize('medium')">A</button>
+                    <button class="st-font-btn" onclick="setFontSize('large')">A+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Danger Zone -->
+              <div class="card" style="margin-top:14px;border-color:rgba(239,68,68,0.2)">
+                <button id="logout-btn" class="btn btn-outline btn-full" style="border-color:var(--danger);color:var(--danger)">
+                  <i data-lucide="log-out" style="width:15px;height:15px"></i> Logout
+                </button>
+              </div>
+
+            </div><!-- end st-general -->
+
+            <!-- ── ACCOUNT TAB ── -->
+            <div class="st-section" id="st-account">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Account Information</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Manage your account details and credentials.</div>
+                <div style="display:grid;gap:14px">
+                  <div>
+                    <label class="st-label">Full Name</label>
+                    <input id="acc-name" type="text" class="st-input" placeholder="Your full name">
+                  </div>
+                  <div>
+                    <label class="st-label">Email Address</label>
+                    <input id="acc-email" type="email" class="st-input" placeholder="email@lunetix.ai">
+                  </div>
+                  <div>
+                    <label class="st-label">Username</label>
+                    <div style="position:relative">
+                      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px">@</span>
+                      <input id="acc-username" type="text" class="st-input" style="padding-left:28px" placeholder="username">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Bio</label>
+                    <textarea id="acc-bio" class="st-input" rows="3" style="resize:none" placeholder="Tell us about yourself..."></textarea>
+                  </div>
+                  <div>
+                    <label class="st-label">Website / Portfolio</label>
+                    <input id="acc-website" type="url" class="st-input" placeholder="https://yourportfolio.com">
+                  </div>
+                  <div>
+                    <label class="st-label">LinkedIn</label>
+                    <input id="acc-linkedin" type="url" class="st-input" placeholder="https://linkedin.com/in/username">
+                  </div>
+                  <div>
+                    <label class="st-label">GitHub</label>
+                    <input id="acc-github" type="url" class="st-input" placeholder="https://github.com/username">
+                  </div>
+                  <button class="btn btn-primary" style="width:fit-content;padding:9px 24px;font-size:13px" onclick="saveAccountInfo()">
+                    <i data-lucide="save" style="width:13px;height:13px"></i> Save Account Info
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Connected Accounts</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Link your social accounts for quick login.</div>
+                <div class="st-pref-list">
+                  <div class="st-pref-item">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="22" height="22" alt="Google">
+                    <div style="flex:1"><div class="st-pref-label">Google</div><div class="st-pref-sub">Connect your Google account</div></div>
+                    <button class="btn btn-outline" style="padding:5px 14px;font-size:11px" onclick="connectSocialAccount('Google')">Connect</button>
+                  </div>
+                  <div class="st-pref-item">
+                    <img src="https://www.svgrepo.com/show/512317/github-142.svg" width="22" height="22" alt="GitHub" style="filter:invert(1)">
+                    <div style="flex:1"><div class="st-pref-label">GitHub</div><div class="st-pref-sub">Connect your GitHub account</div></div>
+                    <button class="btn btn-outline" style="padding:5px 14px;font-size:11px" onclick="connectSocialAccount('GitHub')">Connect</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── NOTIFICATIONS TAB ── -->
+            <div class="st-section" id="st-notifications">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Email Notifications</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Choose which emails you want to receive from Lunetix.</div>
+                <div class="st-pref-list" id="notif-email-list"></div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Push Notifications</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Real-time alerts in your browser.</div>
+                <div class="st-pref-list" id="notif-push-list"></div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Notification Schedule</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Set quiet hours when you don't want to be disturbed.</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div>
+                    <label class="st-label">Quiet Hours Start</label>
+                    <input type="time" id="quiet-start" class="st-input" value="22:00">
+                  </div>
+                  <div>
+                    <label class="st-label">Quiet Hours End</label>
+                    <input type="time" id="quiet-end" class="st-input" value="08:00">
+                  </div>
+                </div>
+                <button class="btn btn-primary" style="margin-top:14px;padding:9px 24px;font-size:13px" onclick="saveNotifSchedule()">
+                  <i data-lucide="save" style="width:13px;height:13px"></i> Save Schedule
+                </button>
+              </div>
+            </div>
+
+            <!-- ── PREFERENCES TAB ── -->
+            <div class="st-section" id="st-preferences">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Learning Preferences</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Customize how you learn on Lunetix.</div>
+                <div style="display:grid;gap:14px">
+                  <div>
+                    <label class="st-label">Daily Learning Goal (minutes)</label>
+                    <input id="pref-daily-goal" type="range" min="15" max="180" step="15" value="60" style="width:100%;accent-color:var(--accent)" oninput="document.getElementById('pref-goal-val').textContent=this.value+' min'">
+                    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:4px">
+                      <span>15 min</span><span id="pref-goal-val" style="color:var(--accent-light);font-weight:600">60 min</span><span>180 min</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Preferred Learning Time</label>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap" id="pref-time-slots"></div>
+                  </div>
+                  <div>
+                    <label class="st-label">Content Language</label>
+                    <select class="st-input" id="pref-lang">
+                      <option value="id">Bahasa Indonesia</option>
+                      <option value="en">English</option>
+                      <option value="mixed">Mixed (ID + EN)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="st-label">Autoplay Videos</label>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <span style="font-size:12px;color:var(--text-secondary)">Automatically play next video in a course</span>
+                      <div class="toggle-switch" id="toggle-autoplay" onclick="togglePref('autoplay')" data-on="true"><div class="toggle-thumb"></div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Show Subtitles by Default</label>
+                    <div style="display:flex;align-items:center;justify-content:space-between">
+                      <span style="font-size:12px;color:var(--text-secondary)">Display subtitles when available</span>
+                      <div class="toggle-switch" id="toggle-subtitles" onclick="togglePref('subtitles')" data-on="false"><div class="toggle-thumb"></div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">Playback Speed</label>
+                    <div style="display:flex;gap:8px" id="pref-speed-btns"></div>
+                  </div>
+                  <button class="btn btn-primary" style="width:fit-content;padding:9px 24px;font-size:13px" onclick="savePreferences()">
+                    <i data-lucide="save" style="width:13px;height:13px"></i> Save Preferences
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Course Recommendations</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Topics you're interested in (affects recommendations).</div>
+                <div style="display:flex;flex-wrap:wrap;gap:8px" id="pref-topics"></div>
+                <button class="btn btn-primary" style="margin-top:14px;padding:9px 24px;font-size:13px" onclick="saveTopics()">
+                  <i data-lucide="save" style="width:13px;height:13px"></i> Save Topics
+                </button>
+              </div>
+            </div>
+
+            <!-- ── PRIVACY & SECURITY TAB ── -->
+            <div class="st-section" id="st-privacy">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Change Password</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Update your password to keep your account secure.</div>
+                <div style="display:grid;gap:12px">
+                  <div>
+                    <label class="st-label">Current Password</label>
+                    <div style="position:relative">
+                      <input id="pw-current" type="password" class="st-input" placeholder="Enter current password">
+                      <button type="button" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="togglePwField('pw-current',this)"><i data-lucide="eye" style="width:14px;height:14px"></i></button>
+                    </div>
+                  </div>
+                  <div>
+                    <label class="st-label">New Password</label>
+                    <div style="position:relative">
+                      <input id="pw-new" type="password" class="st-input" placeholder="Min. 8 characters" oninput="checkPwStrength(this.value)">
+                      <button type="button" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="togglePwField('pw-new',this)"><i data-lucide="eye" style="width:14px;height:14px"></i></button>
+                    </div>
+                    <div id="pw-strength-bar" style="height:3px;border-radius:2px;margin-top:6px;background:var(--border);overflow:hidden"><div id="pw-strength-fill" style="height:100%;width:0%;transition:width 0.3s,background 0.3s;border-radius:2px"></div></div>
+                    <div id="pw-strength-label" style="font-size:10px;color:var(--text-muted);margin-top:3px"></div>
+                  </div>
+                  <div>
+                    <label class="st-label">Confirm New Password</label>
+                    <div style="position:relative">
+                      <input id="pw-confirm" type="password" class="st-input" placeholder="Repeat new password">
+                      <button type="button" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" onclick="togglePwField('pw-confirm',this)"><i data-lucide="eye" style="width:14px;height:14px"></i></button>
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" style="width:fit-content;padding:9px 24px;font-size:13px" onclick="changePassword()">
+                    <i data-lucide="lock" style="width:13px;height:13px"></i> Update Password
+                  </button>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Two-Factor Authentication</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Add an extra layer of security to your account.</div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px;background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.2);border-radius:8px;margin-bottom:12px">
+                  <i data-lucide="shield" style="width:24px;height:24px;color:#34d399;flex-shrink:0"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;margin-bottom:2px">Authenticator App</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Use Google Authenticator or Authy to generate codes.</div>
+                  </div>
+                  <button class="btn btn-primary" style="padding:7px 16px;font-size:12px" onclick="setup2FA()">Enable</button>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:14px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px">
+                  <i data-lucide="smartphone" style="width:24px;height:24px;color:#60a5fa;flex-shrink:0"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px;font-weight:600;margin-bottom:2px">SMS Authentication</div>
+                    <div style="font-size:11px;color:var(--text-muted)">Receive a code via SMS to your phone number.</div>
+                  </div>
+                  <button class="btn btn-outline" style="padding:7px 16px;font-size:12px" onclick="setupSMS2FA()">Setup</button>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Active Sessions</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Devices currently logged into your account.</div>
+                <div id="active-sessions-list"></div>
+              </div>
+              <div class="card" style="border-color:rgba(239,68,68,0.2)">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px;color:var(--danger)">Danger Zone</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">These actions are irreversible. Please be careful.</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                  <button class="btn btn-outline" style="border-color:var(--warning);color:var(--warning);padding:9px 20px;font-size:13px" onclick="deactivateAccount()">
+                    <i data-lucide="pause-circle" style="width:14px;height:14px"></i> Deactivate Account
+                  </button>
+                  <button class="btn btn-outline" style="border-color:var(--danger);color:var(--danger);padding:9px 20px;font-size:13px" onclick="confirmDeleteAccount()">
+                    <i data-lucide="trash-2" style="width:14px;height:14px"></i> Delete Account
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ── BILLING TAB ── -->
+            <div class="st-section" id="st-billing">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Current Plan</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Your active subscription details.</div>
+                <div style="background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <span style="font-size:20px">👑</span>
+                      <div>
+                        <div style="font-size:15px;font-weight:700">Free Plan</div>
+                        <div style="font-size:11px;color:var(--text-muted)">Basic access to Lunetix features</div>
+                      </div>
+                    </div>
+                    <span class="badge badge-purple">Active</span>
+                  </div>
+                  <div style="font-size:12px;color:var(--text-muted)">No billing cycle · Free forever</div>
+                </div>
+                <!-- Plan comparison -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px" id="billing-plans"></div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Payment Methods</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Manage your payment methods for Pro subscription.</div>
+                <div style="text-align:center;padding:24px;border:2px dashed var(--border);border-radius:10px">
+                  <i data-lucide="credit-card" style="width:32px;height:32px;color:var(--text-muted);margin-bottom:8px"></i>
+                  <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px">No payment method added yet.</div>
+                  <button class="btn btn-primary" style="padding:8px 20px;font-size:13px" onclick="addPaymentMethod()">
+                    <i data-lucide="plus" style="width:13px;height:13px"></i> Add Payment Method
+                  </button>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Billing History</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:16px">Your past transactions and invoices.</div>
+                <div id="billing-history"></div>
+              </div>
+            </div>
+
+            <!-- ── APPEARANCE TAB ── -->
+            <div class="st-section" id="st-appearance">
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Theme</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Choose how Lunetix looks.</div>
+                <div class="st-theme-row">
+                  <div class="st-theme-card" id="app-theme-light" onclick="setTheme('light')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;margin-bottom:8px"><i data-lucide="sun" style="width:16px;height:16px;color:#f59e0b"></i></div>
+                    <div style="font-size:12px;font-weight:600">Light Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan terang yang nyaman.</div>
+                  </div>
+                  <div class="st-theme-card active" id="app-theme-dark" onclick="setTheme('dark')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1e1b4b,#312e81);display:flex;align-items:center;justify-content:center;margin-bottom:8px"><i data-lucide="moon" style="width:16px;height:16px;color:#a78bfa"></i></div>
+                    <div style="font-size:12px;font-weight:600">Dark Mode</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Tampilan gelap yang ramah mata.</div>
+                    <div style="position:absolute;top:8px;right:8px;width:16px;height:16px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center"><i data-lucide="check" style="width:10px;height:10px;color:#fff"></i></div>
+                  </div>
+                  <div class="st-theme-card" id="app-theme-system" onclick="setTheme('system')">
+                    <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#374151,#1f2937);display:flex;align-items:center;justify-content:center;margin-bottom:8px"><i data-lucide="monitor" style="width:16px;height:16px;color:#9ca3af"></i></div>
+                    <div style="font-size:12px;font-weight:600">System</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Ikuti pengaturan sistem perangkat.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Accent Color</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Pilih warna aksen favoritmu — langsung diterapkan.</div>
+                <div class="st-color-row" id="app-color-row"></div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Font Size</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px">Sesuaikan ukuran teks untuk kenyamanan membaca.</div>
+                <div class="st-font-row" id="app-font-row"></div>
+                <div id="app-font-preview" style="margin-top:12px;padding:12px;background:var(--input-bg);border-radius:8px;font-size:14px;color:var(--text-secondary);line-height:1.6">
+                  Preview: Belajar AI dengan Lunetix — platform terbaik untuk menguasai Machine Learning dan Deep Learning.
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:14px">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Sidebar</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Customize sidebar behavior.</div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Compact Sidebar</div><div style="font-size:11px;color:var(--text-muted)">Show only icons without labels</div></div>
+                    <div class="toggle-switch" id="toggle-compact" onclick="togglePref('compact')" data-on="false"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Show Upgrade Banner</div><div style="font-size:11px;color:var(--text-muted)">Display Pro upgrade card in sidebar</div></div>
+                    <div class="toggle-switch" id="toggle-upgrade-banner" onclick="togglePref('upgrade_banner')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div style="font-size:14px;font-weight:600;margin-bottom:4px">Animations</div>
+                <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Control motion and transition effects.</div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Enable Animations</div><div style="font-size:11px;color:var(--text-muted)">Smooth transitions and hover effects</div></div>
+                    <div class="toggle-switch" id="toggle-animations" onclick="togglePref('animations')" data-on="true"><div class="toggle-thumb"></div></div>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div><div style="font-size:12px;font-weight:600">Reduce Motion</div><div style="font-size:11px;color:var(--text-muted)">For users sensitive to motion</div></div>
+                    <div class="toggle-switch" id="toggle-reduce-motion" onclick="togglePref('reduce_motion')" data-on="false"><div class="toggle-thumb"></div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            </div><!-- end st-main -->
+
+          <!-- Right Sidebar -->
+          <div class="st-sidebar">
+
+            <!-- Profile Card -->
+            <div class="st-profile-card">
+              <div style="position:relative;width:64px;height:64px;margin:0 auto 12px">
+                <div class="avatar user-avatar" style="width:64px;height:64px;font-size:24px">A</div>
+                <div style="position:absolute;bottom:2px;right:2px;width:12px;height:12px;border-radius:50%;background:#34d399;border:2px solid var(--bg-card)"></div>
+              </div>
+              <div class="user-name" style="font-size:16px;font-weight:700;text-align:center;margin-bottom:2px">Arman</div>
+              <div id="st-sidebar-email" style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:8px">demo@lunetix.ai</div>
+              <span class="badge badge-purple" style="display:block;text-align:center;font-size:11px">Free Plan</span>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card" style="margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Quick Actions</div>
+              <div class="st-quick-list">
+                <div class="st-quick-item" onclick="saveSettings()">
+                  <div class="st-pref-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="user" style="width:13px;height:13px;color:#a78bfa"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Edit Profile</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Perbarui informasi akunmu.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+                <div class="st-quick-item" onclick="showUpgradeModal()">
+                  <div class="st-pref-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="credit-card" style="width:13px;height:13px;color:#60a5fa"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Manage Billing</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Lihat detail langgananmu.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+                <div class="st-quick-item" onclick="showRedeemModal()">
+                  <div class="st-pref-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="gift" style="width:13px;height:13px;color:#34d399"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Redeem Code</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Gunakan kode untuk rewards.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+                <div class="st-quick-item" onclick="showHelpCenter()">
+                  <div class="st-pref-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="help-circle" style="width:13px;height:13px;color:#fbbf24"></i></div>
+                  <div style="flex:1">
+                    <div style="font-size:12px;font-weight:600">Help Center</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Dapatkan bantuan kapan saja.</div>
+                  </div>
+                  <i data-lucide="chevron-right" style="width:13px;height:13px;color:var(--text-muted)"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Your Plan -->
+            <div class="card">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Your Plan</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+                <span style="font-size:18px">👑</span>
+                <div>
+                  <div style="font-size:13px;font-weight:700">Free Plan</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Akses terbatas ke fitur dasar</div>
+                </div>
+              </div>
+              <div class="st-plan-features">
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Akses semua kursus gratis</div>
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Quiz harian terbatas</div>
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Proyek publik</div>
+                <div class="st-plan-feat"><i data-lucide="check" style="width:12px;height:12px;color:#34d399"></i> Sertifikat standar</div>
+              </div>
+              <button class="btn btn-primary btn-full" style="margin-top:12px;padding:10px;font-size:13px">Upgrade to Pro</button>
+              <a href="#" style="display:block;text-align:center;font-size:11px;color:var(--accent-light);margin-top:8px">Lihat semua fitur →</a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Course Detail Modal -->
+<div class="course-detail-overlay" id="course-modal">
+  <div class="course-detail-modal">
+    <div class="cd-hero">
+      <button class="cd-close" onclick="closeCourseModal()">✕</button>
+      <span class="cd-hero-emoji">🤖</span>
+      <h1>Course Title</h1>
+      <p>Course description goes here.</p>
+      <div class="cd-hero-meta">
+        <span class="cd-meta-level">📊 Beginner</span>
+        <span class="cd-meta-duration">⏱️ 8h 30m</span>
+        <span class="cd-meta-students">👥 2.1k students</span>
+        <span class="cd-meta-rating">⭐ 4.8</span>
+      </div>
+    </div>
+    <div class="cd-tabs">
+      <button class="cd-tab active" data-tab="curriculum" onclick="switchCDTab('curriculum')">
+        <i data-lucide="list" style="width:14px;height:14px"></i> Kurikulum
+      </button>
+      <button class="cd-tab" data-tab="materi" onclick="switchCDTab('materi')">
+        <i data-lucide="book-open" style="width:14px;height:14px"></i> Materi
+      </button>
+      <button class="cd-tab" data-tab="quiz" onclick="switchCDTab('quiz')">
+        <i data-lucide="brain" style="width:14px;height:14px"></i> Quiz
+      </button>
+    </div>
+    <div class="cd-body">
+      <div class="cd-section active" id="cd-curriculum"></div>
+      <div class="cd-section" id="cd-materi"></div>
+      <div class="cd-section" id="cd-quiz"></div>
+    </div>
+  </div>
+</div>
+
+
+    </main>
+
+  </div>
+</div>
+
+<!-- ══ SCRIPTS ══ -->
+<script src="../js/auth.js"></script>
+<script src="../js/store.js"></script>
+<!-- Course content -->
+<script src="../js/content/course-ml.js"></script>
+<script src="../js/content/course-python-ai.js"></script>
+<script src="../js/content/course-deep-learning.js"></script>
+<script src="../js/content/course-nlp.js"></script>
+<script src="../js/content/course-computer-vision.js"></script>
+<script src="../js/content/course-data-science.js"></script>
+<script src="../js/content/course-rl.js"></script>
+<script src="../js/content/course-ai-ethics.js"></script>
+<!-- App modules -->
+<script src="../js/courses.js"></script>
+<script src="../js/course-detail.js"></script>
+<script src="../js/playground.js"></script>
+<script src="../js/projects.js"></script>
+<script src="../js/quizzes.js"></script>
+<script src="../js/community.js"></script>
+<script src="../js/certificates.js"></script>
+<script src="../js/analytics.js"></script>
+<script src="../js/bookmarks.js"></script>
+<script src="../js/dashboard-page.js"></script>
+<script src="../js/settings.js"></script>
+<script src="../js/upgrade.js"></script>
+<script src="../js/page-loader.js"></script>
+<script src="../js/pages.js"></script>
+<script src="../js/dashboard.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>
+

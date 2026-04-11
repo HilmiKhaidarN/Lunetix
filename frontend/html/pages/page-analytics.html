@@ -1,0 +1,175 @@
+      <!-- ══ ANALYTICS ══ -->
+      <div class="page" id="page-analytics">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <h2 style="font-size:20px;font-weight:700">Analytics</h2>
+              <span style="font-size:18px">✨</span>
+            </div>
+            <p style="font-size:13px;color:var(--text-secondary)">Track your learning journey and discover insights to help you grow faster.</p>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <select id="an-period" style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text-primary);font-size:13px;outline:none;cursor:pointer" onchange="renderAnalytics()">
+              <option value="week">This Week</option>
+              <option value="month">This Month</option>
+              <option value="year">This Year</option>
+            </select>
+            <button class="btn btn-primary" style="padding:8px 16px;font-size:13px" onclick="exportReport()">
+              <i data-lucide="download" style="width:14px;height:14px"></i> Export Report
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="an-stats-bar" id="an-stats-bar"></div>
+
+        <!-- Row 1: Activity Chart + Skill Mastery + Course Progress -->
+        <div class="an-row1" style="margin-bottom:16px">
+
+          <!-- Learning Activity Bar Chart -->
+          <div class="card an-activity-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:13px;font-weight:600">Learning Activity</span>
+                <i data-lucide="info" style="width:13px;height:13px;color:var(--text-muted)"></i>
+              </div>
+              <select style="background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:3px 8px;color:var(--text-secondary);font-size:11px;outline:none">
+                <option>This Week</option><option>Last Week</option>
+              </select>
+            </div>
+            <div id="an-bar-chart" style="display:flex;align-items:flex-end;gap:6px;height:140px;padding:0 4px"></div>
+            <div id="an-bar-labels" style="display:flex;gap:6px;margin-top:6px;padding:0 4px"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+              <div style="font-size:11px;color:var(--text-muted)">Most Productive Day: <span id="an-best-day" style="color:var(--accent-light);font-weight:600"></span></div>
+              <div id="an-peak-time" style="font-size:12px;font-weight:600;color:var(--text-primary)"></div>
+            </div>
+            <div id="an-productivity-tip" style="margin-top:8px;font-size:11px;color:var(--success);display:flex;align-items:center;gap:4px">
+              <i data-lucide="trending-up" style="width:12px;height:12px"></i>
+            </div>
+          </div>
+
+          <!-- Skill Mastery Radar -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:13px;font-weight:600">Skill Mastery</span>
+                <i data-lucide="info" style="width:13px;height:13px;color:var(--text-muted)"></i>
+              </div>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">See Details</a>
+            </div>
+            <div style="display:flex;justify-content:center">
+              <canvas id="an-radar" width="200" height="200"></canvas>
+            </div>
+            <div style="display:flex;justify-content:center;gap:16px;margin-top:10px">
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted)">
+                <div style="width:10px;height:10px;border-radius:2px;background:rgba(124,58,237,0.6)"></div> Kamu
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted)">
+                <div style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,0.15)"></div> Rata-rata Pengguna
+              </div>
+            </div>
+          </div>
+
+          <!-- Course Progress -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:13px;font-weight:600">Course Progress</span>
+                <i data-lucide="info" style="width:13px;height:13px;color:var(--text-muted)"></i>
+              </div>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">See All</a>
+            </div>
+            <div id="an-course-progress"></div>
+            <div style="margin-top:14px;padding:12px;background:rgba(124,58,237,0.08);border-radius:8px;border:1px solid rgba(124,58,237,0.2)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <div style="width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0">68%</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600">Overall Progress</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Sangat baik! Terus pertahankan momentum belajarmu.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Streak + Time Distribution + Performance Trend -->
+        <div class="an-row2" style="margin-bottom:16px">
+
+          <!-- Learning Streak -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Learning Streak</span>
+              <span style="font-size:11px;color:var(--success);font-weight:600">Best: 12 days</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Keep it up! Consistency is the key to mastery.</div>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <div style="font-size:32px">🔥</div>
+              <div>
+                <div style="font-size:24px;font-weight:700" id="an-streak-val">7 days</div>
+                <div style="font-size:11px;color:var(--text-muted)">Current Streak</div>
+              </div>
+            </div>
+            <div id="an-streak-week" style="display:flex;gap:6px;justify-content:space-between"></div>
+          </div>
+
+          <!-- Time Distribution Donut -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Time Distribution</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Where you spend your learning time.</div>
+            <div style="display:flex;align-items:center;gap:16px">
+              <div style="position:relative;flex-shrink:0">
+                <canvas id="an-donut" width="120" height="120"></canvas>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <div style="font-size:14px;font-weight:700">47h 32m</div>
+                  <div style="font-size:9px;color:var(--text-muted)">Total</div>
+                </div>
+              </div>
+              <div id="an-donut-legend" style="flex:1"></div>
+            </div>
+          </div>
+
+          <!-- Performance Trend Line Chart -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Performance Trend</span>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">Your quiz scores over time.</div>
+            <canvas id="an-line" width="260" height="120"></canvas>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+              <div style="display:flex;gap:12px;font-size:10px;color:var(--text-muted)">
+                <span>Minggu 1</span><span>Minggu 2</span><span>Minggu 3</span><span>Minggu 4</span>
+              </div>
+              <div style="font-size:12px;font-weight:600;color:var(--success)">+15% Peningkatan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Recent Activity + AI Insights -->
+        <div class="an-row3">
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <span style="font-size:13px;font-weight:600">Recent Activity</span>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">Lihat semua</a>
+            </div>
+            <div id="an-recent-list"></div>
+          </div>
+
+          <!-- AI Insights -->
+          <div class="card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+              <span style="font-size:13px;font-weight:600">Insights for You</span>
+              <a href="#" style="font-size:11px;color:var(--accent-light)">See All</a>
+            </div>
+            <div style="font-size:11px;color:var(--text-muted);margin-bottom:14px">AI-powered insights based on your learning data</div>
+            <div id="an-insights-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px"></div>
+          </div>
+
+        </div>
+      </div>
+

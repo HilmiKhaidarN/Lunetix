@@ -1,0 +1,153 @@
+      <!-- ══ AI PLAYGROUND ══ -->
+      <div class="page" id="page-playground">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">AI Playground</h2>
+            <p style="font-size:13px;color:var(--text-secondary)">Experiment with AI models in real-time. Ask questions, generate content, analyze data, and more.</p>
+          </div>
+          <button class="btn btn-primary" style="padding:9px 18px;font-size:13px" onclick="pgNewSession()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> New Session
+          </button>
+        </div>
+
+        <!-- Feature Badges -->
+        <div class="pg-feature-row">
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="layers" style="width:18px;height:18px;color:#a78bfa"></i></div>
+            <div><div class="pg-feature-title">Multi-Model</div><div class="pg-feature-sub">Choose from powerful AI models</div></div>
+          </div>
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(245,158,11,0.15)"><i data-lucide="zap" style="width:18px;height:18px;color:#fbbf24"></i></div>
+            <div><div class="pg-feature-title">Real-time</div><div class="pg-feature-sub">Get instant responses</div></div>
+          </div>
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(59,130,246,0.15)"><i data-lucide="code-2" style="width:18px;height:18px;color:#60a5fa"></i></div>
+            <div><div class="pg-feature-title">Code Interpreter</div><div class="pg-feature-sub">Run code and analyze data</div></div>
+          </div>
+          <div class="pg-feature-badge">
+            <div class="pg-feature-icon" style="background:rgba(16,185,129,0.15)"><i data-lucide="upload" style="width:18px;height:18px;color:#34d399"></i></div>
+            <div><div class="pg-feature-title">File Support</div><div class="pg-feature-sub">Upload files and images</div></div>
+          </div>
+        </div>
+
+        <!-- Main Layout -->
+        <div class="pg-layout">
+
+          <!-- Left: Input + Output + Bottom panels -->
+          <div class="pg-main">
+
+            <!-- Input / Output split -->
+            <div class="pg-io-grid">
+
+              <!-- Input Panel -->
+              <div class="pg-panel">
+                <div class="pg-panel-header">
+                  <span class="pg-panel-title">Your Input</span>
+                  <div class="pg-input-tabs">
+                    <button class="pg-itab active" id="itab-text" onclick="pgSwitchInputTab('text')">Text</button>
+                    <button class="pg-itab" id="itab-code" onclick="pgSwitchInputTab('code')">⌥ Code</button>
+                  </div>
+                </div>
+                <textarea id="pg-input" class="pg-textarea" placeholder="Explain how neural networks work in simple terms, and give me an example with Python code" onkeydown="pgHandleKey(event)" oninput="pgAutoResize(this)"></textarea>
+                <div class="pg-input-footer">
+                  <div style="display:flex;gap:8px">
+                    <button class="pg-icon-btn" title="Attach file"><i data-lucide="paperclip" style="width:15px;height:15px"></i></button>
+                    <button class="pg-icon-btn" title="Voice input"><i data-lucide="mic" style="width:15px;height:15px"></i></button>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:center">
+                    <button class="pg-clear-btn" onclick="pgClearInput()">Clear</button>
+                    <button class="btn btn-primary" style="padding:8px 20px;font-size:13px" onclick="pgSend()" id="pg-send-btn">
+                      Run <i data-lucide="play" style="width:13px;height:13px"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Output Panel -->
+              <div class="pg-panel">
+                <div class="pg-panel-header">
+                  <span class="pg-panel-title">AI Response</span>
+                  <div class="pg-model-badge" id="pg-model-badge">
+                    <i data-lucide="cpu" style="width:12px;height:12px;color:#a78bfa"></i>
+                    <span id="pg-active-model-label">GPT-4o</span>
+                    <i data-lucide="chevron-down" style="width:12px;height:12px"></i>
+                  </div>
+                </div>
+                <div class="pg-output-area" id="pg-output-area">
+                  <div class="pg-output-placeholder">
+                    <i data-lucide="sparkles" style="width:32px;height:32px;color:var(--accent-light);margin-bottom:10px"></i>
+                    <p style="font-size:13px;color:var(--text-muted)">Run a prompt to see the AI response here.</p>
+                  </div>
+                </div>
+                <div class="pg-output-footer" id="pg-output-footer" style="display:none">
+                  <span id="pg-gen-time" style="font-size:11px;color:var(--text-muted)">Generated in 2.3s · 512 tokens</span>
+                  <div style="display:flex;gap:8px">
+                    <button class="pg-icon-btn" title="Copy" onclick="pgCopyOutput()"><i data-lucide="copy" style="width:14px;height:14px"></i></button>
+                    <button class="pg-icon-btn" title="Thumbs up"><i data-lucide="thumbs-up" style="width:14px;height:14px"></i></button>
+                    <button class="pg-icon-btn" title="Thumbs down"><i data-lucide="thumbs-down" style="width:14px;height:14px"></i></button>
+                    <button class="pg-icon-btn" title="Download"><i data-lucide="download" style="width:14px;height:14px"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom: Example Prompts + Sessions -->
+            <div class="pg-bottom-grid">
+
+              <!-- Example Prompts -->
+              <div class="pg-panel" style="padding:16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <span class="pg-panel-title">Example Prompts</span>
+                  <button class="pg-icon-btn" onclick="pgRefreshPrompts()" title="Refresh">
+                    <i data-lucide="refresh-cw" style="width:13px;height:13px"></i> Refresh
+                  </button>
+                </div>
+                <div id="pg-prompts-list"></div>
+              </div>
+
+              <!-- My Sessions -->
+              <div class="pg-panel" style="padding:16px">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                  <span class="pg-panel-title">My Sessions</span>
+                  <a href="#" style="font-size:11px;color:var(--accent-light)">View All</a>
+                </div>
+                <div id="pg-sessions-list"></div>
+                <button class="pg-new-session-btn" onclick="pgNewSession()">
+                  <i data-lucide="plus" style="width:13px;height:13px"></i> New Session
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class="pg-sidebar">
+
+            <!-- Model Selector -->
+            <div class="pg-panel" style="padding:16px;margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Model</div>
+              <div id="pg-model-list"></div>
+              <a href="#" style="font-size:11px;color:var(--accent-light);display:block;margin-top:10px">View all models →</a>
+            </div>
+
+            <!-- Tools -->
+            <div class="pg-panel" style="padding:16px;margin-bottom:14px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:12px">Tools</div>
+              <div id="pg-tools-list"></div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="pg-panel" style="padding:16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div style="font-size:13px;font-weight:600">Recent Activity</div>
+                <a href="#" style="font-size:11px;color:var(--accent-light)">View All</a>
+              </div>
+              <div id="pg-recent-list"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+

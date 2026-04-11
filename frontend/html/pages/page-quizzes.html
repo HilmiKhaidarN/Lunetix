@@ -1,0 +1,113 @@
+      <!-- ══ QUIZZES ══ -->
+      <div class="page" id="page-quizzes">
+
+        <!-- LIST VIEW -->
+        <div id="quiz-list-view">
+          <div style="margin-bottom:6px">
+            <h2 style="font-size:20px;font-weight:700">Quizzes</h2>
+            <p style="font-size:13px;color:var(--text-secondary);margin-top:2px">Test your knowledge, track your progress, and level up your AI skills.</p>
+          </div>
+
+          <!-- Stats Bar -->
+          <div class="qz-stats-bar" id="qz-stats-bar"></div>
+
+          <!-- Filter Tabs -->
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
+            <div class="qz-filter-tabs" id="qz-filter-tabs">
+              <button class="qz-ftab active" data-qf="all" onclick="filterQuizList('all',this)">All Quizzes</button>
+              <button class="qz-ftab" data-qf="beginner" onclick="filterQuizList('beginner',this)">By Course</button>
+              <button class="qz-ftab" data-qf="practice" onclick="filterQuizList('practice',this)">Practice</button>
+              <button class="qz-ftab" data-qf="challenge" onclick="filterQuizList('challenge',this)">Challenges</button>
+              <button class="qz-ftab" data-qf="favorite" onclick="filterQuizList('favorite',this)">Favorite</button>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Latest</span> ▾</div>
+          </div>
+
+          <!-- Main layout: left content + right sidebar -->
+          <div class="qz-layout">
+            <div>
+              <!-- Category Cards -->
+              <div style="margin-bottom:20px">
+                <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Quiz Categories</h3>
+                <div class="qz-cat-row" id="qz-cat-row"></div>
+              </div>
+
+              <!-- Available Quizzes List -->
+              <div>
+                <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Available Quizzes</h3>
+                <div id="qz-list"></div>
+                <button style="width:100%;padding:12px;background:none;border:1px dashed var(--border);border-radius:var(--radius);color:var(--text-muted);font-size:13px;cursor:pointer;margin-top:4px" onclick="loadMoreQuizzes(this)">
+                  View More Quizzes ▾
+                </button>
+              </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="qz-sidebar">
+              <!-- Progress Ring -->
+              <div class="card" style="margin-bottom:16px;text-align:center">
+                <h4 style="font-size:13px;font-weight:600;margin-bottom:16px;text-align:left">Your Progress</h4>
+                <div style="position:relative;width:120px;height:120px;margin:0 auto 14px">
+                  <svg width="120" height="120" style="transform:rotate(-90deg)">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="url(#pg)" stroke-width="10"
+                      stroke-dasharray="314" id="qz-ring-fill" stroke-dashoffset="94" stroke-linecap="round"/>
+                    <defs>
+                      <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#7c3aed"/>
+                        <stop offset="100%" stop-color="#9d5cf6"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                    <div id="qz-ring-pct" style="font-size:22px;font-weight:700">70%</div>
+                    <div style="font-size:10px;color:var(--text-muted)">Overall</div>
+                  </div>
+                </div>
+                <div style="font-size:12px;color:var(--text-muted)" id="qz-ring-label">42 / 60 Quizzes Completed</div>
+                <div class="progress-bar" style="margin-top:12px;height:5px">
+                  <div class="progress-fill" style="width:70%"></div>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="card" style="margin-bottom:16px">
+                <h4 style="font-size:13px;font-weight:600;margin-bottom:14px">Recent Activity</h4>
+                <div id="qz-recent-activity"></div>
+              </div>
+
+              <!-- Keep Going -->
+              <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(157,92,246,0.08));border-color:var(--border-accent)">
+                <div style="font-size:28px;margin-bottom:8px">🏆</div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:6px">Keep Going!</div>
+                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px">Complete 3 more quizzes to earn a new badge!</div>
+                <div class="progress-bar" style="height:6px;margin-bottom:6px">
+                  <div class="progress-fill" id="qz-badge-progress" style="width:60%"></div>
+                </div>
+                <div style="font-size:11px;color:var(--text-muted)" id="qz-badge-label">3 / 5</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLAY VIEW -->
+        <div id="quiz-play-view" style="display:none">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+            <button onclick="exitQuizPlay()" class="btn btn-outline" style="padding:8px 14px;font-size:13px">
+              <i data-lucide="arrow-left" style="width:14px;height:14px"></i> Back
+            </button>
+            <div>
+              <h3 id="quiz-play-title" style="font-size:16px;font-weight:600"></h3>
+              <div id="quiz-play-subtitle" style="font-size:12px;color:var(--text-muted)"></div>
+            </div>
+          </div>
+          <div style="max-width:680px">
+            <div class="progress-bar" style="margin-bottom:6px;height:6px">
+              <div class="progress-fill" id="quiz-play-progress" style="width:0%;transition:width 0.4s"></div>
+            </div>
+            <div id="quiz-play-content"></div>
+          </div>
+        </div>
+
+      </div>
+

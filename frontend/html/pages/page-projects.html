@@ -1,0 +1,135 @@
+      <!-- ══ PROJECTS ══ -->
+      <div class="page" id="page-projects">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div>
+            <h2 style="font-size:20px;font-weight:700;margin-bottom:4px">Projects</h2>
+            <p style="font-size:13px;color:var(--text-secondary)">Build, experiment, and showcase your AI projects.</p>
+          </div>
+          <button class="btn btn-primary" style="padding:9px 18px;font-size:13px" onclick="showNewProjectModal()">
+            <i data-lucide="plus" style="width:14px;height:14px"></i> New Project
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="proj-stats-bar" id="proj-stats-bar"></div>
+
+        <!-- Filter Tabs + Sort -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:24px">
+          <div class="proj-filter-tabs">
+            <button class="proj-ftab active" onclick="filterProjects('all',this)">All</button>
+            <button class="proj-ftab" onclick="filterProjects('active',this)">
+              <i data-lucide="clock" style="width:12px;height:12px"></i> In Progress
+            </button>
+            <button class="proj-ftab" onclick="filterProjects('completed',this)">Completed</button>
+            <button class="proj-ftab" onclick="filterProjects('collab',this)">Collaborations</button>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted)">Sort by: <span style="color:var(--text-primary)">Recent</span> ▾</div>
+        </div>
+
+        <!-- Main layout -->
+        <div class="proj-layout">
+          <div>
+            <!-- Your Projects -->
+            <h3 style="font-size:14px;font-weight:600;margin-bottom:14px">Your Projects</h3>
+            <div class="proj-cards-grid" id="projects-grid"></div>
+
+            <!-- Explore Projects -->
+            <div style="display:flex;align-items:center;justify-content:space-between;margin:28px 0 14px">
+              <h3 style="font-size:14px;font-weight:600">Explore Projects</h3>
+              <a href="#" style="font-size:13px;color:var(--accent-light)">View All</a>
+            </div>
+            <div class="proj-explore-grid" id="proj-explore-grid"></div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="proj-sidebar">
+            <!-- Progress Ring -->
+            <div class="card" style="margin-bottom:16px;text-align:center">
+              <h4 style="font-size:13px;font-weight:600;margin-bottom:16px;text-align:left">Your Progress</h4>
+              <div style="position:relative;width:120px;height:120px;margin:0 auto 14px">
+                <svg width="120" height="120" style="transform:rotate(-90deg)">
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="10"/>
+                  <circle cx="60" cy="60" r="50" fill="none" stroke="url(#proj-pg)" stroke-width="10"
+                    stroke-dasharray="314" stroke-dashoffset="94" stroke-linecap="round"/>
+                  <defs>
+                    <linearGradient id="proj-pg" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#7c3aed"/>
+                      <stop offset="100%" stop-color="#9d5cf6"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+                  <div style="font-size:22px;font-weight:700">70%</div>
+                  <div style="font-size:10px;color:var(--text-muted)">Overall</div>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">12 / 17 Projects Completed</div>
+              <div class="progress-bar" style="height:5px;margin-bottom:6px">
+                <div class="progress-fill" style="width:70%"></div>
+              </div>
+              <div style="font-size:11px;color:var(--accent-light)">Keep building to unlock rewards!</div>
+            </div>
+
+            <!-- Activity -->
+            <div class="card" style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+                <h4 style="font-size:13px;font-weight:600">Activity</h4>
+                <a href="#" style="font-size:11px;color:var(--accent-light)">View All</a>
+              </div>
+              <div id="proj-activity-list"></div>
+            </div>
+
+            <!-- Earn More Points -->
+            <div class="card" style="background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(157,92,246,0.05));border-color:var(--border-accent)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+                <span style="font-size:20px">🏆</span>
+                <h4 style="font-size:13px;font-weight:600">Earn More Points</h4>
+              </div>
+              <div id="proj-earn-list"></div>
+              <a href="#" style="font-size:12px;color:var(--accent-light);margin-top:10px;display:block">Learn how points work →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Project Modal -->
+        <div id="new-project-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:300;align-items:center;justify-content:center;padding:20px">
+          <div class="card" style="width:100%;max-width:460px;padding:28px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+              <h3 style="font-size:16px;font-weight:700">New Project</h3>
+              <button onclick="closeNewProjectModal()" style="background:none;border:none;color:var(--text-muted);cursor:pointer">
+                <i data-lucide="x" style="width:18px;height:18px"></i>
+              </button>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Project Name *</label>
+              <input id="proj-name" type="text" placeholder="e.g. AI Image Classifier" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Category</label>
+              <select id="proj-cat" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none">
+                <option>Machine Learning</option>
+                <option>Deep Learning</option>
+                <option>NLP</option>
+                <option>Computer Vision</option>
+                <option>Data Science</option>
+                <option>Reinforcement Learning</option>
+              </select>
+            </div>
+            <div style="margin-bottom:14px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Tech Stack</label>
+              <input id="proj-stack" type="text" placeholder="e.g. Python, TensorFlow, OpenCV" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <div style="margin-bottom:20px">
+              <label style="font-size:12px;color:var(--text-secondary);display:block;margin-bottom:6px">Description</label>
+              <textarea id="proj-desc" placeholder="Describe what your project does..." rows="3" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:#fff;font-size:14px;outline:none;resize:none;font-family:inherit"></textarea>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="createProject()">
+              <i data-lucide="plus" style="width:14px;height:14px"></i> Create Project
+            </button>
+          </div>
+        </div>
+
+      </div>
+
