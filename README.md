@@ -33,18 +33,3 @@ frontend/
   js/            ← JS modules per feature
     content/     ← Course content files
 ```
-
-## 🔑 Demo Account
-
-```
-Email:    demo@lunetix.ai
-Password: demo1234
-```
-
-## 🌐 Live Demo
-
-[lunetix.vercel.app](https://lunetix.vercel.app)
-
----
-
-Built with ❤️ by **Hilmi Khaidar N**
