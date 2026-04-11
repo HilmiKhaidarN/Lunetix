@@ -1,8 +1,11 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/frontend/html/login.html" },
-    { "source": "/login", "destination": "/frontend/html/login.html" },
-    { "source": "/register", "destination": "/frontend/html/register.html" },
-    { "source": "/dashboard", "destination": "/frontend/html/dashboard.html" }
+    { "source": "/",                "destination": "/frontend/html/login.html" },
+    { "source": "/login",           "destination": "/frontend/html/login.html" },
+    { "source": "/login.html",      "destination": "/frontend/html/login.html" },
+    { "source": "/register",        "destination": "/frontend/html/register.html" },
+    { "source": "/register.html",   "destination": "/frontend/html/register.html" },
+    { "source": "/dashboard",       "destination": "/frontend/html/dashboard.html" },
+    { "source": "/dashboard.html",  "destination": "/frontend/html/dashboard.html" }
   ]
 }

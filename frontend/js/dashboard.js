@@ -153,7 +153,7 @@ function closeAllDropdowns() {
 function doLogout() {
   closeAllDropdowns();
   clearSession();
-  window.location.href = 'login.html';
+  window.location.href = '/login';
 }
 
 // Close dropdowns when clicking outside
@@ -269,5 +269,6 @@ document.addEventListener('DOMContentLoaded', () => {
   navigateTo('dashboard');
   if (typeof initDashboard === 'function') initDashboard();
 });
+
 
 

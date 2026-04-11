@@ -350,7 +350,7 @@ function setupSMS2FA() {
 function deactivateAccount() {
   if (confirm('Akun kamu akan dinonaktifkan sementara. Lanjutkan?')) {
     showToast('Akun dinonaktifkan...');
-    setTimeout(() => { clearSession(); window.location.href = 'login.html'; }, 2000);
+    setTimeout(() => { clearSession(); window.location.href = '/login'; }, 2000);
   }
 }
 
@@ -358,7 +358,7 @@ function confirmDeleteAccount() {
   if (confirm('Hapus akun permanen? Semua data akan hilang.')) {
     clearSession();
     localStorage.clear();
-    window.location.href = 'login.html';
+    window.location.href = '/login';
   }
 }
 
@@ -650,3 +650,4 @@ function applyBmFilterAndClose() {
   if (typeof renderBookmarks === 'function') renderBookmarks();
   showToast(`Filter diterapkan: ${cat}`);
 }
+

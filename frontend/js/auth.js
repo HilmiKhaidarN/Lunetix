@@ -44,13 +44,13 @@ function clearSession() {
 
 function requireAuth() {
   if (!getSession()) {
-    window.location.href = 'login.html';
+    window.location.href = '/login';
   }
 }
 
 function requireGuest() {
   if (getSession()) {
-    window.location.href = 'dashboard.html';
+    window.location.href = '/dashboard';
   }
 }
 
@@ -75,7 +75,7 @@ function handleLogin(e) {
   }
 
   setSession(user);
-  window.location.href = 'dashboard.html';
+  window.location.href = '/dashboard';
 }
 
 // ── Register ──
@@ -125,7 +125,7 @@ function handleRegister(e) {
   users.push(newUser);
   saveUsers(users);
   setSession(newUser);
-  window.location.href = 'dashboard.html';
+  window.location.href = '/dashboard';
 }
 
 function showError(el, msg) {
@@ -148,4 +148,5 @@ function togglePassword(inputId, btn) {
 
 // ── Init ──
 seedDefaultUser();
+
 
