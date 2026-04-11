@@ -1,234 +1,246 @@
-﻿// ══════════════════════════════════════════════
-// KURSUS 7: REINFORCEMENT LEARNING
+// ══════════════════════════════════════════════
+// KURSUS 6: DATA SCIENCE WITH AI
 // ══════════════════════════════════════════════
 
-const courseRL = {
-  id: 7,
+const courseDataScience = {
+  id: 6,
   curriculum: [
     {
-      title: "Modul 1: Fondasi Reinforcement Learning",
+      title: "Modul 1: Fondasi Data Science",
       lessons: [
-        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
-        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
-        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
-        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
+        { icon: "▶️", title: "Data Science Lifecycle", duration: "15 min" },
+        { icon: "▶️", title: "Statistik Deskriptif: Mean, Median, Std, Skewness", duration: "22 min" },
+        { icon: "▶️", title: "Probabilitas & Distribusi", duration: "25 min" },
+        { icon: "▶️", title: "Hypothesis Testing & p-value", duration: "22 min" },
+        { icon: "💻", title: "Lab: Statistik dengan Python & SciPy", duration: "35 min" },
       ]
     },
     {
-      title: "Modul 2: Tabular Methods",
+      title: "Modul 2: Exploratory Data Analysis (EDA)",
       lessons: [
-        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
-        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
-        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
-        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
+        { icon: "▶️", title: "EDA Framework & Best Practices", duration: "18 min" },
+        { icon: "▶️", title: "Univariate & Bivariate Analysis", duration: "22 min" },
+        { icon: "▶️", title: "Correlation & Causation", duration: "18 min" },
+        { icon: "▶️", title: "Outlier Detection & Treatment", duration: "20 min" },
+        { icon: "💻", title: "Lab: EDA Dataset E-commerce", duration: "45 min" },
       ]
     },
     {
-      title: "Modul 3: Deep Reinforcement Learning",
+      title: "Modul 3: Data Wrangling & Feature Engineering",
       lessons: [
-        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
-        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
-        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
-        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
-        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
+        { icon: "▶️", title: "Data Cleaning Strategies", duration: "20 min" },
+        { icon: "▶️", title: "Feature Engineering Techniques", duration: "25 min" },
+        { icon: "▶️", title: "Dimensionality Reduction: PCA, t-SNE", duration: "22 min" },
+        { icon: "💻", title: "Lab: Feature Engineering Pipeline", duration: "40 min" },
       ]
     },
     {
-      title: "Modul 4: Advanced RL",
+      title: "Modul 4: Data Visualization & Storytelling",
       lessons: [
-        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
-        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
-        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
-        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
+        { icon: "▶️", title: "Prinsip Visualisasi Data yang Efektif", duration: "18 min" },
+        { icon: "▶️", title: "Plotly & Interactive Charts", duration: "22 min" },
+        { icon: "▶️", title: "Dashboard dengan Streamlit", duration: "25 min" },
+        { icon: "💻", title: "Proyek: Dashboard Analitik Bisnis", duration: "60 min" },
       ]
     }
   ],
   quiz: [
-    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
-    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
-    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
-    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
-    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
+    { q: "Apa perbedaan Mean dan Median?", options: ["Tidak ada perbedaan", "Mean adalah rata-rata, Median adalah nilai tengah — Median lebih robust terhadap outlier", "Median selalu lebih besar dari Mean", "Mean hanya untuk data kategorikal"], answer: 1 },
+    { q: "Apa yang dimaksud dengan p-value dalam hypothesis testing?", options: ["Probabilitas hipotesis benar", "Probabilitas mendapatkan hasil seekstrem ini jika H0 benar", "Ukuran effect size", "Tingkat kepercayaan"], answer: 1 },
+    { q: "Apa tujuan PCA (Principal Component Analysis)?", options: ["Meningkatkan akurasi model", "Mengurangi dimensi data sambil mempertahankan variance maksimum", "Mendeteksi outlier", "Mengisi missing values"], answer: 1 },
+    { q: "Apa itu EDA (Exploratory Data Analysis)?", options: ["Teknik training model", "Proses investigasi awal data untuk menemukan pola dan anomali", "Metode evaluasi model", "Teknik deployment"], answer: 1 },
+    { q: "Distribusi mana yang sering diasumsikan dalam statistik inferensial?", options: ["Uniform Distribution", "Poisson Distribution", "Normal (Gaussian) Distribution", "Exponential Distribution"], answer: 2 },
   ],
   sources: [
-    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
-    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
-    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
-    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
-    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
-    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
-    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
+    { label: "TutorialSearch – Master Python Data Analysis NumPy Pandas", url: "https://tutorialsearch.io/blog/master-python-data-analysis-numpy-pandas-workflows" },
+    { label: "EasierDocs – Python Data Science with Pandas & NumPy", url: "https://easierdocs.com/tutorials/python/data-science-pandas-numpy/" },
+    { label: "AnalyticsVidhya – Data Exploration in Python", url: "https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" },
+    { label: "Medium – Data Analysis with Pandas and NumPy", url: "https://medium.com/@AlexanderObregon/how-to-use-pandas-and-numpy-for-data-analysis-in-python-0e650e9d0940" },
+    { label: "Landeros Labs – Statistics and Probability with SciPy", url: "https://landeros-labs.com/posts/statistics/index.html" },
+    { label: "Pandas Official Documentation", url: "https://pandas.pydata.org/docs/" },
+    { label: "SciPy Official Documentation", url: "https://docs.scipy.org/doc/scipy/" },
+    { label: "Plotly Official Documentation", url: "https://plotly.com/python/" },
   ]
 };
 
-courseRL.materi = `
+courseDataScience.materi = `
 <div class="materi-section">
-  <h2>🎮 Apa itu Reinforcement Learning?</h2>
-  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
-  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
-  <h3>Pencapaian Luar Biasa RL</h3>
-  <ul>
-    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
-    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
-    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
-    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
-    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
-  </ul>
-</div>
-
-<div class="materi-section">
-  <h2>🏗️ Komponen Dasar RL</h2>
-  <ul>
-    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
-    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
-    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
-    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
-    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
-    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
-    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
-    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
-  </ul>
-
-  <h3>Markov Decision Process (MDP)</h3>
-  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
-  <ul>
-    <li><strong>S:</strong> State space</li>
-    <li><strong>A:</strong> Action space</li>
-    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
-    <li><strong>R(s,a):</strong> Reward function</li>
-    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
-  </ul>
-  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
-</div>
-
-<div class="materi-section">
-  <h2>📋 Q-Learning</h2>
-  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
-  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
-  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
-
-env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
-n_states = env.observation_space.n   <span class="cm"># 16</span>
-n_actions = env.action_space.n       <span class="cm"># 4</span>
-
-<span class="cm"># Inisialisasi Q-table</span>
-Q = np.zeros((n_states, n_actions))
-
-<span class="cm"># Hyperparameters</span>
-alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
-gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
-epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
-epsilon_decay = <span class="num">0.995</span>
-epsilon_min = <span class="num">0.01</span>
-n_episodes = <span class="num">10000</span>
-
-rewards_history = []
-
-<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
-    state, _ = env.reset()
-    total_reward = <span class="num">0</span>
-
-    <span class="kw">while</span> <span class="kw">True</span>:
-        <span class="cm"># Epsilon-greedy policy</span>
-        <span class="kw">if</span> np.random.random() < epsilon:
-            action = env.action_space.sample()  <span class="cm"># explore</span>
-        <span class="kw">else</span>:
-            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
-
-        next_state, reward, terminated, truncated, _ = env.step(action)
-        done = terminated <span class="kw">or</span> truncated
-
-        <span class="cm"># Q-Learning update</span>
-        Q[state, action] += alpha * (
-            reward + gamma * np.max(Q[next_state]) - Q[state, action]
-        )
-
-        state = next_state
-        total_reward += reward
-        <span class="kw">if</span> done: <span class="kw">break</span>
-
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-    rewards_history.append(total_reward)
-
-<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
-</div>
-
-<div class="materi-section">
-  <h2>🧠 Deep Q-Network (DQN)</h2>
-  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
-  <ul>
-    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
-    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
-  </ul>
-  <div class="code-block"><span class="kw">import</span> torch
-<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
-<span class="kw">from</span> collections <span class="kw">import</span> deque
-<span class="kw">import</span> random
-
-<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
-        <span class="fn">super</span>().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, action_dim)
-        )
-    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
-
-<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
-        self.buffer = deque(maxlen=capacity)
-    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
-    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
-    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
-
-<span class="cm"># Training loop DQN</span>
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net.load_state_dict(policy_net.state_dict())
-optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
-buffer = ReplayBuffer()</div>
-</div>
-
-<div class="materi-section">
-  <h2>🎯 Policy Gradient & PPO</h2>
-  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
-  <h3>PPO (Proximal Policy Optimization)</h3>
-  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
-  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
-<span class="cm"># pip install stable-baselines3</span>
-<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
-
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-
-<span class="cm"># Train PPO</span>
-model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
-            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
-            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
-model.learn(total_timesteps=<span class="num">100000</span>)
-model.save(<span class="str">"ppo_cartpole"</span>)
-
-<span class="cm"># Evaluasi</span>
-obs, _ = env.reset()
-<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
-    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
-    obs, reward, done, _, _ = env.step(action)
-    <span class="kw">if</span> done: obs, _ = env.reset()</div>
-
-  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
-  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
+  <h2>📊 Apa itu Data Science?</h2>
+  <p>Data Science adalah bidang interdisipliner yang menggabungkan <strong>statistik, matematika, pemrograman, dan domain knowledge</strong> untuk mengekstrak insight bermakna dari data. Data Scientist sering disebut sebagai "unicorn" karena membutuhkan keahlian yang sangat beragam.</p>
+  <h3>Data Science Lifecycle</h3>
   <ol>
-    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
-    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
-    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
+    <li><strong>Problem Definition:</strong> Definisikan pertanyaan bisnis yang ingin dijawab.</li>
+    <li><strong>Data Collection:</strong> Kumpulkan data dari berbagai sumber (database, API, web scraping, sensor).</li>
+    <li><strong>Data Cleaning:</strong> Tangani missing values, outlier, duplikat, inkonsistensi.</li>
+    <li><strong>EDA (Exploratory Data Analysis):</strong> Eksplorasi data untuk menemukan pola dan insight.</li>
+    <li><strong>Feature Engineering:</strong> Buat dan pilih fitur yang relevan untuk model.</li>
+    <li><strong>Modeling:</strong> Pilih, latih, dan evaluasi model ML.</li>
+    <li><strong>Deployment:</strong> Deploy model ke production environment.</li>
+    <li><strong>Monitoring:</strong> Monitor performa model dan data drift.</li>
   </ol>
+</div>
+
+<div class="materi-section">
+  <h2>📐 Statistik untuk Data Science</h2>
+  <h3>Statistik Deskriptif</h3>
+  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">from</span> scipy <span class="kw">import</span> stats
+
+data = np.array([<span class="num">23</span>, <span class="num">45</span>, <span class="num">12</span>, <span class="num">67</span>, <span class="num">34</span>, <span class="num">89</span>, <span class="num">23</span>, <span class="num">45</span>, <span class="num">56</span>, <span class="num">78</span>, <span class="num">200</span>])
+
+<span class="cm"># Ukuran pemusatan</span>
+<span class="fn">print</span>(<span class="str">f"Mean:   {np.mean(data):.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Median: {np.median(data):.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Mode:   {stats.mode(data).mode[0]}"</span>)
+
+<span class="cm"># Ukuran penyebaran</span>
+<span class="fn">print</span>(<span class="str">f"Std Dev:  {np.std(data):.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Variance: {np.var(data):.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Range:    {np.ptp(data)}"</span>)
+q1, q3 = np.percentile(data, [<span class="num">25</span>, <span class="num">75</span>])
+<span class="fn">print</span>(<span class="str">f"IQR:      {q3 - q1:.2f}"</span>)
+
+<span class="cm"># Bentuk distribusi</span>
+<span class="fn">print</span>(<span class="str">f"Skewness: {stats.skew(data):.3f}"</span>)   <span class="cm"># >0 right-skewed, <0 left-skewed</span>
+<span class="fn">print</span>(<span class="str">f"Kurtosis: {stats.kurtosis(data):.3f}"</span>) <span class="cm"># >0 heavy tails</span></div>
+
+  <h3>Distribusi Probabilitas Penting</h3>
+  <ul>
+    <li><strong>Normal (Gaussian):</strong> Bell curve simetris. Banyak fenomena alam mengikuti distribusi ini. Penting untuk asumsi banyak algoritma ML.</li>
+    <li><strong>Binomial:</strong> Jumlah sukses dalam n percobaan independen dengan probabilitas p. Contoh: jumlah email spam dari 100 email.</li>
+    <li><strong>Poisson:</strong> Jumlah kejadian dalam interval waktu/ruang tertentu. Contoh: jumlah pengunjung website per jam.</li>
+    <li><strong>Uniform:</strong> Semua nilai memiliki probabilitas sama. Digunakan untuk random number generation.</li>
+    <li><strong>Exponential:</strong> Waktu antar kejadian dalam proses Poisson. Contoh: waktu antar kedatangan pelanggan.</li>
+  </ul>
+  <div class="code-block"><span class="kw">from</span> scipy <span class="kw">import</span> stats
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+x = np.linspace(-<span class="num">4</span>, <span class="num">4</span>, <span class="num">100</span>)
+
+<span class="cm"># Normal distribution</span>
+normal_pdf = stats.norm.pdf(x, loc=<span class="num">0</span>, scale=<span class="num">1</span>)
+
+<span class="cm"># Probabilitas P(X < 1.96) untuk normal standar</span>
+prob = stats.norm.cdf(<span class="num">1.96</span>)
+<span class="fn">print</span>(<span class="str">f"P(Z < 1.96) = {prob:.4f}"</span>)  <span class="cm"># 0.9750</span>
+
+<span class="cm"># Confidence interval 95%</span>
+sample = np.random.normal(<span class="num">50</span>, <span class="num">10</span>, <span class="num">100</span>)
+ci = stats.t.interval(<span class="num">0.95</span>, df=len(sample)-<span class="num">1</span>,
+                      loc=np.mean(sample), scale=stats.sem(sample))
+<span class="fn">print</span>(<span class="str">f"95% CI: ({ci[0]:.2f}, {ci[1]:.2f})"</span>)</div>
+
+  <h3>Hypothesis Testing</h3>
+  <p>Proses statistik untuk membuat keputusan berdasarkan data. Kita mulai dengan <strong>Null Hypothesis (H₀)</strong> — asumsi default — dan mencoba membuktikan <strong>Alternative Hypothesis (H₁)</strong>.</p>
+  <ul>
+    <li><strong>p-value:</strong> Probabilitas mendapatkan hasil seekstrem ini (atau lebih ekstrem) jika H₀ benar. Jika p &lt; α (biasanya 0.05), tolak H₀.</li>
+    <li><strong>t-test:</strong> Bandingkan mean dua kelompok. Contoh: apakah treatment A lebih efektif dari B?</li>
+    <li><strong>Chi-square test:</strong> Uji independensi dua variabel kategorikal.</li>
+    <li><strong>ANOVA:</strong> Bandingkan mean lebih dari dua kelompok.</li>
+    <li><strong>A/B Testing:</strong> Aplikasi hypothesis testing di bisnis — uji dua versi produk/fitur.</li>
+  </ul>
+  <div class="code-block"><span class="kw">from</span> scipy <span class="kw">import</span> stats
+
+<span class="cm"># A/B Test: apakah versi B meningkatkan konversi?</span>
+group_a = np.random.binomial(<span class="num">1</span>, <span class="num">0.10</span>, <span class="num">1000</span>)  <span class="cm"># 10% conversion rate</span>
+group_b = np.random.binomial(<span class="num">1</span>, <span class="num">0.12</span>, <span class="num">1000</span>)  <span class="cm"># 12% conversion rate</span>
+
+t_stat, p_value = stats.ttest_ind(group_a, group_b)
+<span class="fn">print</span>(<span class="str">f"t-statistic: {t_stat:.4f}"</span>)
+<span class="fn">print</span>(<span class="str">f"p-value: {p_value:.4f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Signifikan (p<0.05): {p_value < 0.05}"</span>)</div>
+</div>
+
+<div class="materi-section">
+  <h2>🔍 Exploratory Data Analysis (EDA)</h2>
+  <p>EDA adalah proses investigasi awal data menggunakan statistik dan visualisasi untuk menemukan pola, anomali, dan hubungan antar variabel sebelum membangun model.</p>
+  <div class="code-block"><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> seaborn <span class="kw">as</span> sns
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+df = pd.read_csv(<span class="str">'dataset.csv'</span>)
+
+<span class="cm"># ── Step 1: Overview ──</span>
+<span class="fn">print</span>(df.shape)
+<span class="fn">print</span>(df.dtypes)
+<span class="fn">print</span>(df.describe())
+<span class="fn">print</span>(df.isnull().sum())
+
+<span class="cm"># ── Step 2: Distribusi variabel numerik ──</span>
+fig, axes = plt.subplots(<span class="num">2</span>, <span class="num">3</span>, figsize=(<span class="num">15</span>, <span class="num">8</span>))
+<span class="kw">for</span> i, col <span class="kw">in</span> enumerate(df.select_dtypes(<span class="str">'number'</span>).columns[:<span class="num">6</span>]):
+    axes[i//<span class="num">3</span>, i%<span class="num">3</span>].hist(df[col].dropna(), bins=<span class="num">30</span>)
+    axes[i//<span class="num">3</span>, i%<span class="num">3</span>].set_title(col)
+plt.tight_layout(); plt.show()
+
+<span class="cm"># ── Step 3: Correlation matrix ──</span>
+plt.figure(figsize=(<span class="num">10</span>, <span class="num">8</span>))
+sns.heatmap(df.corr(), annot=<span class="kw">True</span>, cmap=<span class="str">'coolwarm'</span>, center=<span class="num">0</span>, fmt=<span class="str">'.2f'</span>)
+plt.title(<span class="str">'Correlation Matrix'</span>); plt.show()
+
+<span class="cm"># ── Step 4: Outlier detection dengan IQR ──</span>
+<span class="kw">def</span> <span class="fn">detect_outliers_iqr</span>(series):
+    Q1, Q3 = series.quantile([<span class="num">0.25</span>, <span class="num">0.75</span>])
+    IQR = Q3 - Q1
+    lower, upper = Q1 - <span class="num">1.5</span>*IQR, Q3 + <span class="num">1.5</span>*IQR
+    <span class="kw">return</span> series[(series < lower) | (series > upper)]
+
+<span class="kw">for</span> col <span class="kw">in</span> df.select_dtypes(<span class="str">'number'</span>).columns:
+    outliers = detect_outliers_iqr(df[col])
+    <span class="fn">print</span>(<span class="str">f"{col}: {len(outliers)} outliers ({len(outliers)/len(df)*100:.1f}%)"</span>)</div>
+</div>
+
+<div class="materi-section">
+  <h2>📉 Dimensionality Reduction</h2>
+  <h3>PCA (Principal Component Analysis)</h3>
+  <p>Teknik unsupervised untuk mengurangi dimensi data dengan menemukan arah (principal components) yang memaksimalkan variance. Berguna untuk visualisasi, mengurangi noise, dan mempercepat training.</p>
+  <div class="code-block"><span class="kw">from</span> sklearn.decomposition <span class="kw">import</span> PCA
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># Selalu scale sebelum PCA!</span>
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+<span class="cm"># PCA untuk visualisasi (2D)</span>
+pca_2d = PCA(n_components=<span class="num">2</span>)
+X_2d = pca_2d.fit_transform(X_scaled)
+<span class="fn">print</span>(<span class="str">f"Explained variance: {pca_2d.explained_variance_ratio_.sum():.2%}"</span>)
+
+<span class="cm"># PCA untuk mempertahankan 95% variance</span>
+pca_95 = PCA(n_components=<span class="num">0.95</span>)
+X_reduced = pca_95.fit_transform(X_scaled)
+<span class="fn">print</span>(<span class="str">f"Dimensi asli: {X.shape[1]}, Setelah PCA: {X_reduced.shape[1]}"</span>)
+
+<span class="cm"># Scree plot</span>
+pca_full = PCA().fit(X_scaled)
+plt.plot(np.cumsum(pca_full.explained_variance_ratio_))
+plt.xlabel(<span class="str">'Jumlah Komponen'</span>); plt.ylabel(<span class="str">'Cumulative Explained Variance'</span>)
+plt.axhline(y=<span class="num">0.95</span>, color=<span class="str">'r'</span>, linestyle=<span class="str">'--'</span>); plt.show()</div>
+
+  <h3>t-SNE & UMAP untuk Visualisasi</h3>
+  <p>t-SNE (t-Distributed Stochastic Neighbor Embedding) dan UMAP (Uniform Manifold Approximation and Projection) adalah teknik non-linear untuk memvisualisasikan data berdimensi tinggi dalam 2D/3D. Sangat berguna untuk memahami struktur cluster dalam data.</p>
+  <div class="code-block"><span class="kw">from</span> sklearn.manifold <span class="kw">import</span> TSNE
+<span class="kw">import</span> umap  <span class="cm"># pip install umap-learn</span>
+
+<span class="cm"># t-SNE</span>
+tsne = TSNE(n_components=<span class="num">2</span>, perplexity=<span class="num">30</span>, random_state=<span class="num">42</span>)
+X_tsne = tsne.fit_transform(X_scaled)
+
+<span class="cm"># UMAP (lebih cepat dari t-SNE untuk dataset besar)</span>
+reducer = umap.UMAP(n_components=<span class="num">2</span>, random_state=<span class="num">42</span>)
+X_umap = reducer.fit_transform(X_scaled)
+
+plt.figure(figsize=(<span class="num">12</span>, <span class="num">5</span>))
+plt.subplot(<span class="num">1</span>,<span class="num">2</span>,<span class="num">1</span>); plt.scatter(X_tsne[:,<span class="num">0</span>], X_tsne[:,<span class="num">1</span>], c=y, cmap=<span class="str">'tab10'</span>); plt.title(<span class="str">'t-SNE'</span>)
+plt.subplot(<span class="num">1</span>,<span class="num">2</span>,<span class="num">2</span>); plt.scatter(X_umap[:,<span class="num">0</span>], X_umap[:,<span class="num">1</span>], c=y, cmap=<span class="str">'tab10'</span>); plt.title(<span class="str">'UMAP'</span>)
+plt.show()</div>
 </div>
 
 <div class="sources-section">
   <h3>📚 Sumber Referensi</h3>
-  <ul id="rl-sources"></ul>
+  <ul id="ds-sources"></ul>
 </div>
 `;

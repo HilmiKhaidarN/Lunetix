@@ -1,234 +1,354 @@
-﻿// ══════════════════════════════════════════════
-// KURSUS 7: REINFORCEMENT LEARNING
+// ══════════════════════════════════════════════
+// KURSUS 1: MACHINE LEARNING FUNDAMENTALS
 // ══════════════════════════════════════════════
 
-const courseRL = {
-  id: 7,
+const courseML = {
+  id: 1,
   curriculum: [
     {
-      title: "Modul 1: Fondasi Reinforcement Learning",
+      title: "Modul 1: Pengenalan Machine Learning",
       lessons: [
-        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
-        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
-        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
-        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
+        { icon: "▶️", title: "Apa itu Machine Learning?", duration: "12 min" },
+        { icon: "▶️", title: "Sejarah dan Perkembangan ML", duration: "10 min" },
+        { icon: "📄", title: "Perbedaan AI, ML, dan Deep Learning", duration: "8 min" },
+        { icon: "▶️", title: "Aplikasi ML di Dunia Nyata", duration: "15 min" },
       ]
     },
     {
-      title: "Modul 2: Tabular Methods",
+      title: "Modul 2: Jenis-Jenis Machine Learning",
       lessons: [
-        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
-        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
-        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
-        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
+        { icon: "▶️", title: "Supervised Learning", duration: "20 min" },
+        { icon: "▶️", title: "Unsupervised Learning", duration: "18 min" },
+        { icon: "▶️", title: "Reinforcement Learning (Intro)", duration: "14 min" },
+        { icon: "💻", title: "Lab: Klasifikasi Pertama dengan Scikit-learn", duration: "30 min" },
       ]
     },
     {
-      title: "Modul 3: Deep Reinforcement Learning",
+      title: "Modul 3: Algoritma Dasar ML",
       lessons: [
-        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
-        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
-        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
-        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
-        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
+        { icon: "▶️", title: "Linear Regression", duration: "22 min" },
+        { icon: "▶️", title: "Logistic Regression", duration: "20 min" },
+        { icon: "▶️", title: "Decision Tree & Random Forest", duration: "25 min" },
+        { icon: "▶️", title: "K-Nearest Neighbors (KNN)", duration: "18 min" },
+        { icon: "▶️", title: "Support Vector Machine (SVM)", duration: "22 min" },
+        { icon: "💻", title: "Lab: Implementasi 5 Algoritma", duration: "45 min" },
       ]
     },
     {
-      title: "Modul 4: Advanced RL",
+      title: "Modul 4: Evaluasi Model",
       lessons: [
-        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
-        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
-        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
-        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
+        { icon: "▶️", title: "Train/Test Split & Cross Validation", duration: "16 min" },
+        { icon: "▶️", title: "Confusion Matrix, Precision, Recall, F1", duration: "20 min" },
+        { icon: "▶️", title: "Overfitting & Underfitting", duration: "18 min" },
+        { icon: "▶️", title: "Hyperparameter Tuning dengan GridSearchCV", duration: "22 min" },
+      ]
+    },
+    {
+      title: "Modul 5: Feature Engineering & Pipeline",
+      lessons: [
+        { icon: "▶️", title: "Data Preprocessing", duration: "20 min" },
+        { icon: "▶️", title: "Feature Scaling & Normalization", duration: "15 min" },
+        { icon: "▶️", title: "Handling Missing Values", duration: "14 min" },
+        { icon: "💻", title: "Proyek Akhir: Prediksi Harga Rumah", duration: "60 min" },
       ]
     }
   ],
   quiz: [
-    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
-    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
-    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
-    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
-    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
+    { q: "Apa perbedaan utama antara Supervised dan Unsupervised Learning?", options: ["Supervised menggunakan GPU, Unsupervised tidak", "Supervised menggunakan data berlabel, Unsupervised tidak", "Supervised lebih lambat dari Unsupervised", "Tidak ada perbedaan"], answer: 1 },
+    { q: "Algoritma mana yang paling cocok untuk prediksi nilai kontinu seperti harga rumah?", options: ["Logistic Regression", "K-Means Clustering", "Linear Regression", "Decision Tree Classifier"], answer: 2 },
+    { q: "Apa yang dimaksud dengan overfitting?", options: ["Model terlalu sederhana", "Model hafal data training tapi buruk di data baru", "Model tidak bisa dilatih", "Model membutuhkan terlalu banyak memori"], answer: 1 },
+    { q: "Metrik apa yang paling tepat untuk dataset yang tidak seimbang (imbalanced)?", options: ["Accuracy", "F1-Score", "Mean Squared Error", "R-squared"], answer: 1 },
+    { q: "Apa fungsi Cross-Validation?", options: ["Mempercepat training", "Mengevaluasi model secara lebih robust dengan multiple splits", "Mengurangi ukuran dataset", "Meningkatkan akurasi secara otomatis"], answer: 1 },
   ],
   sources: [
-    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
-    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
-    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
-    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
-    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
-    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
-    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
+    { label: "GeeksforGeeks – Machine Learning Tutorial", url: "https://www.geeksforgeeks.org/machine-learning/machine-learning/" },
+    { label: "Python Guides – Machine Learning with Python", url: "https://pythonguides.com/machine-learning-tutorials/" },
+    { label: "Clynt – AI and Machine Learning for Beginners", url: "https://clynt.com/blog/ai-machine-learning/getting-started/ai-ml-beginners-guide" },
+    { label: "Sanfoundry – ML Tutorial Beginner to Advanced", url: "https://www.sanfoundry.com/machine-learning-tutorial/" },
+    { label: "YetiAI – Ultimate Guide to Master ML Basics", url: "https://yetiai.com/machine-learning-tutorial-for-beginners/" },
+    { label: "HuggingFace – ML & DL Mastery Guide", url: "https://huggingface.co/blog/info5ec/ml-dl-mastery-guide" },
+    { label: "IndiBlogHub – ML Fundamentals Practical Guide", url: "https://indibloghub.com/post/machine-learning-fundamentals-practical-beginner-guide" },
+    { label: "Scikit-learn Official Documentation", url: "https://scikit-learn.org/stable/" },
   ]
 };
 
-courseRL.materi = `
+courseML.materi = `
 <div class="materi-section">
-  <h2>🎮 Apa itu Reinforcement Learning?</h2>
-  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
-  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
-  <h3>Pencapaian Luar Biasa RL</h3>
+  <h2>🤖 Apa itu Machine Learning?</h2>
+  <p>Machine Learning (ML) adalah cabang dari Artificial Intelligence (AI) yang memungkinkan komputer untuk <strong>belajar dari data</strong> tanpa diprogram secara eksplisit untuk setiap tugas. Alih-alih menulis aturan manual, kita memberikan data ke algoritma yang kemudian menemukan pola sendiri dan membuat prediksi.</p>
+  <p>Definisi klasik dari <strong>Arthur Samuel (1959)</strong>: <em>"Machine Learning adalah bidang studi yang memberikan komputer kemampuan untuk belajar tanpa diprogram secara eksplisit."</em></p>
+  <p>Definisi modern dari <strong>Tom Mitchell (1997)</strong>: <em>"Sebuah program komputer dikatakan belajar dari pengalaman E terhadap tugas T dengan ukuran performa P, jika performanya pada T meningkat seiring pengalaman E."</em></p>
+  <h3>Mengapa ML Penting?</h3>
   <ul>
-    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
-    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
-    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
-    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
-    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
+    <li><strong>Volume data yang besar:</strong> Manusia tidak bisa memproses miliaran data poin secara manual.</li>
+    <li><strong>Pola kompleks:</strong> Beberapa masalah terlalu kompleks untuk dirumuskan sebagai aturan eksplisit (misalnya pengenalan wajah, terjemahan bahasa).</li>
+    <li><strong>Adaptasi otomatis:</strong> Model ML dapat beradaptasi dengan data baru tanpa reprogramming ulang.</li>
+    <li><strong>Personalisasi skala besar:</strong> Rekomendasi Netflix, Spotify, TikTok, dan e-commerce semuanya menggunakan ML.</li>
+    <li><strong>Otomasi keputusan:</strong> Deteksi fraud kartu kredit, diagnosis medis, filter spam email.</li>
+  </ul>
+  <div class="info-box">
+    💡 <strong>Analogi Sederhana:</strong> Bayangkan kamu mengajari anak kecil mengenali kucing. Kamu tidak memberikan aturan seperti "kucing punya 4 kaki, telinga runcing, dll." — kamu cukup menunjukkan ratusan foto kucing dan bukan kucing. Itulah cara kerja ML: belajar dari contoh.
+  </div>
+  <h3>Perbedaan AI, ML, dan Deep Learning</h3>
+  <ul>
+    <li><strong>Artificial Intelligence (AI):</strong> Bidang paling luas — segala teknik yang membuat mesin "cerdas".</li>
+    <li><strong>Machine Learning (ML):</strong> Subset AI — mesin belajar dari data tanpa diprogram eksplisit.</li>
+    <li><strong>Deep Learning (DL):</strong> Subset ML — menggunakan neural network berlapis banyak untuk belajar representasi data secara hierarkis.</li>
   </ul>
 </div>
 
 <div class="materi-section">
-  <h2>🏗️ Komponen Dasar RL</h2>
+  <h2>🗂️ Jenis-Jenis Machine Learning</h2>
+  <h3>1. Supervised Learning (Pembelajaran Terawasi)</h3>
+  <p>Model dilatih menggunakan data berlabel — setiap input memiliki output yang benar. Model belajar memetakan input ke output yang diharapkan.</p>
   <ul>
-    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
-    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
-    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
-    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
-    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
-    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
-    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
-    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
+    <li><strong>Regresi:</strong> Output berupa nilai kontinu. Contoh: prediksi harga rumah, prediksi suhu, estimasi penjualan.</li>
+    <li><strong>Klasifikasi:</strong> Output berupa kategori. Contoh: spam/bukan spam, deteksi penyakit, klasifikasi gambar.</li>
   </ul>
-
-  <h3>Markov Decision Process (MDP)</h3>
-  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
+  <p><strong>Algoritma populer:</strong> Linear Regression, Logistic Regression, Decision Tree, Random Forest, SVM, Gradient Boosting, Neural Networks.</p>
+  <h3>2. Unsupervised Learning (Pembelajaran Tidak Terawasi)</h3>
+  <p>Model dilatih dengan data tanpa label. Model menemukan pola dan struktur tersembunyi sendiri dari data mentah.</p>
   <ul>
-    <li><strong>S:</strong> State space</li>
-    <li><strong>A:</strong> Action space</li>
-    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
-    <li><strong>R(s,a):</strong> Reward function</li>
-    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
+    <li><strong>Clustering:</strong> Mengelompokkan data serupa. Contoh: segmentasi pelanggan, pengelompokan dokumen, deteksi komunitas di media sosial.</li>
+    <li><strong>Dimensionality Reduction:</strong> Mengurangi jumlah fitur sambil mempertahankan informasi penting. Contoh: PCA, t-SNE, UMAP untuk visualisasi.</li>
+    <li><strong>Anomaly Detection:</strong> Menemukan data yang tidak biasa. Contoh: deteksi penipuan kartu kredit, deteksi intrusi jaringan.</li>
+    <li><strong>Generative Models:</strong> Mempelajari distribusi data untuk menghasilkan sampel baru. Contoh: GAN, VAE.</li>
   </ul>
-  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
+  <h3>3. Reinforcement Learning (Pembelajaran Penguatan)</h3>
+  <p>Agent belajar melalui trial-and-error dengan berinteraksi dengan lingkungan. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward jangka panjang.</p>
+  <ul>
+    <li>AlphaGo dan AlphaZero mengalahkan juara dunia Go dan Chess.</li>
+    <li>Robot belajar berjalan dan memanipulasi objek.</li>
+    <li>Optimasi strategi iklan dan trading saham.</li>
+    <li>Autonomous driving dan navigasi drone.</li>
+  </ul>
+  <h3>4. Semi-Supervised Learning</h3>
+  <p>Kombinasi data berlabel (sedikit) dan tidak berlabel (banyak). Berguna ketika pelabelan data mahal dan memakan waktu — misalnya anotasi gambar medis yang membutuhkan dokter spesialis.</p>
+  <h3>5. Self-Supervised Learning</h3>
+  <p>Model membuat label sendiri dari data yang ada. Digunakan oleh model bahasa besar (GPT, BERT) — model belajar memprediksi kata berikutnya atau kata yang disembunyikan.</p>
 </div>
 
 <div class="materi-section">
-  <h2>📋 Q-Learning</h2>
-  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
-  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
-  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+  <h2>📐 Algoritma Machine Learning Utama</h2>
+  <h3>Linear Regression</h3>
+  <p>Algoritma paling dasar untuk prediksi nilai kontinu. Mencari garis (atau hyperplane) terbaik yang meminimalkan jumlah kuadrat error antara prediksi dan nilai aktual (Ordinary Least Squares / OLS).</p>
+  <p><strong>Formula:</strong> ŷ = β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ</p>
+  <p>Di mana β adalah koefisien yang dipelajari dari data, dan x adalah fitur input.</p>
+  <div class="code-block"><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LinearRegression
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> mean_squared_error, r2_score
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
-n_states = env.observation_space.n   <span class="cm"># 16</span>
-n_actions = env.action_space.n       <span class="cm"># 4</span>
+<span class="cm"># Data: ukuran rumah (m²) vs harga (juta rupiah)</span>
+X = np.array([[<span class="num">50</span>],[<span class="num">75</span>],[<span class="num">100</span>],[<span class="num">125</span>],[<span class="num">150</span>],[<span class="num">80</span>],[<span class="num">90</span>],[<span class="num">110</span>]])
+y = np.array([<span class="num">300</span>,<span class="num">450</span>,<span class="num">600</span>,<span class="num">750</span>,<span class="num">900</span>,<span class="num">480</span>,<span class="num">540</span>,<span class="num">660</span>])
 
-<span class="cm"># Inisialisasi Q-table</span>
-Q = np.zeros((n_states, n_actions))
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class="num">0.2</span>)
 
-<span class="cm"># Hyperparameters</span>
-alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
-gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
-epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
-epsilon_decay = <span class="num">0.995</span>
-epsilon_min = <span class="num">0.01</span>
-n_episodes = <span class="num">10000</span>
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
 
-rewards_history = []
+<span class="fn">print</span>(<span class="str">f"R² Score: {r2_score(y_test, y_pred):.3f}"</span>)
+<span class="fn">print</span>(<span class="str">f"RMSE: {mean_squared_error(y_test, y_pred, squared=False):.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Koefisien: {model.coef_[0]:.2f}"</span>)
+<span class="fn">print</span>(<span class="str">f"Intercept: {model.intercept_:.2f}"</span>)</div>
 
-<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
-    state, _ = env.reset()
-    total_reward = <span class="num">0</span>
+  <h3>Logistic Regression</h3>
+  <p>Meskipun namanya "regression", ini adalah algoritma klasifikasi. Menggunakan fungsi sigmoid untuk menghasilkan probabilitas antara 0 dan 1, lalu menerapkan threshold (biasanya 0.5) untuk klasifikasi biner.</p>
+  <p><strong>Fungsi Sigmoid:</strong> σ(z) = 1 / (1 + e⁻ᶻ), di mana z = β₀ + β₁x₁ + ... + βₙxₙ</p>
+  <div class="code-block"><span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
+<span class="kw">from</span> sklearn.datasets <span class="kw">import</span> load_breast_cancer
+<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> classification_report
 
-    <span class="kw">while</span> <span class="kw">True</span>:
-        <span class="cm"># Epsilon-greedy policy</span>
-        <span class="kw">if</span> np.random.random() < epsilon:
-            action = env.action_space.sample()  <span class="cm"># explore</span>
-        <span class="kw">else</span>:
-            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(
+    data.data, data.target, test_size=<span class="num">0.2</span>, random_state=<span class="num">42</span>
+)
 
-        next_state, reward, terminated, truncated, _ = env.step(action)
-        done = terminated <span class="kw">or</span> truncated
+model = LogisticRegression(max_iter=<span class="num">10000</span>)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
 
-        <span class="cm"># Q-Learning update</span>
-        Q[state, action] += alpha * (
-            reward + gamma * np.max(Q[next_state]) - Q[state, action]
-        )
+<span class="fn">print</span>(classification_report(y_test, y_pred,
+      target_names=[<span class="str">'Malignant'</span>, <span class="str">'Benign'</span>]))</div>
 
-        state = next_state
-        total_reward += reward
-        <span class="kw">if</span> done: <span class="kw">break</span>
-
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-    rewards_history.append(total_reward)
-
-<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
-</div>
-
-<div class="materi-section">
-  <h2>🧠 Deep Q-Network (DQN)</h2>
-  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
+  <h3>Decision Tree</h3>
+  <p>Model berbentuk pohon yang membuat keputusan berdasarkan serangkaian pertanyaan ya/tidak pada fitur. Setiap node internal adalah kondisi pada fitur, setiap leaf adalah prediksi.</p>
   <ul>
-    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
-    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
+    <li><strong>Gini Impurity:</strong> Gini = 1 - Σ(pᵢ²) — mengukur seberapa sering elemen yang dipilih secara acak akan salah diklasifikasikan.</li>
+    <li><strong>Information Gain / Entropy:</strong> H = -Σ(pᵢ log₂ pᵢ) — mengukur pengurangan ketidakpastian setelah split.</li>
+    <li><strong>Max Depth:</strong> Parameter krusial untuk mencegah overfitting — batasi kedalaman pohon.</li>
+    <li><strong>Min Samples Split:</strong> Minimum sampel yang dibutuhkan untuk membagi node.</li>
   </ul>
-  <div class="code-block"><span class="kw">import</span> torch
-<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
-<span class="kw">from</span> collections <span class="kw">import</span> deque
-<span class="kw">import</span> random
 
-<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
-        <span class="fn">super</span>().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, action_dim)
-        )
-    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
+  <h3>Random Forest</h3>
+  <p>Ensemble dari banyak Decision Tree yang dilatih secara paralel. Menggunakan dua teknik utama: <strong>Bagging</strong> (setiap pohon dilatih pada subset data acak dengan replacement) dan <strong>Feature Randomness</strong> (setiap split hanya mempertimbangkan subset fitur acak).</p>
+  <div class="code-block"><span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> cross_val_score
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
 
-<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
-        self.buffer = deque(maxlen=capacity)
-    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
-    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
-    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
+model = RandomForestClassifier(
+    n_estimators=<span class="num">200</span>,
+    max_depth=<span class="num">10</span>,
+    min_samples_split=<span class="num">5</span>,
+    random_state=<span class="num">42</span>,
+    n_jobs=-<span class="num">1</span>  <span class="cm"># gunakan semua CPU core</span>
+)
 
-<span class="cm"># Training loop DQN</span>
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net.load_state_dict(policy_net.state_dict())
-optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
-buffer = ReplayBuffer()</div>
+scores = cross_val_score(model, X, y, cv=<span class="num">5</span>, scoring=<span class="str">'accuracy'</span>)
+<span class="fn">print</span>(<span class="str">f"CV Accuracy: {scores.mean():.3f} ± {scores.std():.3f}"</span>)
+
+model.fit(X_train, y_train)
+<span class="cm"># Feature importance</span>
+importances = pd.Series(model.feature_importances_).sort_values(ascending=<span class="kw">False</span>)
+<span class="fn">print</span>(<span class="str">"Top 5 fitur paling penting:"</span>)
+<span class="fn">print</span>(importances.head(<span class="num">5</span>))</div>
+
+  <h3>Support Vector Machine (SVM)</h3>
+  <p>Mencari hyperplane optimal yang memisahkan kelas dengan <strong>margin maksimum</strong>. Margin adalah jarak antara hyperplane dan support vectors (titik data terdekat dari masing-masing kelas).</p>
+  <ul>
+    <li><strong>Hard Margin SVM:</strong> Membutuhkan data yang linearly separable sempurna.</li>
+    <li><strong>Soft Margin SVM:</strong> Mengizinkan beberapa misclassification dengan parameter C (regularization).</li>
+    <li><strong>Kernel Trick:</strong> Memetakan data ke dimensi lebih tinggi tanpa komputasi eksplisit. Kernel populer: RBF (Radial Basis Function), Polynomial, Linear, Sigmoid.</li>
+  </ul>
+
+  <h3>K-Nearest Neighbors (KNN)</h3>
+  <p>Algoritma "lazy learning" — tidak ada training eksplisit, semua komputasi dilakukan saat prediksi. Untuk prediksi, cari K tetangga terdekat menggunakan jarak Euclidean (atau Minkowski), lalu ambil voting mayoritas (klasifikasi) atau rata-rata (regresi).</p>
+  <div class="info-box warn">
+    ⚠️ <strong>Perhatian:</strong> KNN lambat pada dataset besar (O(n) per prediksi). Selalu lakukan feature scaling sebelum KNN karena sensitif terhadap skala fitur. Pilih K ganjil untuk menghindari tie.
+  </div>
+
+  <h3>Gradient Boosting (XGBoost, LightGBM)</h3>
+  <p>Ensemble method yang membangun model secara sekuensial — setiap model baru berfokus pada error dari model sebelumnya. Saat ini merupakan algoritma terbaik untuk data tabular di kompetisi Kaggle.</p>
+  <div class="code-block"><span class="cm"># Install: pip install xgboost</span>
+<span class="kw">from</span> xgboost <span class="kw">import</span> XGBClassifier
+
+model = XGBClassifier(
+    n_estimators=<span class="num">300</span>,
+    learning_rate=<span class="num">0.05</span>,
+    max_depth=<span class="num">6</span>,
+    subsample=<span class="num">0.8</span>,
+    colsample_bytree=<span class="num">0.8</span>,
+    use_label_encoder=<span class="kw">False</span>,
+    eval_metric=<span class="str">'logloss'</span>
+)
+model.fit(X_train, y_train,
+          eval_set=[(X_test, y_test)],
+          early_stopping_rounds=<span class="num">20</span>,
+          verbose=<span class="kw">False</span>)
+<span class="fn">print</span>(<span class="str">f"Akurasi: {model.score(X_test, y_test):.3f}"</span>)</div>
 </div>
 
 <div class="materi-section">
-  <h2>🎯 Policy Gradient & PPO</h2>
-  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
-  <h3>PPO (Proximal Policy Optimization)</h3>
-  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
-  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
-<span class="cm"># pip install stable-baselines3</span>
-<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+  <h2>📊 Evaluasi Model Machine Learning</h2>
+  <h3>Train/Test Split</h3>
+  <p>Membagi dataset menjadi training set (70-80%) dan test set (20-30%). Model dilatih pada training set dan dievaluasi pada test set yang belum pernah dilihat model. Gunakan <code>random_state</code> untuk reproducibility.</p>
+  <h3>K-Fold Cross-Validation</h3>
+  <p>Teknik evaluasi yang lebih robust: dataset dibagi menjadi K fold. Model dilatih K kali, setiap kali menggunakan fold berbeda sebagai test set. Hasil akhir adalah rata-rata dari K evaluasi. Mengurangi variance dalam estimasi performa.</p>
+  <div class="code-block"><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> StratifiedKFold, cross_validate
 
-env = gym.make(<span class="str">'CartPole-v1'</span>)
+cv = StratifiedKFold(n_splits=<span class="num">5</span>, shuffle=<span class="kw">True</span>, random_state=<span class="num">42</span>)
+results = cross_validate(model, X, y, cv=cv,
+    scoring=[<span class="str">'accuracy'</span>, <span class="str">'f1_weighted'</span>, <span class="str">'roc_auc'</span>])
 
-<span class="cm"># Train PPO</span>
-model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
-            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
-            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
-model.learn(total_timesteps=<span class="num">100000</span>)
-model.save(<span class="str">"ppo_cartpole"</span>)
+<span class="kw">for</span> metric, scores <span class="kw">in</span> results.items():
+    <span class="kw">if</span> metric.startswith(<span class="str">'test_'</span>):
+        <span class="fn">print</span>(<span class="str">f"{metric}: {scores.mean():.3f} ± {scores.std():.3f}"</span>)</div>
 
-<span class="cm"># Evaluasi</span>
-obs, _ = env.reset()
-<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
-    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
-    obs, reward, done, _, _ = env.step(action)
-    <span class="kw">if</span> done: obs, _ = env.reset()</div>
+  <h3>Confusion Matrix & Metrik Klasifikasi</h3>
+  <ul>
+    <li><strong>True Positive (TP):</strong> Prediksi positif yang benar</li>
+    <li><strong>True Negative (TN):</strong> Prediksi negatif yang benar</li>
+    <li><strong>False Positive (FP):</strong> Prediksi positif yang salah (Type I Error) — "false alarm"</li>
+    <li><strong>False Negative (FN):</strong> Prediksi negatif yang salah (Type II Error) — "miss"</li>
+    <li><strong>Accuracy:</strong> (TP+TN)/Total — baik untuk dataset seimbang</li>
+    <li><strong>Precision:</strong> TP/(TP+FP) — seberapa tepat prediksi positif (penting jika FP mahal)</li>
+    <li><strong>Recall/Sensitivity:</strong> TP/(TP+FN) — seberapa banyak positif terdeteksi (penting jika FN mahal, misal deteksi kanker)</li>
+    <li><strong>F1-Score:</strong> 2×(P×R)/(P+R) — harmonic mean, baik untuk imbalanced dataset</li>
+    <li><strong>ROC-AUC:</strong> Area under ROC curve — semakin mendekati 1.0 semakin baik</li>
+  </ul>
+  <h3>Metrik Regresi</h3>
+  <ul>
+    <li><strong>MAE (Mean Absolute Error):</strong> Rata-rata nilai absolut error — mudah diinterpretasi</li>
+    <li><strong>MSE (Mean Squared Error):</strong> Rata-rata kuadrat error — menghukum error besar lebih berat</li>
+    <li><strong>RMSE:</strong> Akar dari MSE — dalam satuan yang sama dengan target</li>
+    <li><strong>R² (R-squared):</strong> Proporsi variance yang dijelaskan model (0-1, semakin tinggi semakin baik)</li>
+  </ul>
+  <h3>Overfitting vs Underfitting</h3>
+  <p><strong>Overfitting (High Variance):</strong> Model terlalu kompleks, "hafal" data training, performa buruk di data baru. Training accuracy tinggi, validation accuracy rendah.</p>
+  <p><strong>Solusi overfitting:</strong> Regularisasi L1/L2, Dropout, Early Stopping, lebih banyak data training, data augmentation, cross-validation, simplifikasi model.</p>
+  <p><strong>Underfitting (High Bias):</strong> Model terlalu sederhana, tidak bisa menangkap pola. Baik training maupun validation accuracy rendah.</p>
+  <p><strong>Solusi underfitting:</strong> Model lebih kompleks, lebih banyak fitur, kurangi regularisasi, latih lebih lama.</p>
+  <div class="info-box">
+    🎯 <strong>Bias-Variance Tradeoff:</strong> Overfitting = high variance, low bias. Underfitting = low variance, high bias. Tujuan kita adalah menemukan sweet spot — model yang cukup kompleks untuk menangkap pola tapi tidak terlalu kompleks sehingga overfitting.
+  </div>
+  <h3>Hyperparameter Tuning</h3>
+  <div class="code-block"><span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> GridSearchCV
 
-  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
-  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
-  <ol>
-    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
-    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
-    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
-  </ol>
+param_grid = {
+    <span class="str">'n_estimators'</span>: [<span class="num">100</span>, <span class="num">200</span>, <span class="num">300</span>],
+    <span class="str">'max_depth'</span>: [<span class="num">5</span>, <span class="num">10</span>, <span class="num">15</span>, <span class="kw">None</span>],
+    <span class="str">'min_samples_split'</span>: [<span class="num">2</span>, <span class="num">5</span>, <span class="num">10</span>]
+}
+
+grid_search = GridSearchCV(
+    RandomForestClassifier(random_state=<span class="num">42</span>),
+    param_grid, cv=<span class="num">5</span>, scoring=<span class="str">'f1_weighted'</span>, n_jobs=-<span class="num">1</span>
+)
+grid_search.fit(X_train, y_train)
+<span class="fn">print</span>(<span class="str">f"Best params: {grid_search.best_params_}"</span>)
+<span class="fn">print</span>(<span class="str">f"Best score: {grid_search.best_score_:.3f}"</span>)</div>
+</div>
+
+<div class="materi-section">
+  <h2>🔧 Feature Engineering & Pipeline</h2>
+  <p>Andrew Ng pernah berkata: <em>"Applied machine learning is basically feature engineering."</em> Kualitas fitur sering lebih menentukan performa model daripada pilihan algoritma itu sendiri.</p>
+  <h3>Teknik Preprocessing Penting</h3>
+  <ul>
+    <li><strong>Handling Missing Values:</strong> Imputasi dengan mean/median/mode (SimpleImputer), atau gunakan KNNImputer untuk imputasi berbasis tetangga terdekat. Jangan hapus baris kecuali terpaksa.</li>
+    <li><strong>Feature Scaling:</strong> StandardScaler (z-score: mean=0, std=1) atau MinMaxScaler (range 0-1). Wajib untuk KNN, SVM, Logistic Regression, Neural Networks. Tidak diperlukan untuk tree-based models.</li>
+    <li><strong>Encoding Categorical:</strong> One-Hot Encoding untuk nominal (tidak ada urutan), Ordinal Encoding untuk ordinal (ada urutan: rendah/sedang/tinggi), Target Encoding untuk high-cardinality.</li>
+    <li><strong>Feature Selection:</strong> Pilih fitur paling relevan menggunakan correlation matrix, feature importance dari Random Forest, atau Recursive Feature Elimination (RFE).</li>
+    <li><strong>Feature Creation:</strong> Buat fitur baru dari kombinasi fitur yang ada — polynomial features, interaction terms, log transformation untuk distribusi skewed.</li>
+    <li><strong>Outlier Handling:</strong> Deteksi dengan IQR atau Z-score, lalu clip, remove, atau transform.</li>
+  </ul>
+  <div class="code-block"><span class="kw">from</span> sklearn.pipeline <span class="kw">import</span> Pipeline
+<span class="kw">from</span> sklearn.compose <span class="kw">import</span> ColumnTransformer
+<span class="kw">from</span> sklearn.preprocessing <span class="kw">import</span> StandardScaler, OneHotEncoder
+<span class="kw">from</span> sklearn.impute <span class="kw">import</span> SimpleImputer
+
+<span class="cm"># Definisikan kolom numerik dan kategorikal</span>
+numeric_features = [<span class="str">'age'</span>, <span class="str">'income'</span>, <span class="str">'score'</span>]
+categorical_features = [<span class="str">'gender'</span>, <span class="str">'city'</span>]
+
+numeric_transformer = Pipeline([
+    (<span class="str">'imputer'</span>, SimpleImputer(strategy=<span class="str">'median'</span>)),
+    (<span class="str">'scaler'</span>, StandardScaler())
+])
+
+categorical_transformer = Pipeline([
+    (<span class="str">'imputer'</span>, SimpleImputer(strategy=<span class="str">'most_frequent'</span>)),
+    (<span class="str">'encoder'</span>, OneHotEncoder(handle_unknown=<span class="str">'ignore'</span>))
+])
+
+preprocessor = ColumnTransformer([
+    (<span class="str">'num'</span>, numeric_transformer, numeric_features),
+    (<span class="str">'cat'</span>, categorical_transformer, categorical_features)
+])
+
+<span class="cm"># Full pipeline: preprocessing + model</span>
+full_pipeline = Pipeline([
+    (<span class="str">'preprocessor'</span>, preprocessor),
+    (<span class="str">'model'</span>, RandomForestClassifier(n_estimators=<span class="num">200</span>))
+])
+
+full_pipeline.fit(X_train, y_train)
+<span class="fn">print</span>(<span class="str">f"Test Accuracy: {full_pipeline.score(X_test, y_test):.3f}"</span>)</div>
 </div>
 
 <div class="sources-section">
   <h3>📚 Sumber Referensi</h3>
-  <ul id="rl-sources"></ul>
+  <ul id="ml-sources"></ul>
 </div>
 `;

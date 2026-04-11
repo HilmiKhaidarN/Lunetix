@@ -1,234 +1,224 @@
-﻿// ══════════════════════════════════════════════
-// KURSUS 7: REINFORCEMENT LEARNING
+// ══════════════════════════════════════════════
+// KURSUS 5: COMPUTER VISION WITH PYTHON
 // ══════════════════════════════════════════════
 
-const courseRL = {
-  id: 7,
+const courseComputerVision = {
+  id: 5,
   curriculum: [
     {
-      title: "Modul 1: Fondasi Reinforcement Learning",
+      title: "Modul 1: Dasar Computer Vision",
       lessons: [
-        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
-        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
-        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
-        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
+        { icon: "▶️", title: "Apa itu Computer Vision?", duration: "12 min" },
+        { icon: "▶️", title: "Representasi Gambar: Pixel, Channel, Color Space", duration: "18 min" },
+        { icon: "▶️", title: "OpenCV Basics: Load, Display, Transform", duration: "22 min" },
+        { icon: "💻", title: "Lab: Manipulasi Gambar dengan OpenCV", duration: "35 min" },
       ]
     },
     {
-      title: "Modul 2: Tabular Methods",
+      title: "Modul 2: Image Processing",
       lessons: [
-        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
-        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
-        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
-        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
+        { icon: "▶️", title: "Filtering: Blur, Sharpen, Edge Detection", duration: "20 min" },
+        { icon: "▶️", title: "Morphological Operations", duration: "15 min" },
+        { icon: "▶️", title: "Histogram Equalization & Thresholding", duration: "18 min" },
+        { icon: "💻", title: "Lab: Image Enhancement Pipeline", duration: "30 min" },
       ]
     },
     {
-      title: "Modul 3: Deep Reinforcement Learning",
+      title: "Modul 3: CNN untuk Computer Vision",
       lessons: [
-        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
-        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
-        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
-        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
-        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
+        { icon: "▶️", title: "Image Classification dengan CNN", duration: "25 min" },
+        { icon: "▶️", title: "Object Detection: YOLO, SSD, Faster R-CNN", duration: "28 min" },
+        { icon: "▶️", title: "Image Segmentation: Semantic & Instance", duration: "22 min" },
+        { icon: "💻", title: "Lab: Real-time Object Detection dengan YOLOv8", duration: "50 min" },
       ]
     },
     {
-      title: "Modul 4: Advanced RL",
+      title: "Modul 4: Advanced Computer Vision",
       lessons: [
-        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
-        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
-        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
-        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
+        { icon: "▶️", title: "Face Detection & Recognition", duration: "22 min" },
+        { icon: "▶️", title: "Pose Estimation dengan MediaPipe", duration: "20 min" },
+        { icon: "▶️", title: "Optical Flow & Video Analysis", duration: "20 min" },
+        { icon: "💻", title: "Proyek: Sistem Absensi Face Recognition", duration: "60 min" },
       ]
     }
   ],
   quiz: [
-    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
-    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
-    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
-    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
-    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
+    { q: "Berapa channel yang dimiliki gambar RGB?", options: ["1", "2", "3", "4"], answer: 2 },
+    { q: "Apa fungsi Pooling Layer dalam CNN?", options: ["Menambah parameter", "Mengurangi dimensi spatial dan komputasi", "Meningkatkan resolusi gambar", "Menambah channel"], answer: 1 },
+    { q: "Algoritma deteksi objek mana yang terkenal dengan kecepatannya (real-time)?", options: ["R-CNN", "YOLO", "VGG", "AlexNet"], answer: 1 },
+    { q: "Apa itu Transfer Learning dalam Computer Vision?", options: ["Memindahkan gambar antar server", "Menggunakan model pre-trained ImageNet untuk task baru", "Teknik augmentasi data", "Metode kompresi gambar"], answer: 1 },
+    { q: "Library Python mana yang paling populer untuk Computer Vision?", options: ["Pandas", "NumPy", "OpenCV", "Matplotlib"], answer: 2 },
   ],
   sources: [
-    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
-    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
-    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
-    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
-    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
-    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
-    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
+    { label: "DataCamp – PyTorch CNN Tutorial", url: "https://www.datacamp.com/tutorial/pytorch-cnn-tutorial" },
+    { label: "Orchestrator.dev – Image Recognition in Python", url: "https://orchestrator.dev/blog/2024-12-22-image-recognition-python-article" },
+    { label: "Reintech – Image Recognition System with Python", url: "https://reintech.io/blog/how-to-create-an-image-recognition-system-with-python" },
+    { label: "33rdSquare – Image Classification using CNN", url: "https://www.33rdsquare.com/image-classification-using-convolutional-neural-network-with-python/" },
+    { label: "Krython – CNNs Image Classification Tutorial", url: "https://krython.com/tutorial/python/cnns-image-classification/" },
+    { label: "OpenCV Official Documentation", url: "https://docs.opencv.org/" },
+    { label: "Ultralytics YOLOv8 Documentation", url: "https://docs.ultralytics.com/" },
   ]
 };
 
-courseRL.materi = `
+courseComputerVision.materi = `
 <div class="materi-section">
-  <h2>🎮 Apa itu Reinforcement Learning?</h2>
-  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
-  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
-  <h3>Pencapaian Luar Biasa RL</h3>
+  <h2>👁️ Apa itu Computer Vision?</h2>
+  <p>Computer Vision adalah bidang AI yang memungkinkan komputer untuk <strong>melihat, memahami, dan menginterpretasi dunia visual</strong> — gambar dan video — seperti yang dilakukan manusia. Ini adalah salah satu aplikasi Deep Learning yang paling sukses dan berdampak luas.</p>
   <ul>
-    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
-    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
-    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
-    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
-    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
+    <li><strong>Autonomous Vehicles:</strong> Tesla, Waymo menggunakan CV untuk mendeteksi jalan, rambu, pejalan kaki.</li>
+    <li><strong>Medical Imaging:</strong> Deteksi kanker dari X-ray, MRI, CT scan dengan akurasi melebihi dokter.</li>
+    <li><strong>Face Recognition:</strong> Unlock smartphone, sistem keamanan, absensi otomatis.</li>
+    <li><strong>Augmented Reality:</strong> Filter Snapchat/Instagram, Google Lens, Apple ARKit.</li>
+    <li><strong>Quality Control:</strong> Deteksi cacat produk di lini produksi manufaktur.</li>
+    <li><strong>Agriculture:</strong> Deteksi penyakit tanaman dari foto drone.</li>
   </ul>
 </div>
 
 <div class="materi-section">
-  <h2>🏗️ Komponen Dasar RL</h2>
+  <h2>🖼️ Representasi Gambar Digital</h2>
+  <p>Gambar digital adalah array 2D (grayscale) atau 3D (berwarna) dari nilai pixel. Setiap pixel memiliki nilai intensitas 0-255.</p>
   <ul>
-    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
-    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
-    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
-    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
-    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
-    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
-    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
-    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
+    <li><strong>Grayscale:</strong> Shape (H, W) — satu channel, nilai 0 (hitam) sampai 255 (putih).</li>
+    <li><strong>RGB:</strong> Shape (H, W, 3) — tiga channel: Red, Green, Blue.</li>
+    <li><strong>RGBA:</strong> Shape (H, W, 4) — RGB + Alpha (transparansi).</li>
+    <li><strong>HSV (Hue, Saturation, Value):</strong> Lebih intuitif untuk filtering warna tertentu.</li>
   </ul>
+  <div class="code-block"><span class="kw">import</span> cv2
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
 
-  <h3>Markov Decision Process (MDP)</h3>
-  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
-  <ul>
-    <li><strong>S:</strong> State space</li>
-    <li><strong>A:</strong> Action space</li>
-    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
-    <li><strong>R(s,a):</strong> Reward function</li>
-    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
-  </ul>
-  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
+<span class="cm"># Load gambar</span>
+img = cv2.imread(<span class="str">'image.jpg'</span>)
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  <span class="cm"># OpenCV pakai BGR!</span>
+
+<span class="fn">print</span>(<span class="str">f"Shape: {img.shape}"</span>)    <span class="cm"># (height, width, channels)</span>
+<span class="fn">print</span>(<span class="str">f"Dtype: {img.dtype}"</span>)    <span class="cm"># uint8</span>
+<span class="fn">print</span>(<span class="str">f"Max: {img.max()}"</span>)      <span class="cm"># 255</span>
+
+<span class="cm"># Resize</span>
+img_resized = cv2.resize(img, (<span class="num">224</span>, <span class="num">224</span>))
+
+<span class="cm"># Crop</span>
+img_crop = img[<span class="num">100</span>:<span class="num">300</span>, <span class="num">50</span>:<span class="num">250</span>]
+
+<span class="cm"># Flip</span>
+img_flip = cv2.flip(img, <span class="num">1</span>)  <span class="cm"># 1=horizontal, 0=vertical</span>
+
+<span class="cm"># Rotate</span>
+M = cv2.getRotationMatrix2D((<span class="num">112</span>, <span class="num">112</span>), <span class="num">45</span>, <span class="num">1.0</span>)
+img_rot = cv2.warpAffine(img, M, (<span class="num">224</span>, <span class="num">224</span>))
+
+<span class="cm"># Konversi color space</span>
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+img_hsv  = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)</div>
 </div>
 
 <div class="materi-section">
-  <h2>📋 Q-Learning</h2>
-  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
-  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
-  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+  <h2>🔧 Image Processing dengan OpenCV</h2>
+  <h3>Filtering & Smoothing</h3>
+  <div class="code-block"><span class="cm"># Gaussian Blur — mengurangi noise</span>
+blurred = cv2.GaussianBlur(img, (<span class="num">15</span>, <span class="num">15</span>), <span class="num">0</span>)
 
-env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
-n_states = env.observation_space.n   <span class="cm"># 16</span>
-n_actions = env.action_space.n       <span class="cm"># 4</span>
+<span class="cm"># Median Blur — efektif untuk salt-and-pepper noise</span>
+median = cv2.medianBlur(img, <span class="num">5</span>)
 
-<span class="cm"># Inisialisasi Q-table</span>
-Q = np.zeros((n_states, n_actions))
+<span class="cm"># Bilateral Filter — blur tapi pertahankan edges</span>
+bilateral = cv2.bilateralFilter(img, <span class="num">9</span>, <span class="num">75</span>, <span class="num">75</span>)
 
-<span class="cm"># Hyperparameters</span>
-alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
-gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
-epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
-epsilon_decay = <span class="num">0.995</span>
-epsilon_min = <span class="num">0.01</span>
-n_episodes = <span class="num">10000</span>
+<span class="cm"># Edge Detection dengan Canny</span>
+edges = cv2.Canny(img_gray, threshold1=<span class="num">100</span>, threshold2=<span class="num">200</span>)
 
-rewards_history = []
+<span class="cm"># Sobel — gradient horizontal dan vertikal</span>
+sobelx = cv2.Sobel(img_gray, cv2.CV_64F, <span class="num">1</span>, <span class="num">0</span>, ksize=<span class="num">3</span>)
+sobely = cv2.Sobel(img_gray, cv2.CV_64F, <span class="num">0</span>, <span class="num">1</span>, ksize=<span class="num">3</span>)
+magnitude = np.sqrt(sobelx**<span class="num">2</span> + sobely**<span class="num">2</span>)
 
-<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
-    state, _ = env.reset()
-    total_reward = <span class="num">0</span>
+<span class="cm"># Thresholding</span>
+_, thresh = cv2.threshold(img_gray, <span class="num">127</span>, <span class="num">255</span>, cv2.THRESH_BINARY)
+adaptive = cv2.adaptiveThreshold(img_gray, <span class="num">255</span>,
+    cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, <span class="num">11</span>, <span class="num">2</span>)</div>
 
-    <span class="kw">while</span> <span class="kw">True</span>:
-        <span class="cm"># Epsilon-greedy policy</span>
-        <span class="kw">if</span> np.random.random() < epsilon:
-            action = env.action_space.sample()  <span class="cm"># explore</span>
-        <span class="kw">else</span>:
-            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
+  <h3>Data Augmentation untuk Training</h3>
+  <div class="code-block"><span class="kw">from</span> tensorflow.keras.preprocessing.image <span class="kw">import</span> ImageDataGenerator
 
-        next_state, reward, terminated, truncated, _ = env.step(action)
-        done = terminated <span class="kw">or</span> truncated
+datagen = ImageDataGenerator(
+    rotation_range=<span class="num">20</span>,
+    width_shift_range=<span class="num">0.2</span>,
+    height_shift_range=<span class="num">0.2</span>,
+    horizontal_flip=<span class="kw">True</span>,
+    zoom_range=<span class="num">0.2</span>,
+    brightness_range=[<span class="num">0.8</span>, <span class="num">1.2</span>],
+    fill_mode=<span class="str">'nearest'</span>,
+    rescale=<span class="num">1.</span>/<span class="num">255</span>
+)
 
-        <span class="cm"># Q-Learning update</span>
-        Q[state, action] += alpha * (
-            reward + gamma * np.max(Q[next_state]) - Q[state, action]
-        )
-
-        state = next_state
-        total_reward += reward
-        <span class="kw">if</span> done: <span class="kw">break</span>
-
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-    rewards_history.append(total_reward)
-
-<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
+train_generator = datagen.flow_from_directory(
+    <span class="str">'data/train'</span>, target_size=(<span class="num">224</span>, <span class="num">224</span>),
+    batch_size=<span class="num">32</span>, class_mode=<span class="str">'categorical'</span>
+)</div>
 </div>
 
 <div class="materi-section">
-  <h2>🧠 Deep Q-Network (DQN)</h2>
-  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
+  <h2>🎯 Object Detection</h2>
+  <p>Object detection tidak hanya mengklasifikasikan objek tapi juga melokalisasinya dengan bounding box. Lebih kompleks dari image classification.</p>
+  <h3>YOLO (You Only Look Once)</h3>
+  <p>YOLO adalah algoritma deteksi objek real-time yang memproses seluruh gambar dalam satu forward pass. Sangat cepat (dapat mencapai 100+ FPS) dan akurat.</p>
+  <div class="code-block"><span class="cm"># pip install ultralytics</span>
+<span class="kw">from</span> ultralytics <span class="kw">import</span> YOLO
+<span class="kw">import</span> cv2
+
+<span class="cm"># Load model YOLOv8</span>
+model = YOLO(<span class="str">'yolov8n.pt'</span>)  <span class="cm"># nano, small, medium, large, xlarge</span>
+
+<span class="cm"># Deteksi pada gambar</span>
+results = model(<span class="str">'image.jpg'</span>)
+results[<span class="num">0</span>].show()  <span class="cm"># tampilkan hasil</span>
+
+<span class="cm"># Real-time deteksi dari webcam</span>
+cap = cv2.VideoCapture(<span class="num">0</span>)
+<span class="kw">while</span> cap.isOpened():
+    ret, frame = cap.read()
+    <span class="kw">if not</span> ret: <span class="kw">break</span>
+    results = model(frame, stream=<span class="kw">True</span>)
+    <span class="kw">for</span> r <span class="kw">in</span> results:
+        annotated = r.plot()
+        cv2.imshow(<span class="str">'YOLOv8 Detection'</span>, annotated)
+    <span class="kw">if</span> cv2.waitKey(<span class="num">1</span>) & <span class="num">0xFF</span> == ord(<span class="str">'q'</span>): <span class="kw">break</span>
+cap.release(); cv2.destroyAllWindows()
+
+<span class="cm"># Fine-tune pada dataset custom</span>
+model.train(data=<span class="str">'custom_dataset.yaml'</span>, epochs=<span class="num">100</span>, imgsz=<span class="num">640</span>)</div>
+
+  <h3>Image Segmentation</h3>
   <ul>
-    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
-    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
+    <li><strong>Semantic Segmentation:</strong> Setiap pixel diklasifikasikan ke kategori. Semua mobil = satu warna, semua orang = warna lain. Model: DeepLab, FCN.</li>
+    <li><strong>Instance Segmentation:</strong> Membedakan setiap instance objek. Mobil 1 dan Mobil 2 punya mask berbeda. Model: Mask R-CNN, YOLOv8-seg.</li>
+    <li><strong>Panoptic Segmentation:</strong> Kombinasi semantic + instance segmentation.</li>
   </ul>
-  <div class="code-block"><span class="kw">import</span> torch
-<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
-<span class="kw">from</span> collections <span class="kw">import</span> deque
-<span class="kw">import</span> random
-
-<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
-        <span class="fn">super</span>().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
-            nn.Linear(<span class="num">128</span>, action_dim)
-        )
-    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
-
-<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
-    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
-        self.buffer = deque(maxlen=capacity)
-    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
-    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
-    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
-
-<span class="cm"># Training loop DQN</span>
-env = gym.make(<span class="str">'CartPole-v1'</span>)
-policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
-target_net.load_state_dict(policy_net.state_dict())
-optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
-buffer = ReplayBuffer()</div>
 </div>
 
 <div class="materi-section">
-  <h2>🎯 Policy Gradient & PPO</h2>
-  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
-  <h3>PPO (Proximal Policy Optimization)</h3>
-  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
-  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
-<span class="cm"># pip install stable-baselines3</span>
-<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
-<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+  <h2>👤 Face Detection & Recognition</h2>
+  <div class="code-block"><span class="kw">import</span> face_recognition  <span class="cm"># pip install face-recognition</span>
+<span class="kw">import</span> cv2
+<span class="kw">import</span> numpy <span class="kw">as</span> np
 
-env = gym.make(<span class="str">'CartPole-v1'</span>)
+<span class="cm"># Load gambar referensi</span>
+known_image = face_recognition.load_image_file(<span class="str">"person.jpg"</span>)
+known_encoding = face_recognition.face_encodings(known_image)[<span class="num">0</span>]
 
-<span class="cm"># Train PPO</span>
-model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
-            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
-            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
-model.learn(total_timesteps=<span class="num">100000</span>)
-model.save(<span class="str">"ppo_cartpole"</span>)
+<span class="cm"># Deteksi & kenali wajah di gambar baru</span>
+unknown_image = face_recognition.load_image_file(<span class="str">"unknown.jpg"</span>)
+unknown_encodings = face_recognition.face_encodings(unknown_image)
 
-<span class="cm"># Evaluasi</span>
-obs, _ = env.reset()
-<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
-    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
-    obs, reward, done, _, _ = env.step(action)
-    <span class="kw">if</span> done: obs, _ = env.reset()</div>
-
-  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
-  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
-  <ol>
-    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
-    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
-    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
-  </ol>
+<span class="kw">for</span> encoding <span class="kw">in</span> unknown_encodings:
+    match = face_recognition.compare_faces([known_encoding], encoding, tolerance=<span class="num">0.6</span>)
+    distance = face_recognition.face_distance([known_encoding], encoding)
+    <span class="fn">print</span>(<span class="str">f"Match: {match[0]}, Distance: {distance[0]:.3f}"</span>)</div>
 </div>
 
 <div class="sources-section">
   <h3>📚 Sumber Referensi</h3>
-  <ul id="rl-sources"></ul>
+  <ul id="cv-sources"></ul>
 </div>
 `;
