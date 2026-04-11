@@ -1,4 +1,4 @@
-// ── Local Auth (localStorage) ──
+﻿// â”€â”€ Local Auth (localStorage) â”€â”€
 
 const USERS_KEY = 'lunetix_users';
 const SESSION_KEY = 'lunetix_session';
@@ -44,17 +44,17 @@ function clearSession() {
 
 function requireAuth() {
   if (!getSession()) {
-    window.location.href = 'login.html';
+    window.location.href = '/login';
   }
 }
 
 function requireGuest() {
   if (getSession()) {
-    window.location.href = 'dashboard.html';
+    window.location.href = '/dashboard';
   }
 }
 
-// ── Login ──
+// â”€â”€ Login â”€â”€
 function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('email').value.trim();
@@ -75,10 +75,10 @@ function handleLogin(e) {
   }
 
   setSession(user);
-  window.location.href = 'dashboard.html';
+  window.location.href = '/dashboard';
 }
 
-// ── Register ──
+// â”€â”€ Register â”€â”€
 function handleRegister(e) {
   e.preventDefault();
   const name = document.getElementById('fullname').value.trim();
@@ -125,7 +125,7 @@ function handleRegister(e) {
   users.push(newUser);
   saveUsers(users);
   setSession(newUser);
-  window.location.href = 'dashboard.html';
+  window.location.href = '/dashboard';
 }
 
 function showError(el, msg) {
@@ -146,5 +146,6 @@ function togglePassword(inputId, btn) {
   lucide.createIcons();
 }
 
-// ── Init ──
+// â”€â”€ Init â”€â”€
 seedDefaultUser();
+

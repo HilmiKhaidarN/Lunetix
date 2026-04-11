@@ -1,6 +1,6 @@
-// ══════════════════════════════════════════════
-// SETTINGS.JS — All settings tab logic
-// ══════════════════════════════════════════════
+﻿// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// SETTINGS.JS â€” All settings tab logic
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const ST_ACCENT_COLORS = [
   { color:'#7c3aed', name:'Purple' },
@@ -31,7 +31,7 @@ const ST_NOTIF_PUSH = [
 const ST_TOPICS = ['Machine Learning','Deep Learning','NLP','Computer Vision','Data Science','Reinforcement Learning','AI Ethics','Python','TensorFlow','PyTorch'];
 const ST_SPEEDS = ['0.75x','1x','1.25x','1.5x','2x'];
 
-// ── Main init ──
+// â”€â”€ Main init â”€â”€
 function initSettings() {
   const session = getSession();
   if (!session) return;
@@ -56,7 +56,7 @@ function initSettings() {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-// ── Tab switcher ──
+// â”€â”€ Tab switcher â”€â”€
 function switchSettingsTab(tab, btn) {
   document.querySelectorAll('.st-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.st-section').forEach(s => s.classList.remove('active'));
@@ -74,7 +74,7 @@ function switchSettingsTab(tab, btn) {
   }
 }
 
-// ── Toggle helper ──
+// â”€â”€ Toggle helper â”€â”€
 function stSetToggle(id, on) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -89,7 +89,7 @@ function togglePref(key) {
   showToast((prefs[key] ? 'Enabled' : 'Disabled') + ': ' + key.replace(/_/g,' '));
 }
 
-// ── Save profile ──
+// â”€â”€ Save profile â”€â”€
 function saveSettings() {
   const name = document.getElementById('settings-name-input')?.value.trim();
   if (!name) { showToast('Nama tidak boleh kosong.'); return; }
@@ -103,11 +103,11 @@ function saveSettings() {
     setSession(user);
     document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
     document.querySelectorAll('.user-avatar').forEach(el => el.textContent = user.avatar);
-    showToast('Profil berhasil disimpan! ✓');
+    showToast('Profil berhasil disimpan! âœ“');
   }
 }
 
-// ── ACCOUNT TAB ──
+// â”€â”€ ACCOUNT TAB â”€â”€
 function stInitAccount() {
   const session = getSession();
   if (!session) return;
@@ -140,10 +140,10 @@ function saveAccountInfo() {
     document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
     document.querySelectorAll('.user-avatar').forEach(el => el.textContent = user.avatar);
   }
-  showToast('Account info saved! ✓');
+  showToast('Account info saved! âœ“');
 }
 
-// ── NOTIFICATIONS TAB ──
+// â”€â”€ NOTIFICATIONS TAB â”€â”€
 function stInitNotifications() {
   const prefs = store.get('prefs', {});
   const render = (listId, items) => {
@@ -177,10 +177,10 @@ function saveNotifSchedule() {
   const qe = document.getElementById('quiet-end')?.value;
   store.set('quiet_start', qs);
   store.set('quiet_end', qe);
-  showToast('Quiet hours saved: ' + qs + ' – ' + qe + ' ✓');
+  showToast('Quiet hours saved: ' + qs + ' â€“ ' + qe + ' âœ“');
 }
 
-// ── PREFERENCES TAB ──
+// â”€â”€ PREFERENCES TAB â”€â”€
 function stInitPreferences() {
   const prefs = store.get('prefs', {});
   const savedGoal = store.get('daily_goal', 60);
@@ -250,12 +250,12 @@ function savePreferences() {
   const lang = document.getElementById('pref-lang')?.value;
   store.set('daily_goal', parseInt(goal) || 60);
   store.set('pref_lang', lang);
-  showToast('Preferences saved! ✓');
+  showToast('Preferences saved! âœ“');
 }
 
-function saveTopics() { showToast('Topics saved! ✓'); }
+function saveTopics() { showToast('Topics saved! âœ“'); }
 
-// ── PRIVACY & SECURITY TAB ──
+// â”€â”€ PRIVACY & SECURITY TAB â”€â”€
 function stInitPrivacy() {
   const sessions = [
     { device:'Chrome on Windows', location:'Jakarta, ID', time:'Active now',  current:true,  icon:'monitor' },
@@ -271,7 +271,7 @@ function stInitPrivacy() {
       </div>
       <div style="flex:1">
         <div style="font-size:12px;font-weight:600">${s.device}</div>
-        <div style="font-size:10px;color:var(--text-muted)">${s.location} · ${s.time}</div>
+        <div style="font-size:10px;color:var(--text-muted)">${s.location} Â· ${s.time}</div>
       </div>
       ${s.current
         ? '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(16,185,129,0.15);color:#34d399">Current</span>'
@@ -333,7 +333,7 @@ function changePassword() {
   user.password = newPw;
   saveUsers(users);
   ['pw-current','pw-new','pw-confirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  showToast('Password berhasil diubah! ✓');
+  showToast('Password berhasil diubah! âœ“');
 }
 
 function setup2FA() {
@@ -350,7 +350,7 @@ function setupSMS2FA() {
 function deactivateAccount() {
   if (confirm('Akun kamu akan dinonaktifkan sementara. Lanjutkan?')) {
     showToast('Akun dinonaktifkan...');
-    setTimeout(() => { clearSession(); window.location.href = 'login.html'; }, 2000);
+    setTimeout(() => { clearSession(); window.location.href = '/login'; }, 2000);
   }
 }
 
@@ -358,11 +358,11 @@ function confirmDeleteAccount() {
   if (confirm('Hapus akun permanen? Semua data akan hilang.')) {
     clearSession();
     localStorage.clear();
-    window.location.href = 'login.html';
+    window.location.href = '/login';
   }
 }
 
-// ── BILLING TAB ──
+// â”€â”€ BILLING TAB â”€â”€
 function stInitBilling() {
   const plans = [
     {
@@ -405,7 +405,7 @@ function addPaymentMethod() {
   if (choice && methods[parseInt(choice)-1]) showToast(methods[parseInt(choice)-1] + ' added!');
 }
 
-// ── APPEARANCE TAB ──
+// â”€â”€ APPEARANCE TAB â”€â”€
 function stInitAppearance() {
   stRenderAccentColors('app-color-row');
 
@@ -477,7 +477,7 @@ function setFontSize(size) {
 function renderAccentColors() { stRenderAccentColors('st-color-row'); }
 function setAccentColor(color) { stSetAccentColor(color); }
 
-// ══ EXTRA SETTINGS ACTIONS ══
+// â•â• EXTRA SETTINGS ACTIONS â•â•
 
 function triggerAvatarUpload() {
   const input = document.createElement('input');
@@ -497,7 +497,7 @@ function triggerAvatarUpload() {
         el.style.backgroundPosition = 'center';
         el.textContent = '';
       });
-      showToast('Foto profil berhasil diupdate! ✓');
+      showToast('Foto profil berhasil diupdate! âœ“');
     };
     reader.readAsDataURL(file);
   };
@@ -521,7 +521,7 @@ function downloadUserData() {
   a.download = `lunetix-data-${session?.name?.toLowerCase().replace(/\s+/g,'-') || 'user'}-${Date.now()}.json`;
   a.click();
   URL.revokeObjectURL(url);
-  showToast('Data berhasil diunduh! ✓');
+  showToast('Data berhasil diunduh! âœ“');
 }
 
 function connectSocialAccount(provider) {
@@ -539,7 +539,7 @@ function connectSocialAccount(provider) {
     showToast(`Menghubungkan ke ${provider}...`);
     setTimeout(() => {
       store.set(key, true);
-      showToast(`${provider} berhasil terhubung! ✓`);
+      showToast(`${provider} berhasil terhubung! âœ“`);
       stInitAccount();
     }, 1500);
   }
@@ -551,10 +551,10 @@ function showRedeemModal() {
   const validCodes = { 'LUNETIX20':'20% diskon Pro Plan', 'BELAJAR50':'50% diskon Pro Plan', 'NEWUSER':'30% diskon untuk pengguna baru', 'FREEMONTH':'1 bulan Pro gratis' };
   const reward = validCodes[code.toUpperCase().trim()];
   if (reward) {
-    showToast(`🎉 Kode valid! Reward: ${reward}`);
+    showToast(`ðŸŽ‰ Kode valid! Reward: ${reward}`);
     store.set('promo_code', code.toUpperCase().trim());
   } else {
-    showToast('❌ Kode tidak valid atau sudah digunakan.');
+    showToast('âŒ Kode tidak valid atau sudah digunakan.');
   }
 }
 
@@ -572,7 +572,7 @@ function showHelpCenter() {
     .contact{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(157,92,246,0.08));border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:24px;margin-top:24px;text-align:center}
     .btn{background:linear-gradient(135deg,#7c3aed,#9d5cf6);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
   </style></head><body>
-  <h1>🌙 Help Center</h1>
+  <h1>ðŸŒ™ Help Center</h1>
   <div class="sub">Temukan jawaban untuk pertanyaan umum tentang Lunetix</div>
   ${[
     ['Bagaimana cara memulai belajar?','Pilih kursus dari halaman Courses, klik Start, dan ikuti materi secara berurutan. Setiap kursus memiliki video, materi teks, dan quiz.'],
@@ -585,16 +585,16 @@ function showHelpCenter() {
   <div class="contact">
     <h3 style="margin-bottom:8px">Masih butuh bantuan?</h3>
     <p style="color:#a0a0c0;font-size:13px;margin-bottom:16px">Tim support kami siap membantu kamu</p>
-    <button class="btn" onclick="window.location.href='mailto:support@lunetix.ai'">📧 Email Support</button>
+    <button class="btn" onclick="window.location.href='mailto:support@lunetix.ai'">ðŸ“§ Email Support</button>
   </div>
   </body></html>`);
   w.document.close();
 }
 
-// ── Certificate Share ──
+// â”€â”€ Certificate Share â”€â”€
 function shareCertToLinkedIn() {
   const session = getSession();
-  const text = encodeURIComponent(`I just earned a certificate from Lunetix AI Learning Platform! 🎓 #AI #MachineLearning #Lunetix`);
+  const text = encodeURIComponent(`I just earned a certificate from Lunetix AI Learning Platform! ðŸŽ“ #AI #MachineLearning #Lunetix`);
   const url = encodeURIComponent('https://lunetix.ai');
   window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, '_blank');
   showToast('Membuka LinkedIn untuk share...');
@@ -602,12 +602,12 @@ function shareCertToLinkedIn() {
 
 function shareCertToTwitter() {
   const session = getSession();
-  const text = encodeURIComponent(`Just earned my AI certificate from @Lunetix! 🚀 Learning Machine Learning & Deep Learning. #AI #MachineLearning #Lunetix`);
+  const text = encodeURIComponent(`Just earned my AI certificate from @Lunetix! ðŸš€ Learning Machine Learning & Deep Learning. #AI #MachineLearning #Lunetix`);
   window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
   showToast('Membuka Twitter/X untuk share...');
 }
 
-// ── Bookmark Filter Panel ──
+// â”€â”€ Bookmark Filter Panel â”€â”€
 function toggleBmFilterPanel() {
   const existing = document.getElementById('bm-filter-panel');
   if (existing) { existing.remove(); return; }
@@ -618,7 +618,7 @@ function toggleBmFilterPanel() {
   panel.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
       <h3 style="font-size:15px;font-weight:600">Filter Bookmark</h3>
-      <button onclick="document.getElementById('bm-filter-panel').remove()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">✕</button>
+      <button onclick="document.getElementById('bm-filter-panel').remove()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">âœ•</button>
     </div>
     <div style="margin-bottom:14px">
       <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px">Kategori</label>
@@ -650,3 +650,4 @@ function applyBmFilterAndClose() {
   if (typeof renderBookmarks === 'function') renderBookmarks();
   showToast(`Filter diterapkan: ${cat}`);
 }
+

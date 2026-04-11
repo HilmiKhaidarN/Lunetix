@@ -1,6 +1,6 @@
-// ── Dashboard Logic ──
+﻿// â”€â”€ Dashboard Logic â”€â”€
 
-// ── Global Search ──
+// â”€â”€ Global Search â”€â”€
 const searchIndex = [
   { title:'Machine Learning Fundamentals', type:'Kursus',    page:'courses',      icon:'book-open',    color:'#a78bfa' },
   { title:'Python for AI',                 type:'Kursus',    page:'courses',      icon:'book-open',    color:'#4ade80' },
@@ -85,7 +85,7 @@ document.addEventListener('keydown', (e) => {
 });
 const notifData = [
   { id:1, icon:'check-circle', iconBg:'rgba(16,185,129,0.15)', iconColor:'#34d399', text:'<strong>Python for AI</strong> kursus selesai! Sertifikat tersedia.', time:'2 jam lalu', unread:true },
-  { id:2, icon:'help-circle',  iconBg:'rgba(124,58,237,0.15)', iconColor:'#a78bfa', text:'Quiz <strong>Deep Learning Fundamentals</strong> — Skor kamu 80%!', time:'5 jam lalu', unread:true },
+  { id:2, icon:'help-circle',  iconBg:'rgba(124,58,237,0.15)', iconColor:'#a78bfa', text:'Quiz <strong>Deep Learning Fundamentals</strong> â€” Skor kamu 80%!', time:'5 jam lalu', unread:true },
   { id:3, icon:'award',        iconBg:'rgba(245,158,11,0.15)', iconColor:'#fbbf24', text:'Selamat! Kamu mendapat badge <strong>Quick Learner</strong>.', time:'1 hari lalu', unread:false },
   { id:4, icon:'users',        iconBg:'rgba(59,130,246,0.15)', iconColor:'#60a5fa', text:'<strong>Budi P.</strong> membalas postinganmu di Community.', time:'2 hari lalu', unread:false },
   { id:5, icon:'zap',          iconBg:'rgba(239,68,68,0.15)',  iconColor:'#f87171', text:'Streak kamu <strong>7 hari</strong>! Terus pertahankan.', time:'3 hari lalu', unread:false },
@@ -153,7 +153,7 @@ function closeAllDropdowns() {
 function doLogout() {
   closeAllDropdowns();
   clearSession();
-  window.location.href = 'login.html';
+  window.location.href = '/login';
 }
 
 // Close dropdowns when clicking outside
@@ -187,9 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
   else if (hour >= 17) greeting = 'Good evening';
   const greetEl = document.getElementById('greeting');
-  if (greetEl) greetEl.textContent = `${greeting}, ${session.name}! 👋`;
+  if (greetEl) greetEl.textContent = `${greeting}, ${session.name}! ðŸ‘‹`;
 
-  // Navigation — pages already in DOM, just show/hide
+  // Navigation â€” pages already in DOM, just show/hide
   const navItems = document.querySelectorAll('.nav-item[data-page]');
 
   const pageTitles = {
@@ -269,4 +269,5 @@ document.addEventListener('DOMContentLoaded', () => {
   navigateTo('dashboard');
   if (typeof initDashboard === 'function') initDashboard();
 });
+
 
