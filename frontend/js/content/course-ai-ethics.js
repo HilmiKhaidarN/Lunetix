@@ -1,253 +1,234 @@
-// ══════════════════════════════════════════════
-// KURSUS 8: AI ETHICS & SAFETY
+﻿// ══════════════════════════════════════════════
+// KURSUS 7: REINFORCEMENT LEARNING
 // ══════════════════════════════════════════════
 
-const courseAIEthics = {
-  id: 8,
+const courseRL = {
+  id: 7,
   curriculum: [
     {
-      title: "Modul 1: Fondasi Etika AI",
+      title: "Modul 1: Fondasi Reinforcement Learning",
       lessons: [
-        { icon: "▶️", title: "Mengapa Etika AI Penting?", duration: "15 min" },
-        { icon: "▶️", title: "Prinsip-Prinsip AI yang Bertanggung Jawab", duration: "20 min" },
-        { icon: "📄", title: "Regulasi AI: EU AI Act, GDPR, dan Kebijakan Global", duration: "18 min" },
-        { icon: "▶️", title: "Kasus Nyata: Ketika AI Gagal", duration: "22 min" },
+        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
+        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
+        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
+        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
       ]
     },
     {
-      title: "Modul 2: Bias & Fairness dalam AI",
+      title: "Modul 2: Tabular Methods",
       lessons: [
-        { icon: "▶️", title: "Jenis-Jenis Bias dalam ML", duration: "20 min" },
-        { icon: "▶️", title: "Mengukur Fairness: Metrik dan Trade-off", duration: "22 min" },
-        { icon: "▶️", title: "Teknik Mitigasi Bias", duration: "20 min" },
-        { icon: "💻", title: "Lab: Deteksi Bias dengan Fairlearn", duration: "35 min" },
+        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
+        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
+        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
+        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
       ]
     },
     {
-      title: "Modul 3: Transparansi & Explainability",
+      title: "Modul 3: Deep Reinforcement Learning",
       lessons: [
-        { icon: "▶️", title: "Black Box vs Interpretable Models", duration: "18 min" },
-        { icon: "▶️", title: "LIME & SHAP: Menjelaskan Prediksi Model", duration: "25 min" },
-        { icon: "▶️", title: "Model Cards & Datasheets", duration: "15 min" },
-        { icon: "💻", title: "Lab: SHAP Values untuk Random Forest", duration: "35 min" },
+        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
+        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
+        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
+        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
+        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
       ]
     },
     {
-      title: "Modul 4: AI Safety & Privacy",
+      title: "Modul 4: Advanced RL",
       lessons: [
-        { icon: "▶️", title: "Adversarial Attacks & Robustness", duration: "22 min" },
-        { icon: "▶️", title: "Privacy-Preserving ML: Federated Learning, DP", duration: "20 min" },
-        { icon: "▶️", title: "AI Alignment Problem", duration: "22 min" },
-        { icon: "▶️", title: "Masa Depan AI yang Aman dan Bermanfaat", duration: "20 min" },
+        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
+        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
+        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
+        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
       ]
     }
   ],
   quiz: [
-    { q: "Apa yang dimaksud dengan 'algorithmic bias'?", options: ["Bug dalam kode", "Ketidakadilan sistematis dalam output model akibat data atau desain yang bias", "Model yang terlalu lambat", "Kesalahan dalam deployment"], answer: 1 },
-    { q: "Apa itu SHAP dalam konteks Explainable AI?", options: ["Teknik training baru", "Metode untuk menjelaskan kontribusi setiap fitur terhadap prediksi model", "Jenis neural network", "Metrik evaluasi"], answer: 1 },
-    { q: "Apa itu Federated Learning?", options: ["Training model di satu server besar", "Training model di perangkat lokal tanpa mengirim data ke server pusat", "Teknik augmentasi data", "Metode kompresi model"], answer: 1 },
-    { q: "Apa yang dimaksud dengan 'AI Alignment'?", options: ["Menyejajarkan layer neural network", "Memastikan AI bertindak sesuai dengan nilai dan tujuan manusia", "Teknik optimasi", "Metode evaluasi model"], answer: 1 },
-    { q: "Regulasi AI mana yang dikeluarkan oleh Uni Eropa?", options: ["AI Safety Act", "EU AI Act", "Digital AI Regulation", "European ML Policy"], answer: 1 },
+    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
+    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
+    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
+    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
+    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
   ],
   sources: [
-    { label: "TheAIInternship – AI Ethics & Responsible AI Guide 2025", url: "https://theaiinternship.com/blog/ai-ethics-responsible-ai-development-guide-2025/" },
-    { label: "Clay Global – Key Ethical Issues in AI", url: "https://clay.global/blog/ai-guide/ethical-issues-in-ai" },
-    { label: "FutureInsights – Understanding Bias, Fairness, and Responsible AI", url: "https://www.futureinsights.com/ai-ethics-guide-bias-fairness-2026/" },
-    { label: "ZenVanRiel – Understanding Responsible AI Development", url: "https://zenvanriel.nl/ai-engineer-blog/understanding-responsible-ai-development/" },
-    { label: "Superblocks – What is Responsible AI? 6 Principles", url: "https://www.superblocks.com/blog/responsible-ai" },
-    { label: "SubrosaCyber – Responsible AI Governance Framework", url: "https://subrosacyber.com/en/blog/what-is-responsible-ai-governance" },
-    { label: "AIPRomptsx – Responsible AI Use Guide 2026", url: "https://aipromptsx.com/blog/ai-safety-ethics-guide" },
-    { label: "Microsoft Fairlearn Documentation", url: "https://fairlearn.org/" },
-    { label: "SHAP Official Documentation", url: "https://shap.readthedocs.io/" },
+    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
+    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
+    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
+    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
+    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
+    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
+    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
   ]
 };
 
-courseAIEthics.materi = `
+courseRL.materi = `
 <div class="materi-section">
-  <h2>⚖️ Mengapa Etika AI Penting?</h2>
-  <p>AI semakin banyak digunakan untuk membuat keputusan yang berdampak besar pada kehidupan manusia — siapa yang mendapat pinjaman bank, siapa yang diterima kerja, siapa yang dibebaskan dari penjara. Ketika sistem AI membuat keputusan yang salah atau tidak adil, konsekuensinya bisa sangat serius.</p>
+  <h2>🎮 Apa itu Reinforcement Learning?</h2>
+  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
+  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
+  <h3>Pencapaian Luar Biasa RL</h3>
   <ul>
-    <li><strong>COMPAS (2016):</strong> Algoritma prediksi recidivism yang digunakan pengadilan AS terbukti dua kali lebih sering salah memprediksi orang kulit hitam sebagai "berisiko tinggi" dibanding orang kulit putih.</li>
-    <li><strong>Amazon Hiring Tool (2018):</strong> Amazon menonaktifkan tool rekrutmen AI-nya karena terbukti bias terhadap perempuan — dilatih pada resume historis yang didominasi laki-laki.</li>
-    <li><strong>Facial Recognition:</strong> Studi MIT menemukan error rate hingga 34% untuk wajah perempuan berkulit gelap, vs 0.8% untuk laki-laki berkulit terang.</li>
-    <li><strong>GPT Hallucination:</strong> LLM dapat menghasilkan informasi yang terdengar meyakinkan tapi sepenuhnya salah — berbahaya di konteks medis atau hukum.</li>
-  </ul>
-  <div class="info-box warn">
-    ⚠️ <strong>Penting:</strong> AI tidak secara inheren objektif. AI mencerminkan bias yang ada dalam data training dan keputusan desain yang dibuat oleh manusia.
-  </div>
-</div>
-
-<div class="materi-section">
-  <h2>🏛️ Prinsip-Prinsip Responsible AI</h2>
-  <p>Berbagai organisasi (Google, Microsoft, EU, UNESCO) telah menetapkan prinsip-prinsip untuk pengembangan AI yang bertanggung jawab. Meskipun ada variasi, prinsip-prinsip inti yang muncul berulang kali adalah:</p>
-  <ul>
-    <li><strong>Fairness (Keadilan):</strong> AI tidak boleh mendiskriminasi berdasarkan ras, gender, usia, atau karakteristik lain yang dilindungi. Output harus adil di semua kelompok demografis.</li>
-    <li><strong>Transparency (Transparansi):</strong> Proses pengambilan keputusan AI harus dapat dijelaskan dan dipahami oleh pengguna dan pemangku kepentingan.</li>
-    <li><strong>Accountability (Akuntabilitas):</strong> Harus ada mekanisme yang jelas untuk melacak dan mengatasi kesalahan atau dampak negatif dari sistem AI.</li>
-    <li><strong>Privacy (Privasi):</strong> Data pengguna harus dilindungi. AI tidak boleh mengumpulkan atau menggunakan data secara berlebihan atau tanpa persetujuan.</li>
-    <li><strong>Safety & Reliability (Keamanan):</strong> Sistem AI harus bekerja dengan andal dan aman, terutama dalam aplikasi kritis (medis, transportasi, infrastruktur).</li>
-    <li><strong>Inclusiveness (Inklusivitas):</strong> AI harus dirancang untuk memberdayakan semua orang, termasuk kelompok yang terpinggirkan.</li>
-    <li><strong>Human Oversight (Pengawasan Manusia):</strong> Manusia harus tetap dalam kontrol, terutama untuk keputusan berisiko tinggi.</li>
-  </ul>
-
-  <h3>Regulasi AI Global</h3>
-  <ul>
-    <li><strong>EU AI Act (2024):</strong> Regulasi AI pertama di dunia yang komprehensif. Mengklasifikasikan sistem AI berdasarkan risiko (unacceptable, high, limited, minimal) dan menetapkan persyaratan berbeda untuk setiap kategori.</li>
-    <li><strong>GDPR:</strong> Regulasi privasi data Eropa yang mencakup "right to explanation" — pengguna berhak mendapat penjelasan atas keputusan otomatis yang mempengaruhi mereka.</li>
-    <li><strong>US Executive Order on AI (2023):</strong> Mewajibkan safety testing untuk model AI yang paling kuat sebelum deployment publik.</li>
-    <li><strong>China AI Regulations:</strong> Regulasi untuk generative AI dan deep synthesis (deepfake).</li>
+    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
+    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
+    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
+    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
+    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
   </ul>
 </div>
 
 <div class="materi-section">
-  <h2>⚡ Bias dalam Machine Learning</h2>
-  <h3>Jenis-Jenis Bias</h3>
+  <h2>🏗️ Komponen Dasar RL</h2>
   <ul>
-    <li><strong>Historical Bias:</strong> Data training mencerminkan ketidakadilan historis. Contoh: data rekrutmen historis yang bias terhadap gender tertentu.</li>
-    <li><strong>Representation Bias:</strong> Kelompok tertentu kurang terwakili dalam data training. Contoh: dataset wajah yang didominasi orang kulit putih.</li>
-    <li><strong>Measurement Bias:</strong> Cara data dikumpulkan atau dilabeli tidak konsisten antar kelompok.</li>
-    <li><strong>Aggregation Bias:</strong> Model dilatih pada populasi gabungan tapi digunakan untuk subkelompok spesifik yang memiliki karakteristik berbeda.</li>
-    <li><strong>Deployment Bias:</strong> Model digunakan dalam konteks yang berbeda dari konteks training.</li>
-    <li><strong>Feedback Loop Bias:</strong> Prediksi model mempengaruhi data masa depan, memperkuat bias awal. Contoh: polisi lebih banyak patroli di area yang diprediksi berisiko tinggi → lebih banyak penangkapan di sana → model semakin yakin area itu berisiko tinggi.</li>
+    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
+    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
+    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
+    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
+    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
+    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
+    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
+    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
   </ul>
 
-  <h3>Mengukur Fairness</h3>
-  <div class="code-block"><span class="kw">from</span> fairlearn.metrics <span class="kw">import</span> MetricFrame, demographic_parity_difference
-<span class="kw">from</span> sklearn.metrics <span class="kw">import</span> accuracy_score
-<span class="kw">import</span> pandas <span class="kw">as</span> pd
-
-<span class="cm"># Evaluasi fairness model kredit</span>
-metric_frame = MetricFrame(
-    metrics=accuracy_score,
-    y_true=y_test,
-    y_pred=y_pred,
-    sensitive_features=sensitive_features  <span class="cm"># misal: gender, ras</span>
-)
-
-<span class="fn">print</span>(<span class="str">"Akurasi per kelompok:"</span>)
-<span class="fn">print</span>(metric_frame.by_group)
-
-<span class="fn">print</span>(<span class="str">f"\nDemographic Parity Difference: {demographic_parity_difference(y_test, y_pred, sensitive_features=sensitive_features):.4f}"</span>)
-<span class="cm"># Semakin mendekati 0, semakin adil</span></div>
-
-  <h3>Teknik Mitigasi Bias</h3>
+  <h3>Markov Decision Process (MDP)</h3>
+  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
   <ul>
-    <li><strong>Pre-processing:</strong> Perbaiki bias di data sebelum training — resampling, reweighting, data augmentation untuk kelompok yang kurang terwakili.</li>
-    <li><strong>In-processing:</strong> Tambahkan fairness constraint ke objective function selama training.</li>
-    <li><strong>Post-processing:</strong> Sesuaikan threshold prediksi per kelompok untuk mencapai fairness yang diinginkan.</li>
+    <li><strong>S:</strong> State space</li>
+    <li><strong>A:</strong> Action space</li>
+    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
+    <li><strong>R(s,a):</strong> Reward function</li>
+    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
   </ul>
-  <div class="code-block"><span class="kw">from</span> fairlearn.reductions <span class="kw">import</span> ExponentiatedGradient, DemographicParity
-<span class="kw">from</span> sklearn.linear_model <span class="kw">import</span> LogisticRegression
-
-<span class="cm"># Mitigasi bias dengan Exponentiated Gradient</span>
-base_estimator = LogisticRegression()
-mitigator = ExponentiatedGradient(
-    base_estimator,
-    constraints=DemographicParity()
-)
-mitigator.fit(X_train, y_train, sensitive_features=sensitive_train)
-y_pred_fair = mitigator.predict(X_test)</div>
+  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
 </div>
 
 <div class="materi-section">
-  <h2>🔍 Explainable AI (XAI)</h2>
-  <p>Explainable AI adalah bidang yang berfokus pada membuat keputusan model ML dapat dipahami oleh manusia. Penting untuk kepercayaan, debugging, regulasi, dan deteksi bias.</p>
+  <h2>📋 Q-Learning</h2>
+  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
+  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
+  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
 
-  <h3>SHAP (SHapley Additive exPlanations)</h3>
-  <p>SHAP menggunakan konsep dari game theory (Shapley values) untuk menghitung kontribusi setiap fitur terhadap prediksi individual. Memberikan penjelasan yang konsisten dan akurat secara matematis.</p>
-  <div class="code-block"><span class="kw">import</span> shap
-<span class="kw">from</span> sklearn.ensemble <span class="kw">import</span> RandomForestClassifier
+env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
+n_states = env.observation_space.n   <span class="cm"># 16</span>
+n_actions = env.action_space.n       <span class="cm"># 4</span>
 
-model = RandomForestClassifier(n_estimators=<span class="num">100</span>).fit(X_train, y_train)
+<span class="cm"># Inisialisasi Q-table</span>
+Q = np.zeros((n_states, n_actions))
 
-<span class="cm"># Hitung SHAP values</span>
-explainer = shap.TreeExplainer(model)
-shap_values = explainer.shap_values(X_test)
+<span class="cm"># Hyperparameters</span>
+alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
+gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
+epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
+epsilon_decay = <span class="num">0.995</span>
+epsilon_min = <span class="num">0.01</span>
+n_episodes = <span class="num">10000</span>
 
-<span class="cm"># Summary plot — fitur mana yang paling penting?</span>
-shap.summary_plot(shap_values[<span class="num">1</span>], X_test, feature_names=feature_names)
+rewards_history = []
 
-<span class="cm"># Force plot — jelaskan satu prediksi</span>
-shap.force_plot(
-    explainer.expected_value[<span class="num">1</span>],
-    shap_values[<span class="num">1</span>][<span class="num">0</span>],
-    X_test.iloc[<span class="num">0</span>],
-    feature_names=feature_names
-)
+<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
+    state, _ = env.reset()
+    total_reward = <span class="num">0</span>
 
-<span class="cm"># Waterfall plot</span>
-shap.waterfall_plot(shap.Explanation(
-    values=shap_values[<span class="num">1</span>][<span class="num">0</span>],
-    base_values=explainer.expected_value[<span class="num">1</span>],
-    data=X_test.iloc[<span class="num">0</span>],
-    feature_names=feature_names
-))</div>
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="cm"># Epsilon-greedy policy</span>
+        <span class="kw">if</span> np.random.random() < epsilon:
+            action = env.action_space.sample()  <span class="cm"># explore</span>
+        <span class="kw">else</span>:
+            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
 
-  <h3>LIME (Local Interpretable Model-agnostic Explanations)</h3>
-  <p>LIME menjelaskan prediksi individual dengan membangun model linear sederhana di sekitar titik data tersebut. Model-agnostic — bekerja untuk model apapun.</p>
-  <div class="code-block"><span class="kw">import</span> lime
-<span class="kw">import</span> lime.lime_tabular
+        next_state, reward, terminated, truncated, _ = env.step(action)
+        done = terminated <span class="kw">or</span> truncated
 
-explainer = lime.lime_tabular.LimeTabularExplainer(
-    X_train.values,
-    feature_names=feature_names,
-    class_names=[<span class="str">'Ditolak'</span>, <span class="str">'Disetujui'</span>],
-    mode=<span class="str">'classification'</span>
-)
+        <span class="cm"># Q-Learning update</span>
+        Q[state, action] += alpha * (
+            reward + gamma * np.max(Q[next_state]) - Q[state, action]
+        )
 
-<span class="cm"># Jelaskan prediksi untuk satu sampel</span>
-exp = explainer.explain_instance(
-    X_test.iloc[<span class="num">0</span>].values,
-    model.predict_proba,
-    num_features=<span class="num">10</span>
-)
-exp.show_in_notebook()</div>
+        state = next_state
+        total_reward += reward
+        <span class="kw">if</span> done: <span class="kw">break</span>
+
+    epsilon = max(epsilon_min, epsilon * epsilon_decay)
+    rewards_history.append(total_reward)
+
+<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
 </div>
 
 <div class="materi-section">
-  <h2>🔒 AI Safety & Privacy</h2>
-  <h3>Adversarial Attacks</h3>
-  <p>Adversarial examples adalah input yang sengaja dimodifikasi dengan perturbasi kecil (tidak terlihat oleh manusia) untuk menipu model AI. Ancaman serius untuk aplikasi keamanan kritis.</p>
+  <h2>🧠 Deep Q-Network (DQN)</h2>
+  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
   <ul>
-    <li><strong>FGSM (Fast Gradient Sign Method):</strong> Tambahkan perturbasi kecil searah gradient loss untuk memaksimalkan error model.</li>
-    <li><strong>PGD (Projected Gradient Descent):</strong> Versi iteratif FGSM yang lebih kuat.</li>
-    <li><strong>Adversarial Training:</strong> Latih model dengan adversarial examples untuk meningkatkan robustness.</li>
+    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
+    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
   </ul>
+  <div class="code-block"><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">import</span> random
 
-  <h3>Privacy-Preserving ML</h3>
-  <ul>
-    <li><strong>Federated Learning:</strong> Model dilatih di perangkat lokal (smartphone, rumah sakit) tanpa data pernah meninggalkan perangkat. Hanya gradient yang dikirim ke server pusat. Digunakan oleh Google untuk keyboard prediction.</li>
-    <li><strong>Differential Privacy:</strong> Tambahkan noise yang dikalibrasi ke data atau gradient untuk memberikan jaminan matematis bahwa informasi individu tidak bisa diekstrak dari model.</li>
-    <li><strong>Homomorphic Encryption:</strong> Komputasi pada data terenkripsi tanpa perlu mendekripsi — masih sangat lambat untuk praktis.</li>
-    <li><strong>Secure Multi-Party Computation:</strong> Beberapa pihak bisa bersama-sama menghitung fungsi dari data mereka tanpa mengungkapkan data masing-masing.</li>
-  </ul>
-  <div class="code-block"><span class="cm"># Differential Privacy dengan TensorFlow Privacy</span>
-<span class="cm"># pip install tensorflow-privacy</span>
-<span class="kw">import</span> tensorflow <span class="kw">as</span> tf
-<span class="kw">from</span> tensorflow_privacy.privacy.optimizers.dp_optimizer_keras <span class="kw">import</span> DPKerasSGDOptimizer
+<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
+        <span class="fn">super</span>().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
+            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
+            nn.Linear(<span class="num">128</span>, action_dim)
+        )
+    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
 
-<span class="cm"># DP-SGD: SGD dengan differential privacy guarantee</span>
-optimizer = DPKerasSGDOptimizer(
-    l2_norm_clip=<span class="num">1.0</span>,       <span class="cm"># gradient clipping</span>
-    noise_multiplier=<span class="num">1.1</span>,   <span class="cm"># noise level</span>
-    num_microbatches=<span class="num">256</span>,
-    learning_rate=<span class="num">0.01</span>
-)
+<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
+        self.buffer = deque(maxlen=capacity)
+    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
+    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
+    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
 
-model.compile(optimizer=optimizer, loss=<span class="str">'sparse_categorical_crossentropy'</span>, metrics=[<span class="str">'accuracy'</span>])</div>
+<span class="cm"># Training loop DQN</span>
+env = gym.make(<span class="str">'CartPole-v1'</span>)
+policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
+target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
+target_net.load_state_dict(policy_net.state_dict())
+optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
+buffer = ReplayBuffer()</div>
+</div>
 
-  <h3>AI Alignment Problem</h3>
-  <p>Salah satu tantangan terbesar dalam AI jangka panjang: bagaimana memastikan sistem AI yang sangat cerdas bertindak sesuai dengan nilai dan tujuan manusia?</p>
-  <ul>
-    <li><strong>Reward Hacking:</strong> AI menemukan cara untuk memaksimalkan reward yang tidak sesuai dengan tujuan sebenarnya. Contoh klasik: robot pembersih yang belajar menutup matanya agar tidak "melihat" kotoran.</li>
-    <li><strong>Instrumental Convergence:</strong> AI yang sangat cerdas cenderung mengembangkan sub-goals tertentu (self-preservation, resource acquisition) terlepas dari tujuan utamanya.</li>
-    <li><strong>RLHF sebagai Solusi Parsial:</strong> Melatih AI berdasarkan feedback manusia membantu alignment, tapi tidak sempurna — manusia bisa dimanipulasi atau memiliki preferensi yang tidak konsisten.</li>
-    <li><strong>Constitutional AI (Anthropic):</strong> Melatih AI dengan prinsip-prinsip eksplisit dan self-critique untuk meningkatkan keamanan.</li>
-  </ul>
+<div class="materi-section">
+  <h2>🎯 Policy Gradient & PPO</h2>
+  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
+  <h3>PPO (Proximal Policy Optimization)</h3>
+  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
+  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
+<span class="cm"># pip install stable-baselines3</span>
+<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
+<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+
+env = gym.make(<span class="str">'CartPole-v1'</span>)
+
+<span class="cm"># Train PPO</span>
+model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
+            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
+            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
+model.learn(total_timesteps=<span class="num">100000</span>)
+model.save(<span class="str">"ppo_cartpole"</span>)
+
+<span class="cm"># Evaluasi</span>
+obs, _ = env.reset()
+<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
+    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
+    obs, reward, done, _, _ = env.step(action)
+    <span class="kw">if</span> done: obs, _ = env.reset()</div>
+
+  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
+  <ol>
+    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
+    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
+    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
+  </ol>
 </div>
 
 <div class="sources-section">
   <h3>📚 Sumber Referensi</h3>
-  <ul id="ethics-sources"></ul>
+  <ul id="rl-sources"></ul>
 </div>
 `;

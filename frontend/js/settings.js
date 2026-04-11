@@ -1,653 +1,234 @@
+﻿// ══════════════════════════════════════════════
+// KURSUS 7: REINFORCEMENT LEARNING
 // ══════════════════════════════════════════════
-// SETTINGS.JS — All settings tab logic
-// ══════════════════════════════════════════════
 
-const ST_ACCENT_COLORS = [
-  { color:'#7c3aed', name:'Purple' },
-  { color:'#3b82f6', name:'Blue' },
-  { color:'#10b981', name:'Green' },
-  { color:'#f59e0b', name:'Amber' },
-  { color:'#ef4444', name:'Red' },
-  { color:'#ec4899', name:'Pink' },
-  { color:'#06b6d4', name:'Cyan' },
-  { color:'#8b5cf6', name:'Violet' },
-];
-
-const ST_NOTIF_EMAIL = [
-  { key:'notif_course_update',  label:'Course Updates',      desc:'New lessons and course announcements', def:true },
-  { key:'notif_quiz_result',    label:'Quiz Results',        desc:'When your quiz is graded',             def:true },
-  { key:'notif_cert_earned',    label:'Certificate Earned',  desc:'When you complete a course',           def:true },
-  { key:'notif_community',      label:'Community Replies',   desc:'When someone replies to your post',    def:false },
-  { key:'notif_weekly_digest',  label:'Weekly Digest',       desc:'Summary of your weekly progress',      def:true },
-  { key:'notif_promotions',     label:'Promotions & Offers', desc:'Special deals and new features',       def:false },
-];
-
-const ST_NOTIF_PUSH = [
-  { key:'push_streak',     label:'Streak Reminder',  desc:'Daily reminder to keep your streak alive', def:true },
-  { key:'push_deadline',   label:'Deadline Alerts',  desc:'Upcoming project and quiz deadlines',      def:true },
-  { key:'push_new_course', label:'New Courses',      desc:'When new courses are published',           def:false },
-];
-
-const ST_TOPICS = ['Machine Learning','Deep Learning','NLP','Computer Vision','Data Science','Reinforcement Learning','AI Ethics','Python','TensorFlow','PyTorch'];
-const ST_SPEEDS = ['0.75x','1x','1.25x','1.5x','2x'];
-
-// ── Main init ──
-function initSettings() {
-  const session = getSession();
-  if (!session) return;
-
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
-  set('settings-name-input', session.name);
-  set('settings-email-input', session.email);
-
-  const sidebarEmail = document.getElementById('st-sidebar-email');
-  if (sidebarEmail) sidebarEmail.textContent = session.email || '';
-
-  document.querySelectorAll('.user-name').forEach(el => el.textContent = session.name || 'User');
-  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = session.avatar || session.name?.charAt(0) || 'U');
-
-  const prefs = store.get('prefs', {});
-  stSetToggle('toggle-notif',      prefs.notif !== false);
-  stSetToggle('toggle-reminder',   prefs.reminder !== false);
-  stSetToggle('toggle-quiz',       prefs.quiz !== false);
-  stSetToggle('toggle-community',  prefs.community || false);
-
-  stRenderAccentColors('st-color-row');
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-// ── Tab switcher ──
-function switchSettingsTab(tab, btn) {
-  document.querySelectorAll('.st-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.st-section').forEach(s => s.classList.remove('active'));
-  btn.classList.add('active');
-  const section = document.getElementById('st-' + tab);
-  if (section) {
-    section.classList.add('active');
-    if (tab === 'account')       stInitAccount();
-    if (tab === 'notifications') stInitNotifications();
-    if (tab === 'preferences')   stInitPreferences();
-    if (tab === 'privacy')       stInitPrivacy();
-    if (tab === 'billing')       stInitBilling();
-    if (tab === 'appearance')    stInitAppearance();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-  }
-}
-
-// ── Toggle helper ──
-function stSetToggle(id, on) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.dataset.on = on ? 'true' : 'false';
-}
-
-function togglePref(key) {
-  const prefs = store.get('prefs', {});
-  prefs[key] = !prefs[key];
-  store.set('prefs', prefs);
-  stSetToggle('toggle-' + key, prefs[key]);
-  showToast((prefs[key] ? 'Enabled' : 'Disabled') + ': ' + key.replace(/_/g,' '));
-}
-
-// ── Save profile ──
-function saveSettings() {
-  const name = document.getElementById('settings-name-input')?.value.trim();
-  if (!name) { showToast('Nama tidak boleh kosong.'); return; }
-  const users = getUsers();
-  const session = getSession();
-  const user = users.find(u => u.email === session.email);
-  if (user) {
-    user.name = name;
-    user.avatar = name.charAt(0).toUpperCase();
-    saveUsers(users);
-    setSession(user);
-    document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
-    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = user.avatar);
-    showToast('Profil berhasil disimpan! ✓');
-  }
-}
-
-// ── ACCOUNT TAB ──
-function stInitAccount() {
-  const session = getSession();
-  if (!session) return;
-  const users = getUsers();
-  const user = users.find(u => u.email === session.email) || session;
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
-  set('acc-name', user.name);
-  set('acc-email', user.email);
-  set('acc-username', (user.name || '').toLowerCase().replace(/\s+/g,'_'));
-  set('acc-bio', user.bio || '');
-  set('acc-website', user.website || '');
-  set('acc-linkedin', user.linkedin || '');
-  set('acc-github', user.github || '');
-}
-
-function saveAccountInfo() {
-  const name     = document.getElementById('acc-name')?.value.trim();
-  const bio      = document.getElementById('acc-bio')?.value.trim();
-  const website  = document.getElementById('acc-website')?.value.trim();
-  const linkedin = document.getElementById('acc-linkedin')?.value.trim();
-  const github   = document.getElementById('acc-github')?.value.trim();
-  if (!name) { showToast('Nama tidak boleh kosong.'); return; }
-  const session = getSession();
-  const users = getUsers();
-  const user = users.find(u => u.email === session.email);
-  if (user) {
-    Object.assign(user, { name, bio, website, linkedin, github, avatar: name.charAt(0).toUpperCase() });
-    saveUsers(users);
-    setSession(user);
-    document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
-    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = user.avatar);
-  }
-  showToast('Account info saved! ✓');
-}
-
-// ── NOTIFICATIONS TAB ──
-function stInitNotifications() {
-  const prefs = store.get('prefs', {});
-  const render = (listId, items) => {
-    const el = document.getElementById(listId);
-    if (!el) return;
-    el.innerHTML = items.map(item => {
-      const on = prefs[item.key] !== undefined ? prefs[item.key] : item.def;
-      return `<div class="st-pref-item">
-        <div style="flex:1">
-          <div class="st-pref-label">${item.label}</div>
-          <div class="st-pref-sub">${item.desc}</div>
-        </div>
-        <div class="toggle-switch" id="toggle-${item.key}" onclick="togglePref('${item.key}')" data-on="${on}">
-          <div class="toggle-thumb"></div>
-        </div>
-      </div>`;
-    }).join('');
-  };
-  render('notif-email-list', ST_NOTIF_EMAIL);
-  render('notif-push-list', ST_NOTIF_PUSH);
-  const qs = store.get('quiet_start','22:00');
-  const qe = store.get('quiet_end','08:00');
-  const qsEl = document.getElementById('quiet-start');
-  const qeEl = document.getElementById('quiet-end');
-  if (qsEl) qsEl.value = qs;
-  if (qeEl) qeEl.value = qe;
-}
-
-function saveNotifSchedule() {
-  const qs = document.getElementById('quiet-start')?.value;
-  const qe = document.getElementById('quiet-end')?.value;
-  store.set('quiet_start', qs);
-  store.set('quiet_end', qe);
-  showToast('Quiet hours saved: ' + qs + ' – ' + qe + ' ✓');
-}
-
-// ── PREFERENCES TAB ──
-function stInitPreferences() {
-  const prefs = store.get('prefs', {});
-  const savedGoal = store.get('daily_goal', 60);
-  const goalEl = document.getElementById('pref-daily-goal');
-  const goalVal = document.getElementById('pref-goal-val');
-  if (goalEl) goalEl.value = savedGoal;
-  if (goalVal) goalVal.textContent = savedGoal + ' min';
-
-  const timeSlots = ['Morning (6-9 AM)','Afternoon (12-3 PM)','Evening (6-9 PM)','Night (9-12 PM)'];
-  const savedSlots = store.get('pref_time_slots', ['Evening (6-9 PM)']);
-  const slotsEl = document.getElementById('pref-time-slots');
-  if (slotsEl) slotsEl.innerHTML = timeSlots.map(t =>
-    `<button class="cert-ftab ${savedSlots.includes(t)?'active':''}" onclick="stToggleTimeSlot('${t}',this)">${t}</button>`
-  ).join('');
-
-  const savedSpeed = store.get('pref_speed','1x');
-  const speedEl = document.getElementById('pref-speed-btns');
-  if (speedEl) speedEl.innerHTML = ST_SPEEDS.map(s =>
-    `<button class="st-font-btn ${s===savedSpeed?'active':''}" onclick="stSetSpeed('${s}',this)">${s}</button>`
-  ).join('');
-
-  stSetToggle('toggle-autoplay',   prefs.autoplay !== false);
-  stSetToggle('toggle-subtitles',  prefs.subtitles || false);
-
-  const langEl = document.getElementById('pref-lang');
-  if (langEl) langEl.value = store.get('pref_lang','id');
-
-  const savedTopics = store.get('pref_topics', ['Machine Learning','Python','Deep Learning']);
-  const topicsEl = document.getElementById('pref-topics');
-  if (topicsEl) topicsEl.innerHTML = ST_TOPICS.map(t => {
-    const active = savedTopics.includes(t);
-    return `<button class="cm-tag ${active?'active':''}" style="${active?'border-color:var(--accent);color:var(--accent-light);background:rgba(124,58,237,0.1)':''}"
-      onclick="stToggleTopic('${t}',this)">${t}</button>`;
-  }).join('');
-}
-
-function stToggleTimeSlot(slot, btn) {
-  btn.classList.toggle('active');
-  const slots = store.get('pref_time_slots', []);
-  const idx = slots.indexOf(slot);
-  if (idx === -1) slots.push(slot); else slots.splice(idx, 1);
-  store.set('pref_time_slots', slots);
-}
-
-function stSetSpeed(speed, btn) {
-  document.querySelectorAll('#pref-speed-btns .st-font-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  store.set('pref_speed', speed);
-  showToast('Playback speed: ' + speed);
-}
-
-function stToggleTopic(topic, btn) {
-  const topics = store.get('pref_topics', []);
-  const idx = topics.indexOf(topic);
-  if (idx === -1) {
-    topics.push(topic);
-    btn.style.cssText = 'border-color:var(--accent);color:var(--accent-light);background:rgba(124,58,237,0.1)';
-  } else {
-    topics.splice(idx, 1);
-    btn.style.cssText = '';
-  }
-  store.set('pref_topics', topics);
-}
-
-function savePreferences() {
-  const goal = document.getElementById('pref-daily-goal')?.value;
-  const lang = document.getElementById('pref-lang')?.value;
-  store.set('daily_goal', parseInt(goal) || 60);
-  store.set('pref_lang', lang);
-  showToast('Preferences saved! ✓');
-}
-
-function saveTopics() { showToast('Topics saved! ✓'); }
-
-// ── PRIVACY & SECURITY TAB ──
-function stInitPrivacy() {
-  const sessions = [
-    { device:'Chrome on Windows', location:'Jakarta, ID', time:'Active now',  current:true,  icon:'monitor' },
-    { device:'Safari on iPhone',  location:'Jakarta, ID', time:'2 hours ago', current:false, icon:'smartphone' },
-    { device:'Firefox on MacOS',  location:'Bandung, ID', time:'3 days ago',  current:false, icon:'monitor' },
-  ];
-  const el = document.getElementById('active-sessions-list');
-  if (!el) return;
-  el.innerHTML = sessions.map(s => `
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
-      <div style="width:36px;height:36px;border-radius:8px;background:var(--input-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i data-lucide="${s.icon}" style="width:16px;height:16px;color:var(--text-secondary)"></i>
-      </div>
-      <div style="flex:1">
-        <div style="font-size:12px;font-weight:600">${s.device}</div>
-        <div style="font-size:10px;color:var(--text-muted)">${s.location} · ${s.time}</div>
-      </div>
-      ${s.current
-        ? '<span style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(16,185,129,0.15);color:#34d399">Current</span>'
-        : '<button style="font-size:11px;color:var(--danger);background:none;border:1px solid rgba(239,68,68,0.3);border-radius:6px;padding:4px 10px;cursor:pointer" onclick="stRevokeSession(this)">Revoke</button>'}
-    </div>
-  `).join('');
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function stRevokeSession(btn) {
-  btn.closest('div[style*="border-bottom"]')?.remove();
-  showToast('Session revoked.');
-}
-
-function checkPwStrength(pw) {
-  const bar = document.getElementById('pw-strength-fill');
-  const label = document.getElementById('pw-strength-label');
-  if (!bar || !label) return;
-  let score = 0;
-  if (pw.length >= 8) score++;
-  if (/[A-Z]/.test(pw)) score++;
-  if (/[0-9]/.test(pw)) score++;
-  if (/[^A-Za-z0-9]/.test(pw)) score++;
-  const levels = [
-    { pct:0,   color:'transparent', text:'' },
-    { pct:25,  color:'#ef4444',     text:'Weak' },
-    { pct:50,  color:'#f59e0b',     text:'Fair' },
-    { pct:75,  color:'#3b82f6',     text:'Good' },
-    { pct:100, color:'#10b981',     text:'Strong' },
-  ];
-  const lvl = levels[score];
-  bar.style.width = lvl.pct + '%';
-  bar.style.background = lvl.color;
-  label.textContent = lvl.text;
-  label.style.color = lvl.color;
-}
-
-function togglePwField(id, btn) {
-  const input = document.getElementById(id);
-  if (!input) return;
-  input.type = input.type === 'password' ? 'text' : 'password';
-  btn.innerHTML = input.type === 'password'
-    ? '<i data-lucide="eye" style="width:14px;height:14px"></i>'
-    : '<i data-lucide="eye-off" style="width:14px;height:14px"></i>';
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function changePassword() {
-  const current = document.getElementById('pw-current')?.value;
-  const newPw   = document.getElementById('pw-new')?.value;
-  const confirm = document.getElementById('pw-confirm')?.value;
-  if (!current || !newPw || !confirm) { showToast('Semua field wajib diisi.'); return; }
-  const session = getSession();
-  const users = getUsers();
-  const user = users.find(u => u.email === session.email);
-  if (!user || user.password !== current) { showToast('Password saat ini salah.'); return; }
-  if (newPw.length < 6) { showToast('Password baru minimal 6 karakter.'); return; }
-  if (newPw !== confirm) { showToast('Konfirmasi password tidak cocok.'); return; }
-  user.password = newPw;
-  saveUsers(users);
-  ['pw-current','pw-new','pw-confirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  showToast('Password berhasil diubah! ✓');
-}
-
-function setup2FA() {
-  const code = Math.floor(100000 + Math.random() * 900000);
-  alert('Two-Factor Authentication\n\nBackup code: ' + code + '\n\nSimpan kode ini di tempat aman.');
-  showToast('2FA setup initiated!');
-}
-
-function setupSMS2FA() {
-  const phone = prompt('Masukkan nomor HP (contoh: +628123456789):');
-  if (phone) showToast('SMS 2FA akan dikirim ke ' + phone);
-}
-
-function deactivateAccount() {
-  if (confirm('Akun kamu akan dinonaktifkan sementara. Lanjutkan?')) {
-    showToast('Akun dinonaktifkan...');
-    setTimeout(() => { clearSession(); window.location.href = '/login'; }, 2000);
-  }
-}
-
-function confirmDeleteAccount() {
-  if (confirm('Hapus akun permanen? Semua data akan hilang.')) {
-    clearSession();
-    localStorage.clear();
-    window.location.href = '/login';
-  }
-}
-
-// ── BILLING TAB ──
-function stInitBilling() {
-  const plans = [
+const courseRL = {
+  id: 7,
+  curriculum: [
     {
-      name:'Free', price:'Rp 0', period:'/bulan', current:true, disabled:true,
-      features:['Semua kursus gratis','Quiz harian terbatas','Proyek publik','Sertifikat standar'],
-      btnText:'Current Plan',
+      title: "Modul 1: Fondasi Reinforcement Learning",
+      lessons: [
+        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
+        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
+        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
+        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
+      ]
     },
     {
-      name:'Pro', price:'Rp 99K', period:'/bulan', current:false, disabled:false,
-      features:['Semua kursus + premium','Quiz unlimited','AI Playground penuh','Sertifikat premium','Analytics lanjutan','Priority support'],
-      btnText:'Upgrade Now',
+      title: "Modul 2: Tabular Methods",
+      lessons: [
+        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
+        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
+        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
+        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
+      ]
     },
-  ];
-  const el = document.getElementById('billing-plans');
-  if (el) el.innerHTML = plans.map(p => `
-    <div style="background:var(--input-bg);border:1px solid ${p.current?'var(--border)':'var(--accent)'};border-radius:10px;padding:16px">
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px">${p.name}</div>
-      <div style="font-size:20px;font-weight:800;color:${p.current?'var(--text-primary)':'var(--accent-light)'}">${p.price}<span style="font-size:11px;font-weight:400;color:var(--text-muted)">${p.period}</span></div>
-      <div style="margin:10px 0;display:flex;flex-direction:column;gap:5px">
-        ${p.features.map(f=>`<div style="font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:5px"><i data-lucide="check" style="width:11px;height:11px;color:#34d399;flex-shrink:0"></i>${f}</div>`).join('')}
-      </div>
-      <button class="btn ${p.current?'btn-outline':'btn-primary'} btn-full" style="padding:8px;font-size:12px;margin-top:8px;${p.disabled?'opacity:0.5;cursor:not-allowed':''}" ${p.disabled?'disabled':''} onclick="${p.disabled?'':'showToast(\'Redirecting to payment...\')'}">
-        ${p.btnText}
-      </button>
-    </div>
-  `).join('');
-
-  const histEl = document.getElementById('billing-history');
-  if (histEl) histEl.innerHTML = `
-    <div style="text-align:center;padding:24px;color:var(--text-muted)">
-      <i data-lucide="file-text" style="width:32px;height:32px;margin-bottom:8px;opacity:0.4"></i>
-      <div style="font-size:13px">No billing history yet.</div>
-    </div>`;
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
-
-function addPaymentMethod() {
-  const methods = ['Credit/Debit Card','GoPay','OVO','DANA','Bank Transfer'];
-  const choice = prompt('Pilih metode:\n' + methods.map((m,i)=>`${i+1}. ${m}`).join('\n') + '\n\nKetik nomor:');
-  if (choice && methods[parseInt(choice)-1]) showToast(methods[parseInt(choice)-1] + ' added!');
-}
-
-// ── APPEARANCE TAB ──
-function stInitAppearance() {
-  stRenderAccentColors('app-color-row');
-
-  const savedFont = store.get('font_size','medium');
-  const fontEl = document.getElementById('app-font-row');
-  if (fontEl) fontEl.innerHTML = [
-    {size:'small',label:'A-'},{size:'medium',label:'A'},{size:'large',label:'A+'}
-  ].map(f =>
-    `<button class="st-font-btn ${f.size===savedFont?'active':''}" onclick="stSetFontSize('${f.size}',this)">${f.label}</button>`
-  ).join('');
-
-  const savedTheme = store.get('theme','dark');
-  ['light','dark','system'].forEach(t => {
-    const el = document.getElementById('app-theme-'+t);
-    if (el) el.classList.toggle('active', t===savedTheme);
-  });
-
-  const prefs = store.get('prefs',{});
-  stSetToggle('toggle-compact',        prefs.compact || false);
-  stSetToggle('toggle-upgrade-banner', prefs.upgrade_banner !== false);
-  stSetToggle('toggle-animations',     prefs.animations !== false);
-  stSetToggle('toggle-reduce-motion',  prefs.reduce_motion || false);
-}
-
-function stRenderAccentColors(containerId) {
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  const saved = store.get('accent_color','#7c3aed');
-  el.innerHTML = ST_ACCENT_COLORS.map(c =>
-    `<div class="st-color-dot ${c.color===saved?'active':''}" style="background:${c.color}" title="${c.name}" onclick="stSetAccentColor('${c.color}')"></div>`
-  ).join('');
-}
-
-function stSetAccentColor(color) {
-  store.set('accent_color', color);
-  document.documentElement.style.setProperty('--accent', color);
-  stRenderAccentColors('st-color-row');
-  stRenderAccentColors('app-color-row');
-  showToast('Accent color updated!');
-}
-
-function setTheme(theme) {
-  store.set('theme', theme);
-  ['light','dark','system'].forEach(t => {
-    const el = document.getElementById('theme-'+t) || document.getElementById('app-theme-'+t);
-    if (el) el.classList.toggle('active', t===theme);
-  });
-  if (theme === 'light') showToast('Light mode akan tersedia di versi Pro!');
-  else showToast('Theme: ' + theme.charAt(0).toUpperCase() + theme.slice(1));
-}
-
-function stSetFontSize(size, btn) {
-  document.querySelectorAll('#app-font-row .st-font-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const sizes = { small:'13px', medium:'14px', large:'16px' };
-  document.documentElement.style.fontSize = sizes[size];
-  store.set('font_size', size);
-  const preview = document.getElementById('app-font-preview');
-  if (preview) preview.style.fontSize = sizes[size];
-  showToast('Font size: ' + size);
-}
-
-// alias for general tab
-function setFontSize(size) {
-  const btn = document.querySelector('.st-font-btn');
-  stSetFontSize(size, btn || document.createElement('button'));
-}
-
-function renderAccentColors() { stRenderAccentColors('st-color-row'); }
-function setAccentColor(color) { stSetAccentColor(color); }
-
-// ══ EXTRA SETTINGS ACTIONS ══
-
-function triggerAvatarUpload() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.onchange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { showToast('Ukuran foto maksimal 2MB.'); return; }
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      // Store as data URL and show as background
-      store.set('avatar_img', ev.target.result);
-      document.querySelectorAll('.user-avatar').forEach(el => {
-        el.style.backgroundImage = `url(${ev.target.result})`;
-        el.style.backgroundSize = 'cover';
-        el.style.backgroundPosition = 'center';
-        el.textContent = '';
-      });
-      showToast('Foto profil berhasil diupdate! ✓');
-    };
-    reader.readAsDataURL(file);
-  };
-  input.click();
-}
-
-function downloadUserData() {
-  const session = getSession();
-  const data = {
-    profile: session,
-    bookmarks: store.get('bookmarks_v2', []),
-    projects: store.get('projects', []),
-    quiz_scores: store.get('quiz_scores', {}),
-    preferences: store.get('prefs', {}),
-    exported_at: new Date().toISOString(),
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `lunetix-data-${session?.name?.toLowerCase().replace(/\s+/g,'-') || 'user'}-${Date.now()}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Data berhasil diunduh! ✓');
-}
-
-function connectSocialAccount(provider) {
-  const session = getSession();
-  const key = 'connected_' + provider.toLowerCase();
-  const isConnected = store.get(key, false);
-  if (isConnected) {
-    if (confirm(`Disconnect akun ${provider}?`)) {
-      store.set(key, false);
-      showToast(`${provider} disconnected.`);
-      stInitAccount();
+    {
+      title: "Modul 3: Deep Reinforcement Learning",
+      lessons: [
+        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
+        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
+        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
+        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
+        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
+      ]
+    },
+    {
+      title: "Modul 4: Advanced RL",
+      lessons: [
+        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
+        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
+        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
+        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
+      ]
     }
-  } else {
-    // Simulate OAuth flow
-    showToast(`Menghubungkan ke ${provider}...`);
-    setTimeout(() => {
-      store.set(key, true);
-      showToast(`${provider} berhasil terhubung! ✓`);
-      stInitAccount();
-    }, 1500);
-  }
-}
+  ],
+  quiz: [
+    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
+    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
+    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
+    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
+    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
+  ],
+  sources: [
+    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
+    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
+    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
+    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
+    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
+    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
+    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
+  ]
+};
 
-function showRedeemModal() {
-  const code = prompt('Masukkan kode redeem kamu:\n\n(Coba: LUNETIX20, BELAJAR50, NEWUSER)');
-  if (!code) return;
-  const validCodes = { 'LUNETIX20':'20% diskon Pro Plan', 'BELAJAR50':'50% diskon Pro Plan', 'NEWUSER':'30% diskon untuk pengguna baru', 'FREEMONTH':'1 bulan Pro gratis' };
-  const reward = validCodes[code.toUpperCase().trim()];
-  if (reward) {
-    showToast(`🎉 Kode valid! Reward: ${reward}`);
-    store.set('promo_code', code.toUpperCase().trim());
-  } else {
-    showToast('❌ Kode tidak valid atau sudah digunakan.');
-  }
-}
+courseRL.materi = `
+<div class="materi-section">
+  <h2>🎮 Apa itu Reinforcement Learning?</h2>
+  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
+  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
+  <h3>Pencapaian Luar Biasa RL</h3>
+  <ul>
+    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
+    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
+    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
+    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
+    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
+  </ul>
+</div>
 
-function showHelpCenter() {
-  const w = window.open('', '_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>Help Center - Lunetix</title>
-  <style>
-    body{font-family:'Inter',sans-serif;background:#0a0a1a;color:#fff;padding:40px;max-width:800px;margin:0 auto}
-    h1{color:#a78bfa;margin-bottom:8px}
-    .sub{color:#6060a0;margin-bottom:32px;font-size:14px}
-    .faq{background:#12122a;border:1px solid rgba(124,58,237,0.2);border-radius:12px;padding:20px;margin-bottom:14px;cursor:pointer}
-    .faq h3{font-size:14px;font-weight:600;margin-bottom:0;display:flex;justify-content:space-between}
-    .faq p{font-size:13px;color:#a0a0c0;margin-top:10px;line-height:1.6;display:none}
-    .faq.open p{display:block}
-    .contact{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(157,92,246,0.08));border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:24px;margin-top:24px;text-align:center}
-    .btn{background:linear-gradient(135deg,#7c3aed,#9d5cf6);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
-  </style></head><body>
-  <h1>🌙 Help Center</h1>
-  <div class="sub">Temukan jawaban untuk pertanyaan umum tentang Lunetix</div>
-  ${[
-    ['Bagaimana cara memulai belajar?','Pilih kursus dari halaman Courses, klik Start, dan ikuti materi secara berurutan. Setiap kursus memiliki video, materi teks, dan quiz.'],
-    ['Bagaimana cara mendapatkan sertifikat?','Selesaikan semua lesson dalam kursus dan lulus quiz akhir dengan skor minimal 70%. Sertifikat akan otomatis tersedia di halaman Certificates.'],
-    ['Apa perbedaan Free dan Pro Plan?','Free Plan memberikan akses ke semua kursus gratis dan quiz terbatas. Pro Plan membuka semua kursus premium, AI Playground penuh, analytics lanjutan, dan sertifikat premium.'],
-    ['Bagaimana cara reset password?','Pergi ke Settings > Privacy & Security > Change Password. Masukkan password lama dan password baru minimal 6 karakter.'],
-    ['Apakah materi bisa diakses offline?','Fitur download offline tersedia untuk pengguna Pro. Upgrade ke Pro untuk mengakses fitur ini.'],
-    ['Bagaimana cara menghubungi support?','Kirim email ke support@lunetix.ai atau gunakan form di bawah ini. Tim kami akan merespons dalam 24 jam.'],
-  ].map(([q,a])=>`<div class="faq" onclick="this.classList.toggle('open')"><h3>${q} <span>+</span></h3><p>${a}</p></div>`).join('')}
-  <div class="contact">
-    <h3 style="margin-bottom:8px">Masih butuh bantuan?</h3>
-    <p style="color:#a0a0c0;font-size:13px;margin-bottom:16px">Tim support kami siap membantu kamu</p>
-    <button class="btn" onclick="window.location.href='mailto:support@lunetix.ai'">📧 Email Support</button>
-  </div>
-  </body></html>`);
-  w.document.close();
-}
+<div class="materi-section">
+  <h2>🏗️ Komponen Dasar RL</h2>
+  <ul>
+    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
+    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
+    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
+    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
+    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
+    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
+    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
+    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
+  </ul>
 
-// ── Certificate Share ──
-function shareCertToLinkedIn() {
-  const session = getSession();
-  const text = encodeURIComponent(`I just earned a certificate from Lunetix AI Learning Platform! 🎓 #AI #MachineLearning #Lunetix`);
-  const url = encodeURIComponent('https://lunetix.ai');
-  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&summary=${text}`, '_blank');
-  showToast('Membuka LinkedIn untuk share...');
-}
+  <h3>Markov Decision Process (MDP)</h3>
+  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
+  <ul>
+    <li><strong>S:</strong> State space</li>
+    <li><strong>A:</strong> Action space</li>
+    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
+    <li><strong>R(s,a):</strong> Reward function</li>
+    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
+  </ul>
+  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
+</div>
 
-function shareCertToTwitter() {
-  const session = getSession();
-  const text = encodeURIComponent(`Just earned my AI certificate from @Lunetix! 🚀 Learning Machine Learning & Deep Learning. #AI #MachineLearning #Lunetix`);
-  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
-  showToast('Membuka Twitter/X untuk share...');
-}
+<div class="materi-section">
+  <h2>📋 Q-Learning</h2>
+  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
+  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
+  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
 
-// ── Bookmark Filter Panel ──
-function toggleBmFilterPanel() {
-  const existing = document.getElementById('bm-filter-panel');
-  if (existing) { existing.remove(); return; }
+env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
+n_states = env.observation_space.n   <span class="cm"># 16</span>
+n_actions = env.action_space.n       <span class="cm"># 4</span>
 
-  const panel = document.createElement('div');
-  panel.id = 'bm-filter-panel';
-  panel.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:24px;z-index:300;min-width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.5)';
-  panel.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-      <h3 style="font-size:15px;font-weight:600">Filter Bookmark</h3>
-      <button onclick="document.getElementById('bm-filter-panel').remove()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:18px">✕</button>
-    </div>
-    <div style="margin-bottom:14px">
-      <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px">Kategori</label>
-      <div style="display:flex;flex-wrap:wrap;gap:6px" id="bm-fp-cats">
-        ${['Semua','Machine Learning','Deep Learning','NLP','Computer Vision','Data Science'].map(c=>`<button class="cert-ftab" onclick="applyBmFilter('${c}',this)">${c}</button>`).join('')}
-      </div>
-    </div>
-    <div style="margin-bottom:14px">
-      <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:8px">Urutkan</label>
-      <select id="bm-fp-sort" style="width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:#fff;font-size:13px;outline:none">
-        <option>Terbaru</option><option>Terlama</option><option>A-Z</option><option>Z-A</option>
-      </select>
-    </div>
-    <button class="btn btn-primary btn-full" onclick="applyBmFilterAndClose()" style="padding:10px">Terapkan Filter</button>
-  `;
-  document.body.appendChild(panel);
-  if (typeof lucide !== 'undefined') lucide.createIcons();
-}
+<span class="cm"># Inisialisasi Q-table</span>
+Q = np.zeros((n_states, n_actions))
 
-function applyBmFilter(cat, btn) {
-  document.querySelectorAll('#bm-fp-cats .cert-ftab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
+<span class="cm"># Hyperparameters</span>
+alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
+gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
+epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
+epsilon_decay = <span class="num">0.995</span>
+epsilon_min = <span class="num">0.01</span>
+n_episodes = <span class="num">10000</span>
 
-function applyBmFilterAndClose() {
-  const activeBtn = document.querySelector('#bm-fp-cats .cert-ftab.active');
-  const cat = activeBtn?.textContent || 'Semua';
-  document.getElementById('bm-filter-panel')?.remove();
-  if (typeof renderBookmarks === 'function') renderBookmarks();
-  showToast(`Filter diterapkan: ${cat}`);
-}
+rewards_history = []
 
+<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
+    state, _ = env.reset()
+    total_reward = <span class="num">0</span>
+
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="cm"># Epsilon-greedy policy</span>
+        <span class="kw">if</span> np.random.random() < epsilon:
+            action = env.action_space.sample()  <span class="cm"># explore</span>
+        <span class="kw">else</span>:
+            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
+
+        next_state, reward, terminated, truncated, _ = env.step(action)
+        done = terminated <span class="kw">or</span> truncated
+
+        <span class="cm"># Q-Learning update</span>
+        Q[state, action] += alpha * (
+            reward + gamma * np.max(Q[next_state]) - Q[state, action]
+        )
+
+        state = next_state
+        total_reward += reward
+        <span class="kw">if</span> done: <span class="kw">break</span>
+
+    epsilon = max(epsilon_min, epsilon * epsilon_decay)
+    rewards_history.append(total_reward)
+
+<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
+</div>
+
+<div class="materi-section">
+  <h2>🧠 Deep Q-Network (DQN)</h2>
+  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
+  <ul>
+    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
+    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
+  </ul>
+  <div class="code-block"><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">import</span> random
+
+<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
+        <span class="fn">super</span>().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
+            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
+            nn.Linear(<span class="num">128</span>, action_dim)
+        )
+    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
+
+<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
+        self.buffer = deque(maxlen=capacity)
+    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
+    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
+    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
+
+<span class="cm"># Training loop DQN</span>
+env = gym.make(<span class="str">'CartPole-v1'</span>)
+policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
+target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
+target_net.load_state_dict(policy_net.state_dict())
+optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
+buffer = ReplayBuffer()</div>
+</div>
+
+<div class="materi-section">
+  <h2>🎯 Policy Gradient & PPO</h2>
+  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
+  <h3>PPO (Proximal Policy Optimization)</h3>
+  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
+  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
+<span class="cm"># pip install stable-baselines3</span>
+<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
+<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
+
+env = gym.make(<span class="str">'CartPole-v1'</span>)
+
+<span class="cm"># Train PPO</span>
+model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
+            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
+            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
+model.learn(total_timesteps=<span class="num">100000</span>)
+model.save(<span class="str">"ppo_cartpole"</span>)
+
+<span class="cm"># Evaluasi</span>
+obs, _ = env.reset()
+<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
+    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
+    obs, reward, done, _, _ = env.step(action)
+    <span class="kw">if</span> done: obs, _ = env.reset()</div>
+
+  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
+  <ol>
+    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
+    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
+    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
+  </ol>
+</div>
+
+<div class="sources-section">
+  <h3>📚 Sumber Referensi</h3>
+  <ul id="rl-sources"></ul>
+</div>
+`;

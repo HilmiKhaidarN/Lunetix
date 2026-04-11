@@ -1,274 +1,234 @@
-// ── Dashboard Logic ──
+﻿// ══════════════════════════════════════════════
+// KURSUS 7: REINFORCEMENT LEARNING
+// ══════════════════════════════════════════════
 
-// ── Global Search ──
-const searchIndex = [
-  { title:'Machine Learning Fundamentals', type:'Kursus',    page:'courses',      icon:'book-open',    color:'#a78bfa' },
-  { title:'Python for AI',                 type:'Kursus',    page:'courses',      icon:'book-open',    color:'#4ade80' },
-  { title:'Deep Learning Essentials',      type:'Kursus',    page:'courses',      icon:'book-open',    color:'#60a5fa' },
-  { title:'Natural Language Processing',   type:'Kursus',    page:'courses',      icon:'book-open',    color:'#c084fc' },
-  { title:'Computer Vision with Python',   type:'Kursus',    page:'courses',      icon:'book-open',    color:'#34d399' },
-  { title:'Dashboard',                     type:'Halaman',   page:'dashboard',    icon:'layout-dashboard', color:'#a78bfa' },
-  { title:'AI Playground',                 type:'Halaman',   page:'playground',   icon:'cpu',          color:'#fbbf24' },
-  { title:'Projects',                      type:'Halaman',   page:'projects',     icon:'folder',       color:'#34d399' },
-  { title:'Quizzes',                       type:'Halaman',   page:'quizzes',      icon:'help-circle',  color:'#60a5fa' },
-  { title:'Community',                     type:'Halaman',   page:'community',    icon:'users',        color:'#f97316' },
-  { title:'Certificates',                  type:'Halaman',   page:'certificates', icon:'award',        color:'#fbbf24' },
-  { title:'Analytics',                     type:'Halaman',   page:'analytics',    icon:'bar-chart',    color:'#a78bfa' },
-  { title:'Bookmarks',                     type:'Halaman',   page:'bookmarks',    icon:'bookmark',     color:'#60a5fa' },
-  { title:'Settings',                      type:'Halaman',   page:'settings',     icon:'settings',     color:'#34d399' },
-  { title:'Machine Learning Basics Quiz',  type:'Quiz',      page:'quizzes',      icon:'help-circle',  color:'#a78bfa' },
-  { title:'Python for AI Quiz',            type:'Quiz',      page:'quizzes',      icon:'help-circle',  color:'#4ade80' },
-  { title:'Deep Learning Fundamentals Quiz',type:'Quiz',     page:'quizzes',      icon:'help-circle',  color:'#60a5fa' },
-  { title:'Upgrade to Pro',                type:'Aksi',      page:'billing',      icon:'zap',          color:'#fbbf24' },
-];
+const courseRL = {
+  id: 7,
+  curriculum: [
+    {
+      title: "Modul 1: Fondasi Reinforcement Learning",
+      lessons: [
+        { icon: "▶️", title: "Agent, Environment, State, Action, Reward", duration: "18 min" },
+        { icon: "▶️", title: "Markov Decision Process (MDP)", duration: "22 min" },
+        { icon: "▶️", title: "Policy, Value Function, Q-Function", duration: "20 min" },
+        { icon: "▶️", title: "Exploration vs Exploitation Tradeoff", duration: "15 min" },
+      ]
+    },
+    {
+      title: "Modul 2: Tabular Methods",
+      lessons: [
+        { icon: "▶️", title: "Dynamic Programming: Value Iteration", duration: "20 min" },
+        { icon: "▶️", title: "Monte Carlo Methods", duration: "18 min" },
+        { icon: "▶️", title: "Q-Learning & SARSA", duration: "25 min" },
+        { icon: "💻", title: "Lab: Q-Learning di FrozenLake (OpenAI Gym)", duration: "40 min" },
+      ]
+    },
+    {
+      title: "Modul 3: Deep Reinforcement Learning",
+      lessons: [
+        { icon: "▶️", title: "Deep Q-Network (DQN)", duration: "25 min" },
+        { icon: "▶️", title: "Policy Gradient Methods: REINFORCE", duration: "22 min" },
+        { icon: "▶️", title: "Actor-Critic: A2C, A3C", duration: "22 min" },
+        { icon: "▶️", title: "PPO (Proximal Policy Optimization)", duration: "25 min" },
+        { icon: "💻", title: "Lab: DQN untuk Atari Games", duration: "55 min" },
+      ]
+    },
+    {
+      title: "Modul 4: Advanced RL",
+      lessons: [
+        { icon: "▶️", title: "Multi-Agent RL", duration: "22 min" },
+        { icon: "▶️", title: "Model-Based RL", duration: "20 min" },
+        { icon: "▶️", title: "RLHF (RL from Human Feedback) — Cara ChatGPT Dilatih", duration: "25 min" },
+        { icon: "💻", title: "Proyek: Robot Navigation dengan PPO", duration: "60 min" },
+      ]
+    }
+  ],
+  quiz: [
+    { q: "Apa yang dimaksud dengan 'reward' dalam Reinforcement Learning?", options: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], answer: 1 },
+    { q: "Apa itu Exploration vs Exploitation tradeoff?", options: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"], answer: 1 },
+    { q: "Apa perbedaan Q-Learning dan SARSA?", options: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], answer: 1 },
+    { q: "Apa inovasi utama DQN dibanding Q-Learning biasa?", options: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], answer: 1 },
+    { q: "RLHF digunakan untuk melatih model apa?", options: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], answer: 1 },
+  ],
+  sources: [
+    { label: "TheAIInternship – Reinforcement Learning Complete Guide 2025", url: "https://theaiinternship.com/blog/reinforcement-learning-complete-guide-2025/" },
+    { label: "Indium Tech – Policy Gradient Methods in RL", url: "https://www.indium.tech/blog/policy-gradient-methods/" },
+    { label: "Medium – Complete Guide to Modern RL: From Basics to PPO", url: "https://medium.com/@harshal.dhandrut/a-complete-guide-to-modern-reinforcement-learning-from-basics-to-ppo-6474b0fd24d0" },
+    { label: "Sesen.ai – From Q-Tables to Policy Gradients", url: "https://sesen.ai/blog/topics/reinforcement-learning" },
+    { label: "Arxiv – Practical Introduction to Deep RL", url: "https://arxiv.org/html/2505.08295v1" },
+    { label: "OpenAI Gym Documentation", url: "https://gymnasium.farama.org/" },
+    { label: "Stable Baselines3 Documentation", url: "https://stable-baselines3.readthedocs.io/" },
+  ]
+};
 
-function showSearchSuggestions(q) {
-  const dd = document.getElementById('search-dropdown');
-  if (!dd) return;
-  if (!q.trim()) { dd.style.display = 'none'; return; }
-  const results = searchIndex.filter(item =>
-    item.title.toLowerCase().includes(q.toLowerCase()) ||
-    item.type.toLowerCase().includes(q.toLowerCase())
-  ).slice(0, 6);
-  if (!results.length) {
-    dd.innerHTML = `<div style="padding:16px;text-align:center;font-size:13px;color:var(--text-muted)">Tidak ada hasil untuk "${q}"</div>`;
-    dd.style.display = 'block'; return;
-  }
-  dd.innerHTML = results.map(r => `
-    <div onclick="searchGo('${r.page}','${r.title}')" style="display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='var(--input-bg)'" onmouseout="this.style.background='transparent'">
-      <div style="width:28px;height:28px;border-radius:8px;background:rgba(124,58,237,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <i data-lucide="${r.icon}" style="width:13px;height:13px;color:${r.color}"></i>
-      </div>
-      <div style="flex:1">
-        <div style="font-size:13px;font-weight:500">${r.title}</div>
-        <div style="font-size:10px;color:var(--text-muted)">${r.type}</div>
-      </div>
-      <i data-lucide="arrow-right" style="width:12px;height:12px;color:var(--text-muted)"></i>
-    </div>`).join('');
-  dd.style.display = 'block';
-  lucide.createIcons();
-}
+courseRL.materi = `
+<div class="materi-section">
+  <h2>🎮 Apa itu Reinforcement Learning?</h2>
+  <p>Reinforcement Learning (RL) adalah paradigma ML di mana <strong>agent belajar membuat keputusan melalui trial-and-error</strong> dengan berinteraksi dengan environment. Agent menerima reward untuk tindakan baik dan penalty untuk tindakan buruk, dengan tujuan memaksimalkan total reward kumulatif jangka panjang.</p>
+  <p>RL berbeda dari Supervised Learning (tidak ada label) dan Unsupervised Learning (ada reward/feedback, bukan hanya data). RL adalah cara belajar yang paling mirip dengan cara manusia dan hewan belajar.</p>
+  <h3>Pencapaian Luar Biasa RL</h3>
+  <ul>
+    <li><strong>AlphaGo (2016):</strong> Mengalahkan juara dunia Go Lee Sedol — permainan yang dianggap terlalu kompleks untuk AI.</li>
+    <li><strong>AlphaZero (2017):</strong> Belajar Chess, Go, dan Shogi dari nol hanya dalam beberapa jam, mengalahkan semua program sebelumnya.</li>
+    <li><strong>OpenAI Five (2019):</strong> Mengalahkan tim profesional Dota 2 — game dengan action space yang sangat besar.</li>
+    <li><strong>ChatGPT/GPT-4:</strong> Menggunakan RLHF (RL from Human Feedback) untuk alignment dengan preferensi manusia.</li>
+    <li><strong>AlphaFold 2:</strong> Memecahkan masalah protein folding yang telah menantang ilmuwan selama 50 tahun.</li>
+  </ul>
+</div>
 
-function searchGo(page, title) {
-  document.getElementById('topbar-search').value = '';
-  document.getElementById('search-dropdown').style.display = 'none';
-  if (page === 'billing') { showUpgradeModal(); return; }
-  if (window.navigateTo) navigateTo(page);
-  showToast('Membuka: ' + title);
-}
+<div class="materi-section">
+  <h2>🏗️ Komponen Dasar RL</h2>
+  <ul>
+    <li><strong>Agent:</strong> Entitas yang belajar dan membuat keputusan (robot, program game, trading bot).</li>
+    <li><strong>Environment:</strong> Dunia tempat agent berinteraksi (game, simulator fisika, pasar saham).</li>
+    <li><strong>State (s):</strong> Representasi situasi saat ini dari environment.</li>
+    <li><strong>Action (a):</strong> Tindakan yang bisa dilakukan agent di state tertentu.</li>
+    <li><strong>Reward (r):</strong> Sinyal numerik yang menunjukkan seberapa baik tindakan agent.</li>
+    <li><strong>Policy (π):</strong> Strategi agent — fungsi yang memetakan state ke action. π(a|s) = probabilitas memilih action a di state s.</li>
+    <li><strong>Value Function V(s):</strong> Expected total reward dari state s mengikuti policy π.</li>
+    <li><strong>Q-Function Q(s,a):</strong> Expected total reward dari mengambil action a di state s, lalu mengikuti policy π.</li>
+  </ul>
 
-function handleTopbarSearch(e) {
-  if (e.key === 'Escape') {
-    document.getElementById('search-dropdown').style.display = 'none';
-    e.target.value = '';
-  }
-  if (e.key === 'Enter') {
-    const q = e.target.value.trim();
-    if (q) searchGo('courses', q);
-  }
-}
+  <h3>Markov Decision Process (MDP)</h3>
+  <p>Framework matematis untuk RL. MDP didefinisikan oleh tuple (S, A, P, R, γ):</p>
+  <ul>
+    <li><strong>S:</strong> State space</li>
+    <li><strong>A:</strong> Action space</li>
+    <li><strong>P(s'|s,a):</strong> Transition probability — probabilitas pindah ke state s' dari state s dengan action a</li>
+    <li><strong>R(s,a):</strong> Reward function</li>
+    <li><strong>γ (gamma):</strong> Discount factor (0-1) — seberapa penting reward masa depan vs sekarang</li>
+  </ul>
+  <p><strong>Bellman Equation:</strong> V(s) = max_a [R(s,a) + γ Σ P(s'|s,a) V(s')]</p>
+</div>
 
-// Close search on outside click
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('#topbar-search-wrap')) {
-    const dd = document.getElementById('search-dropdown');
-    if (dd) dd.style.display = 'none';
-  }
-});
+<div class="materi-section">
+  <h2>📋 Q-Learning</h2>
+  <p>Q-Learning adalah algoritma RL off-policy yang belajar Q-function optimal secara langsung, tanpa perlu model environment. Menggunakan Bellman equation untuk update Q-values secara iteratif.</p>
+  <p><strong>Update Rule:</strong> Q(s,a) ← Q(s,a) + α[r + γ max_a' Q(s',a') - Q(s,a)]</p>
+  <div class="code-block"><span class="kw">import</span> numpy <span class="kw">as</span> np
+<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
 
-// Keyboard shortcut Cmd/Ctrl+K
-document.addEventListener('keydown', (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault();
-    document.getElementById('topbar-search')?.focus();
-  }
-});
-const notifData = [
-  { id:1, icon:'check-circle', iconBg:'rgba(16,185,129,0.15)', iconColor:'#34d399', text:'<strong>Python for AI</strong> kursus selesai! Sertifikat tersedia.', time:'2 jam lalu', unread:true },
-  { id:2, icon:'help-circle',  iconBg:'rgba(124,58,237,0.15)', iconColor:'#a78bfa', text:'Quiz <strong>Deep Learning Fundamentals</strong> — Skor kamu 80%!', time:'5 jam lalu', unread:true },
-  { id:3, icon:'award',        iconBg:'rgba(245,158,11,0.15)', iconColor:'#fbbf24', text:'Selamat! Kamu mendapat badge <strong>Quick Learner</strong>.', time:'1 hari lalu', unread:false },
-  { id:4, icon:'users',        iconBg:'rgba(59,130,246,0.15)', iconColor:'#60a5fa', text:'<strong>Budi P.</strong> membalas postinganmu di Community.', time:'2 hari lalu', unread:false },
-  { id:5, icon:'zap',          iconBg:'rgba(239,68,68,0.15)',  iconColor:'#f87171', text:'Streak kamu <strong>7 hari</strong>! Terus pertahankan.', time:'3 hari lalu', unread:false },
-];
-let notifRead = new Set();
+env = gym.make(<span class="str">'FrozenLake-v1'</span>, is_slippery=<span class="kw">False</span>)
+n_states = env.observation_space.n   <span class="cm"># 16</span>
+n_actions = env.action_space.n       <span class="cm"># 4</span>
 
-function renderNotifList() {
-  const el = document.getElementById('notif-list'); if (!el) return;
-  const unreadCount = notifData.filter(n => n.unread && !notifRead.has(n.id)).length;
-  const dot = document.getElementById('notif-dot');
-  if (dot) dot.style.display = unreadCount > 0 ? 'block' : 'none';
+<span class="cm"># Inisialisasi Q-table</span>
+Q = np.zeros((n_states, n_actions))
 
-  el.innerHTML = notifData.map(n => {
-    const isUnread = n.unread && !notifRead.has(n.id);
-    return `<div class="notif-item ${isUnread?'unread':''}" onclick="markNotifRead(${n.id})">
-      <div class="notif-icon" style="background:${n.iconBg}">
-        <i data-lucide="${n.icon}" style="width:14px;height:14px;color:${n.iconColor}"></i>
-      </div>
-      <div style="flex:1">
-        <div class="notif-text">${n.text}</div>
-        <div class="notif-time">${n.time}</div>
-      </div>
-      ${isUnread ? '<div class="notif-unread-dot"></div>' : ''}
-    </div>`;
-  }).join('');
-  lucide.createIcons();
-}
+<span class="cm"># Hyperparameters</span>
+alpha = <span class="num">0.1</span>    <span class="cm"># learning rate</span>
+gamma = <span class="num">0.99</span>   <span class="cm"># discount factor</span>
+epsilon = <span class="num">1.0</span>  <span class="cm"># exploration rate</span>
+epsilon_decay = <span class="num">0.995</span>
+epsilon_min = <span class="num">0.01</span>
+n_episodes = <span class="num">10000</span>
 
-function markNotifRead(id) {
-  notifRead.add(id);
-  renderNotifList();
-}
+rewards_history = []
 
-function markAllRead() {
-  notifData.forEach(n => notifRead.add(n.id));
-  renderNotifList();
-  showToast('Semua notifikasi ditandai dibaca.');
-}
+<span class="kw">for</span> episode <span class="kw">in</span> range(n_episodes):
+    state, _ = env.reset()
+    total_reward = <span class="num">0</span>
 
-function toggleNotifDropdown() {
-  const dd = document.getElementById('notif-dropdown');
-  const pd = document.getElementById('profile-dropdown');
-  if (!dd) return;
-  const isOpen = dd.style.display !== 'none';
-  closeAllDropdowns();
-  if (!isOpen) { dd.style.display = 'block'; renderNotifList(); lucide.createIcons(); }
-}
+    <span class="kw">while</span> <span class="kw">True</span>:
+        <span class="cm"># Epsilon-greedy policy</span>
+        <span class="kw">if</span> np.random.random() < epsilon:
+            action = env.action_space.sample()  <span class="cm"># explore</span>
+        <span class="kw">else</span>:
+            action = np.argmax(Q[state])         <span class="cm"># exploit</span>
 
-function toggleProfileDropdown() {
-  const dd = document.getElementById('profile-dropdown');
-  const nd = document.getElementById('notif-dropdown');
-  if (!dd) return;
-  const isOpen = dd.style.display !== 'none';
-  closeAllDropdowns();
-  if (!isOpen) { dd.style.display = 'block'; lucide.createIcons(); }
-}
+        next_state, reward, terminated, truncated, _ = env.step(action)
+        done = terminated <span class="kw">or</span> truncated
 
-function closeAllDropdowns() {
-  const nd = document.getElementById('notif-dropdown');
-  const pd = document.getElementById('profile-dropdown');
-  if (nd) nd.style.display = 'none';
-  if (pd) pd.style.display = 'none';
-}
+        <span class="cm"># Q-Learning update</span>
+        Q[state, action] += alpha * (
+            reward + gamma * np.max(Q[next_state]) - Q[state, action]
+        )
 
-function doLogout() {
-  closeAllDropdowns();
-  clearSession();
-  window.location.href = '/login';
-}
+        state = next_state
+        total_reward += reward
+        <span class="kw">if</span> done: <span class="kw">break</span>
 
-// Close dropdowns when clicking outside
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('#tb-notif-wrap') && !e.target.closest('#tb-profile-wrap')) {
-    closeAllDropdowns();
-  }
-});
+    epsilon = max(epsilon_min, epsilon * epsilon_decay)
+    rewards_history.append(total_reward)
 
-// Make navigateTo global so dropdowns can call it
-window.navigateTo = null; // will be set in DOMContentLoaded
+<span class="fn">print</span>(<span class="str">f"Avg reward (last 100): {np.mean(rewards_history[-100:]):.3f}"</span>)</div>
+</div>
 
-document.addEventListener('DOMContentLoaded', () => {
-  requireAuth();
+<div class="materi-section">
+  <h2>🧠 Deep Q-Network (DQN)</h2>
+  <p>DQN menggabungkan Q-Learning dengan Deep Neural Network untuk menangani state space yang sangat besar (seperti pixel gambar). Dua inovasi kunci yang membuat DQN stabil:</p>
+  <ul>
+    <li><strong>Experience Replay:</strong> Simpan transisi (s, a, r, s') dalam replay buffer. Sample mini-batch secara acak untuk training — mengurangi korelasi antar sampel.</li>
+    <li><strong>Target Network:</strong> Gunakan network terpisah (target network) untuk menghitung target Q-values. Update target network secara periodik — mengurangi oscillation.</li>
+  </ul>
+  <div class="code-block"><span class="kw">import</span> torch
+<span class="kw">import</span> torch.nn <span class="kw">as</span> nn
+<span class="kw">from</span> collections <span class="kw">import</span> deque
+<span class="kw">import</span> random
 
-  const session = getSession();
+<span class="kw">class</span> <span class="fn">DQN</span>(nn.Module):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, state_dim, action_dim):
+        <span class="fn">super</span>().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_dim, <span class="num">128</span>), nn.ReLU(),
+            nn.Linear(<span class="num">128</span>, <span class="num">128</span>), nn.ReLU(),
+            nn.Linear(<span class="num">128</span>, action_dim)
+        )
+    <span class="kw">def</span> <span class="fn">forward</span>(self, x): <span class="kw">return</span> self.net(x)
 
-  // Populate user info
-  document.querySelectorAll('.user-name').forEach(el => el.textContent = session.name);
-  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = session.avatar || session.name.charAt(0));
-  document.querySelectorAll('.user-streak').forEach(el => el.textContent = session.streak || 7);
-  document.querySelectorAll('.user-points').forEach(el => el.textContent = (session.points || 1250).toLocaleString());
+<span class="kw">class</span> <span class="fn">ReplayBuffer</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, capacity=<span class="num">10000</span>):
+        self.buffer = deque(maxlen=capacity)
+    <span class="kw">def</span> <span class="fn">push</span>(self, *args): self.buffer.append(args)
+    <span class="kw">def</span> <span class="fn">sample</span>(self, batch_size): <span class="kw">return</span> random.sample(self.buffer, batch_size)
+    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> len(self.buffer)
 
-  // Topbar email
-  const tbEmail = document.getElementById('tb-email');
-  if (tbEmail) tbEmail.textContent = session.email || '';
+<span class="cm"># Training loop DQN</span>
+env = gym.make(<span class="str">'CartPole-v1'</span>)
+policy_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
+target_net = DQN(env.observation_space.shape[<span class="num">0</span>], env.action_space.n)
+target_net.load_state_dict(policy_net.state_dict())
+optimizer = torch.optim.Adam(policy_net.parameters(), lr=<span class="num">1e-3</span>)
+buffer = ReplayBuffer()</div>
+</div>
 
-  // Greeting
-  const hour = new Date().getHours();
-  let greeting = 'Good morning';
-  if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
-  else if (hour >= 17) greeting = 'Good evening';
-  const greetEl = document.getElementById('greeting');
-  if (greetEl) greetEl.textContent = `${greeting}, ${session.name}! 👋`;
+<div class="materi-section">
+  <h2>🎯 Policy Gradient & PPO</h2>
+  <p>Policy Gradient methods langsung mengoptimasi policy π tanpa perlu Q-function. Lebih cocok untuk continuous action spaces (seperti kontrol robot).</p>
+  <h3>PPO (Proximal Policy Optimization)</h3>
+  <p>PPO adalah algoritma state-of-the-art yang digunakan oleh OpenAI untuk melatih ChatGPT (via RLHF). Membatasi seberapa besar policy bisa berubah dalam satu update — mencegah "catastrophic forgetting".</p>
+  <div class="code-block"><span class="cm"># Menggunakan Stable Baselines3 — library RL terpopuler</span>
+<span class="cm"># pip install stable-baselines3</span>
+<span class="kw">from</span> stable_baselines3 <span class="kw">import</span> PPO, DQN, SAC
+<span class="kw">import</span> gymnasium <span class="kw">as</span> gym
 
-  // Navigation — pages already in DOM, just show/hide
-  const navItems = document.querySelectorAll('.nav-item[data-page]');
+env = gym.make(<span class="str">'CartPole-v1'</span>)
 
-  const pageTitles = {
-    dashboard:'Dashboard', courses:'All Courses', playground:'AI Playground',
-    projects:'Projects', quizzes:'Quizzes', community:'Community',
-    certificates:'Certificates', analytics:'Analytics', bookmarks:'Bookmarks', settings:'Settings'
-  };
+<span class="cm"># Train PPO</span>
+model = PPO(<span class="str">'MlpPolicy'</span>, env, verbose=<span class="num">1</span>,
+            learning_rate=<span class="num">3e-4</span>, n_steps=<span class="num">2048</span>,
+            batch_size=<span class="num">64</span>, n_epochs=<span class="num">10</span>)
+model.learn(total_timesteps=<span class="num">100000</span>)
+model.save(<span class="str">"ppo_cartpole"</span>)
 
-  function navigateTo(pageId) {
-    closeAllDropdowns();
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    navItems.forEach(n => n.classList.remove('active'));
+<span class="cm"># Evaluasi</span>
+obs, _ = env.reset()
+<span class="kw">for</span> _ <span class="kw">in</span> range(<span class="num">1000</span>):
+    action, _ = model.predict(obs, deterministic=<span class="kw">True</span>)
+    obs, reward, done, _, _ = env.step(action)
+    <span class="kw">if</span> done: obs, _ = env.reset()</div>
 
-    const targetPage = document.getElementById('page-' + pageId);
-    const targetNav  = document.querySelector(`.nav-item[data-page="${pageId}"]`);
-    if (targetPage) targetPage.classList.add('active');
-    if (targetNav)  targetNav.classList.add('active');
+  <h3>RLHF (Reinforcement Learning from Human Feedback)</h3>
+  <p>Teknik yang digunakan untuk melatih ChatGPT dan model bahasa modern agar sesuai dengan preferensi manusia:</p>
+  <ol>
+    <li><strong>Supervised Fine-tuning (SFT):</strong> Fine-tune LLM pada demonstrasi manusia berkualitas tinggi.</li>
+    <li><strong>Reward Model Training:</strong> Latih model reward dari perbandingan output yang dibuat manusia (mana yang lebih baik?).</li>
+    <li><strong>RL Optimization:</strong> Gunakan PPO untuk mengoptimasi LLM berdasarkan reward model, dengan KL penalty untuk mencegah drift terlalu jauh dari SFT model.</li>
+  </ol>
+</div>
 
-    const titleEl = document.getElementById('page-title');
-    if (titleEl) titleEl.textContent = pageTitles[pageId] || pageId;
-
-    if (typeof initPage === 'function') initPage(pageId);
-    lucide.createIcons();
-    closeSidebar();
-  }
-
-  // Expose globally
-  window.navigateTo = navigateTo;
-
-  navItems.forEach(item => {
-    item.addEventListener('click', () => navigateTo(item.dataset.page));
-  });
-
-  // Sidebar mobile
-  const menuToggle = document.getElementById('menu-toggle');
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-
-  if (menuToggle) menuToggle.addEventListener('click', () => {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
-  });
-
-  function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-  }
-
-  if (overlay) overlay.addEventListener('click', closeSidebar);
-
-  // Logout button (settings page)
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) logoutBtn.addEventListener('click', doLogout);
-
-  // Animate progress bars
-  setTimeout(() => {
-    document.querySelectorAll('.progress-fill[data-width]').forEach(bar => {
-      bar.style.width = bar.dataset.width + '%';
-    });
-  }, 300);
-
-  // Apply stored avatar image if exists
-  const avatarImg = store.get('avatar_img', null);
-  if (avatarImg) {
-    document.querySelectorAll('.user-avatar').forEach(el => {
-      el.style.backgroundImage = `url(${avatarImg})`;
-      el.style.backgroundSize = 'cover';
-      el.style.backgroundPosition = 'center';
-      el.textContent = '';
-    });
-  }
-
-  // Init notification dot
-  renderNotifList();
-
-  // Default page
-  navigateTo('dashboard');
-  if (typeof initDashboard === 'function') initDashboard();
-});
-
-
-
+<div class="sources-section">
+  <h3>📚 Sumber Referensi</h3>
+  <ul id="rl-sources"></ul>
+</div>
+`;
