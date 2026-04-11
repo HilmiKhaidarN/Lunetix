@@ -2,6 +2,8 @@
 
 > The next-generation platform to learn Artificial Intelligence through interactive courses, AI tools, and real-world projects.
 
+> ⚠️ **Warning:** This project is currently a **frontend-only demo**. All data is stored in `localStorage` — there is no backend, no real database, and no actual authentication. Passwords are stored in plain text in the browser. Do not use real personal information. This is built for portfolio/demonstration purposes only.
+
 ## ✨ Features
 
 - **Dashboard** — Learning stats, progress tracking, streak, AI study tips
