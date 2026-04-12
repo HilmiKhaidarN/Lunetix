@@ -30,6 +30,24 @@ function openCourse(id) {
     return;
   }
 
+  // Cek akses kursus
+  const session = getSession();
+  if (session && typeof checkCourseAccess === 'function') {
+    const userId = String(session.id);
+    const access = checkCourseAccess(userId, id);
+    if (!access.hasAccess) {
+      if (access.status === 'expired') {
+        showToast(`⏰ Akses kursus "${course.title}" telah berakhir. Upgrade ke Pro untuk melanjutkan.`);
+        if (typeof showUpgradeModal === 'function') showUpgradeModal();
+        return;
+      }
+      if (access.status === 'not_claimed') {
+        showToast(`🔒 Klaim kursus ini terlebih dahulu untuk mengakses materi.`);
+        return;
+      }
+    }
+  }
+
   buildModal(course, content);
   document.getElementById('course-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -64,6 +82,12 @@ function buildModal(course, content) {
 
   // Quiz
   buildQuiz(content.quiz);
+
+  // Certificate
+  const session = getSession();
+  if (session && typeof renderCertificateButton === 'function') {
+    renderCertificateButton(String(session.id), course.id);
+  }
 
   // Reset to first tab
   switchCDTab('curriculum');

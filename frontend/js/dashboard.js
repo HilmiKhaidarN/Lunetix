@@ -265,6 +265,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Init notification dot
   renderNotifList();
 
+  // Init course access system (refresh statuses, check expiry notifications)
+  if (typeof initCourseAccess === 'function') initCourseAccess();
+
+  // Show claim popup for new users who haven't claimed a course yet
+  const isNewUser = new URLSearchParams(window.location.search).get('new') === '1';
+  if (typeof showClaimPopup === 'function') {
+    if (isNewUser) {
+      // Langsung tampilkan popup untuk user baru
+      setTimeout(showClaimPopup, 500);
+    } else {
+      showClaimPopup();
+    }
+  }
+
   // Default page
   navigateTo('dashboard');
   if (typeof initDashboard === 'function') initDashboard();

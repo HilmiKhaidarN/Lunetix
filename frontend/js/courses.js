@@ -19,6 +19,14 @@ function renderCourses() {
   const container = document.getElementById('courses-grid');
   if (!container) return;
 
+  // Ambil status klaim pengguna
+  const session = getSession();
+  const userId = session ? String(session.id) : null;
+  const claimedMap = {};
+  if (userId && typeof getClaimedCourses === 'function') {
+    getClaimedCourses(userId).forEach(c => { claimedMap[c.courseId] = c; });
+  }
+
   let filtered = coursesData.filter(c => {
     const matchLevel = activeLevel === 'All' || c.level === activeLevel;
     const matchCat = activeCategory === 'All' || c.category === activeCategory;
@@ -34,19 +42,42 @@ function renderCourses() {
     return;
   }
 
-  container.innerHTML = filtered.map(c => `
-    <div class="course-card" onclick="openCourse(${c.id})">
-      <div class="course-thumb" style="background:${c.thumbBg}">
+  container.innerHTML = filtered.map(c => {
+    const claimed = claimedMap[c.id];
+    const isExpired = claimed && claimed.status === 'expired';
+    const isClaimed = claimed && !isExpired;
+    const isLocked = !claimed && c.status !== 'coming';
+
+    let statusBadge = '';
+    let lockOverlay = '';
+    if (isClaimed) {
+      statusBadge = `<span class="badge badge-green" style="font-size:10px">✓ Diklaim</span>`;
+    } else if (isExpired) {
+      statusBadge = `<span class="badge badge-yellow" style="font-size:10px">⏰ Kedaluwarsa</span>`;
+    } else if (isLocked) {
+      lockOverlay = `<div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);border-radius:6px;padding:4px 8px;font-size:10px;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:4px"><i data-lucide="lock" style="width:10px;height:10px"></i> Terkunci</div>`;
+    }
+
+    const btnLabel = c.status === 'coming' ? 'Coming Soon'
+      : isExpired ? 'Akses Berakhir'
+      : isClaimed ? (c.progress > 0 ? 'Continue' : 'Start')
+      : 'Lihat Preview';
+
+    return `
+    <div class="course-card" onclick="openCourse(${c.id})" style="position:relative">
+      <div class="course-thumb" style="background:${c.thumbBg};position:relative">
         <i data-lucide="${c.thumbIcon}" style="width:48px;height:48px;color:${c.thumbColor}"></i>
+        ${lockOverlay}
       </div>
       <div class="course-body">
-        <div style="display:flex;gap:6px;margin-bottom:8px">
+        <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
           <span class="badge badge-purple">${c.category}</span>
           <span class="badge ${c.level === 'Beginner' ? 'badge-green' : c.level === 'Advanced' ? 'badge-yellow' : 'badge-purple'}">${c.level}</span>
+          ${statusBadge}
         </div>
         <h4>${c.title}</h4>
         <div class="course-level">⭐ ${c.rating} · ${c.students} students</div>
-        ${c.progress > 0 ? `
+        ${c.progress > 0 && isClaimed ? `
           <div class="course-progress-label">
             <span>Progress</span><span>${c.progress}%</span>
           </div>
@@ -57,12 +88,12 @@ function renderCourses() {
         <div class="course-meta">
           <span>⏱️ ${c.duration}</span>
           <button class="btn btn-primary" style="padding:6px 14px;font-size:11px" onclick="event.stopPropagation();openCourse(${c.id})">
-            ${c.status === 'continue' ? 'Continue' : c.status === 'coming' ? 'Coming Soon' : 'Start'}
+            ${btnLabel}
           </button>
         </div>
       </div>
     </div>
-  `).join('');
+  `}).join('');
   lucide.createIcons();
 }
 

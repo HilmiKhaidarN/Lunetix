@@ -203,11 +203,17 @@
         <button class="cd-tab" data-tab="quiz" onclick="switchCDTab('quiz')">
           <i data-lucide="brain" style="width:14px;height:14px"></i> Quiz
         </button>
+        <button class="cd-tab" data-tab="certificate" onclick="switchCDTab('certificate')">
+          <i data-lucide="award" style="width:14px;height:14px"></i> Sertifikat
+        </button>
       </div>
       <div class="cd-body">
         <div class="cd-section active" id="cd-curriculum"></div>
         <div class="cd-section" id="cd-materi"></div>
         <div class="cd-section" id="cd-quiz"></div>
+        <div class="cd-section" id="cd-certificate">
+          <div id="cd-cert-section"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -2108,6 +2114,11 @@
 <!-- App modules -->
 <script src="/frontend/js/courses.js"></script>
 <script src="/frontend/js/course-detail.js"></script>
+<script src="/frontend/js/courseAccess.js"></script>
+<script src="/frontend/js/quizAccess.js"></script>
+<script src="/frontend/js/lessonProgress.js"></script>
+<script src="/frontend/js/certificateAccess.js"></script>
+<script src="/frontend/js/notificationAccess.js"></script>
 <script src="/frontend/js/playground.js"></script>
 <script src="/frontend/js/projects.js"></script>
 <script src="/frontend/js/quizzes.js"></script>

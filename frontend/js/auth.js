@@ -125,7 +125,7 @@ function handleRegister(e) {
   users.push(newUser);
   saveUsers(users);
   setSession(newUser);
-  window.location.href = '/dashboard';
+  window.location.href = '/dashboard?new=1';
 }
 
 function showError(el, msg) {
