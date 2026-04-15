@@ -2,7 +2,11 @@
 // API.JS — Centralized API client
 // ══════════════════════════════════════════════
 
-const API_BASE = 'http://localhost:3000/api';
+// Auto-detect: pakai /api (relative) di production Vercel,
+// pakai localhost saat development lokal
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3000/api'
+  : '/api';
 
 /**
  * Helper fetch dengan auth token otomatis
