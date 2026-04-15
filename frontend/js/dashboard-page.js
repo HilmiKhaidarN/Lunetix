@@ -282,6 +282,8 @@ function renderDbStreak() {
   const el = document.getElementById('db-streak-dots'); if (!el) return;
   const session = getSession();
   const streak = session?.streak || 0;
+  const titleEl = document.getElementById('db-streak-title');
+  if (titleEl) titleEl.textContent = streak + ' Day Streak';
   const days = ['SAT','SUN','MON','TUE','WED','THU','FRI'];
   el.innerHTML = `<div class="db-streak-dots">${days.map((d,i)=>`
     <div style="text-align:center">

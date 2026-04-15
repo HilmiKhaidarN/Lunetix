@@ -1,4 +1,15 @@
 ﻿// â”€â”€ Dashboard Logic â”€â”€
+// -- Update topbar stats dari session --
+function updateTopbarStats() {
+  const session = getSession();
+  if (!session) return;
+  const streakEl = document.querySelector('.user-streak');
+  const pointsEl = document.querySelector('.user-points');
+  if (streakEl) streakEl.textContent = session.streak || 0;
+  if (pointsEl) pointsEl.textContent = (session.points || 0).toLocaleString();
+}
+document.addEventListener('DOMContentLoaded', updateTopbarStats);
+
 
 // â”€â”€ Global Search â”€â”€
 const searchIndex = [
