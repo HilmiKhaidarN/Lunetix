@@ -327,21 +327,21 @@ function togglePwField(id, btn) {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-function changePassword() {
+async function changePassword() {
   const current = document.getElementById('pw-current')?.value;
   const newPw   = document.getElementById('pw-new')?.value;
   const confirm = document.getElementById('pw-confirm')?.value;
   if (!current || !newPw || !confirm) { showToast('Semua field wajib diisi.'); return; }
-  const session = getSession();
-  const users = getUsers();
-  const user = users.find(u => u.email === session.email);
-  if (!user || user.password !== current) { showToast('Password saat ini salah.'); return; }
   if (newPw.length < 6) { showToast('Password baru minimal 6 karakter.'); return; }
   if (newPw !== confirm) { showToast('Konfirmasi password tidak cocok.'); return; }
-  user.password = newPw;
-  saveUsers(users);
-  ['pw-current','pw-new','pw-confirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  showToast('Password berhasil diubah! âœ“');
+  try {
+    await AuthAPI.changePassword({ currentPassword: current, newPassword: newPw });
+    ['pw-current','pw-new','pw-confirm'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    showToast('Password berhasil diubah! v');
+  } catch (err) {
+    const msg = err?.error || 'Gagal mengubah password.';
+    showToast(msg);
+  }
 }
 
 function setup2FA() {

@@ -87,6 +87,17 @@ async function recordAttempt(req, res) {
 
   if (error) return res.status(500).json({ error: error.message });
 
+  // Kirim notifikasi jika lulus
+  if (passed) {
+    const { createNotification } = require('./notificationsController');
+    createNotification(userId, {
+      icon: 'check-circle',
+      iconBg: 'rgba(16,185,129,0.15)',
+      iconColor: '#34d399',
+      text: `Quiz <strong>${quizId}</strong> lulus! Skor kamu ${Math.round(score)}%.`,
+    }).catch(() => {});
+  }
+
   return res.status(201).json({
     success: true,
     attemptsToday: todayCount + 1,

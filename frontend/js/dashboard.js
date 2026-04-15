@@ -83,55 +83,87 @@ document.addEventListener('keydown', (e) => {
     document.getElementById('topbar-search')?.focus();
   }
 });
-const notifData = [
-  { id:1, icon:'check-circle', iconBg:'rgba(16,185,129,0.15)', iconColor:'#34d399', text:'<strong>Python for AI</strong> kursus selesai! Sertifikat tersedia.', time:'2 jam lalu', unread:true },
-  { id:2, icon:'help-circle',  iconBg:'rgba(124,58,237,0.15)', iconColor:'#a78bfa', text:'Quiz <strong>Deep Learning Fundamentals</strong> â€” Skor kamu 80%!', time:'5 jam lalu', unread:true },
-  { id:3, icon:'award',        iconBg:'rgba(245,158,11,0.15)', iconColor:'#fbbf24', text:'Selamat! Kamu mendapat badge <strong>Quick Learner</strong>.', time:'1 hari lalu', unread:false },
-  { id:4, icon:'users',        iconBg:'rgba(59,130,246,0.15)', iconColor:'#60a5fa', text:'<strong>Budi P.</strong> membalas postinganmu di Community.', time:'2 hari lalu', unread:false },
-  { id:5, icon:'zap',          iconBg:'rgba(239,68,68,0.15)',  iconColor:'#f87171', text:'Streak kamu <strong>7 hari</strong>! Terus pertahankan.', time:'3 hari lalu', unread:false },
-];
-let notifRead = new Set();
+// notifData diisi dari API
+let notifData = [];
+
+async function loadNotifications() {
+  const session = getSession();
+  if (!session) return;
+  try {
+    const data = await NotificationsAPI.getAll();
+    notifData = data.notifications.map(n => ({
+      id:        n.id,
+      icon:      n.icon,
+      iconBg:    n.icon_bg,
+      iconColor: n.icon_color,
+      text:      n.text,
+      time:      timeAgo(n.created_at),
+      unread:    !n.is_read,
+    }));
+  } catch (err) {
+    // Fallback: notif kosong jika API tidak tersedia
+    console.warn('[Notif] API tidak tersedia.', err);
+    notifData = [];
+  }
+}
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1)   return 'Baru saja';
+  if (m < 60)  return m + ' menit lalu';
+  const h = Math.floor(m / 60);
+  if (h < 24)  return h + ' jam lalu';
+  const d = Math.floor(h / 24);
+  if (d < 7)   return d + ' hari lalu';
+  return Math.floor(d / 7) + ' minggu lalu';
+}
 
 function renderNotifList() {
   const el = document.getElementById('notif-list'); if (!el) return;
-  const unreadCount = notifData.filter(n => n.unread && !notifRead.has(n.id)).length;
+  const unreadCount = notifData.filter(n => n.unread).length;
   const dot = document.getElementById('notif-dot');
   if (dot) dot.style.display = unreadCount > 0 ? 'block' : 'none';
 
+  if (!notifData.length) {
+    el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Belum ada notifikasi.</div>';
+    return;
+  }
+
   el.innerHTML = notifData.map(n => {
-    const isUnread = n.unread && !notifRead.has(n.id);
-    return `<div class="notif-item ${isUnread?'unread':''}" onclick="markNotifRead(${n.id})">
-      <div class="notif-icon" style="background:${n.iconBg}">
-        <i data-lucide="${n.icon}" style="width:14px;height:14px;color:${n.iconColor}"></i>
+    return <div class="notif-item " onclick="markNotifRead('')">
+      <div class="notif-icon" style="background:">
+        <i data-lucide="" style="width:14px;height:14px;color:"></i>
       </div>
       <div style="flex:1">
-        <div class="notif-text">${n.text}</div>
-        <div class="notif-time">${n.time}</div>
+        <div class="notif-text"></div>
+        <div class="notif-time"></div>
       </div>
-      ${isUnread ? '<div class="notif-unread-dot"></div>' : ''}
-    </div>`;
+      
+    </div>;
   }).join('');
   lucide.createIcons();
 }
 
 function markNotifRead(id) {
-  notifRead.add(id);
+  const n = notifData.find(x => x.id === id);
+  if (n) n.unread = false;
   renderNotifList();
+  NotificationsAPI.markRead(id).catch(() => {});
 }
 
 function markAllRead() {
-  notifData.forEach(n => notifRead.add(n.id));
+  notifData.forEach(n => n.unread = false);
   renderNotifList();
+  NotificationsAPI.markAllRead().catch(() => {});
   showToast('Semua notifikasi ditandai dibaca.');
 }
-
-function toggleNotifDropdown() {
   const dd = document.getElementById('notif-dropdown');
   const pd = document.getElementById('profile-dropdown');
   if (!dd) return;
   const isOpen = dd.style.display !== 'none';
   closeAllDropdowns();
-  if (!isOpen) { dd.style.display = 'block'; renderNotifList(); lucide.createIcons(); }
+  if (!isOpen) { dd.style.display = 'block'; loadNotifications().then(renderNotifList); lucide.createIcons(); }
 }
 
 function toggleProfileDropdown() {

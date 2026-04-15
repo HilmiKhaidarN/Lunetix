@@ -135,4 +135,39 @@ async function updateProfile(req, res) {
   return res.json({ success: true, user: profile });
 }
 
-module.exports = { register, login, getMe, updateProfile };
+// PUT /api/auth/password
+async function changePassword(req, res) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
+
+  const token = authHeader.split(' ')[1];
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) return res.status(401).json({ error: 'Invalid token' });
+
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'Semua field wajib diisi.' });
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ error: 'Password baru minimal 6 karakter.' });
+  }
+
+  // Verifikasi password lama dengan re-login
+  const { error: verifyErr } = await supabase.auth.signInWithPassword({
+    email: user.email,
+    password: currentPassword,
+  });
+  if (verifyErr) {
+    return res.status(401).json({ error: 'Password saat ini salah.' });
+  }
+
+  // Update password via Supabase Admin
+  const { error: updateErr } = await supabase.auth.admin.updateUserById(user.id, {
+    password: newPassword,
+  });
+  if (updateErr) return res.status(500).json({ error: updateErr.message });
+
+  return res.json({ success: true, message: 'Password berhasil diubah.' });
+}
+
+module.exports = { register, login, getMe, updateProfile, changePassword };

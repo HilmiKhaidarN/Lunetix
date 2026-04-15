@@ -127,6 +127,16 @@ async function issueCertificate(req, res) {
     .single();
 
   if (insertErr) return res.status(500).json({ error: insertErr.message });
+
+  // Kirim notifikasi sertifikat diterbitkan
+  const { createNotification } = require('./notificationsController');
+  createNotification(userId, {
+    icon: 'award',
+    iconBg: 'rgba(245,158,11,0.15)',
+    iconColor: '#fbbf24',
+    text: `Selamat! Sertifikat <strong>${course.title}</strong> berhasil diterbitkan.`,
+  }).catch(() => {});
+
   return res.status(201).json({ success: true, certificate: cert });
 }
 

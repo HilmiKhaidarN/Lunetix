@@ -49,6 +49,7 @@ const AuthAPI = {
   login: (body) => apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   getMe: () => apiFetch('/auth/me'),
   updateProfile: (body) => apiFetch('/auth/profile', { method: 'PUT', body: JSON.stringify(body) }),
+  changePassword: (body) => apiFetch('/auth/password', { method: 'PUT', body: JSON.stringify(body) }),
 };
 
 // ── Quiz ──
@@ -72,4 +73,11 @@ const LessonsAPI = {
 const CertificatesAPI = {
   getMine: () => apiFetch('/certificates'),
   issue: (courseId) => apiFetch(`/certificates/${courseId}`, { method: 'POST' }),
+};
+
+// ── Notifications ──
+const NotificationsAPI = {
+  getAll:      () => apiFetch('/notifications'),
+  markAllRead: () => apiFetch('/notifications/read-all', { method: 'PUT' }),
+  markRead:    (id) => apiFetch(`/notifications/${id}/read`, { method: 'PUT' }),
 };
