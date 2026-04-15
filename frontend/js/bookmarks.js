@@ -1,26 +1,13 @@
-// ══ BOOKMARKS ══
-
-const defaultBookmarks = [
-  { id:1, title:'Machine Learning Fundamentals', sub:'Deep Learning Essentials', type:'course',      category:'Machine Learning', time:'2 hari lalu',   progress:70, bg:'linear-gradient(135deg,#1e1b4b,#312e81)', icon:'cpu',           iconColor:'#a78bfa', typeColor:'#a78bfa', typeBg:'rgba(124,58,237,0.2)' },
-  { id:2, title:'Python for AI',                 sub:'Kursus · Beginner',        type:'course',      category:'Machine Learning', time:'5 hari lalu',   progress:45, bg:'linear-gradient(135deg,#14532d,#166534)', icon:'code-2',        iconColor:'#4ade80', typeColor:'#4ade80', typeBg:'rgba(16,185,129,0.2)' },
-  { id:3, title:'Backpropagation Explained',     sub:'Deep Learning Essentials', type:'lesson',      category:'Deep Learning',    time:'1 minggu lalu', progress:0,  bg:'linear-gradient(135deg,#1e3a5f,#1e40af)', icon:'play-circle',   iconColor:'#60a5fa', typeColor:'#60a5fa', typeBg:'rgba(59,130,246,0.2)' },
-  { id:4, title:'Sentiment Analysis API',        sub:'GitHub',                   type:'project',     category:'NLP',              time:'1 minggu lalu', progress:0,  bg:'linear-gradient(135deg,#3b1f5e,#6d28d9)', icon:'folder',        iconColor:'#c084fc', typeColor:'#c084fc', typeBg:'rgba(168,85,247,0.2)' },
-  { id:5, title:'Tips Belajar Deep Learning',    sub:'Community',                type:'discussion',  category:'Deep Learning',    time:'3 minggu lalu', progress:0,  bg:'linear-gradient(135deg,#7f1d1d,#dc2626)', icon:'message-circle',iconColor:'#f87171', typeColor:'#f87171', typeBg:'rgba(239,68,68,0.2)' },
-  { id:6, title:'Intro to Neural Networks',      sub:'Deep Learning Essentials', type:'lesson',      category:'Deep Learning',    time:'3 hari lalu',   progress:0,  bg:'linear-gradient(135deg,#1e3a5f,#1e40af)', icon:'play-circle',   iconColor:'#60a5fa', typeColor:'#60a5fa', typeBg:'rgba(59,130,246,0.2)' },
-  { id:7, title:'Computer Vision Roadmap 2024',  sub:'Community Post',           type:'article',     category:'Computer Vision',  time:'1 minggu lalu', progress:0,  bg:'linear-gradient(135deg,#1c3a2e,#065f46)', icon:'file-text',     iconColor:'#34d399', typeColor:'#34d399', typeBg:'rgba(16,185,129,0.2)' },
-  { id:8, title:'Image Classifier with CNN',     sub:'Computer Vision',          type:'project',     category:'Computer Vision',  time:'2 minggu lalu', progress:0,  bg:'linear-gradient(135deg,#1c3a2e,#065f46)', icon:'folder',        iconColor:'#34d399', typeColor:'#34d399', typeBg:'rgba(16,185,129,0.2)' },
-  { id:9, title:'Attention Mechanism in Transformer', sub:'NLP Advanced',        type:'lesson',      category:'NLP',              time:'3 minggu lalu', progress:0,  bg:'linear-gradient(135deg,#3b1f5e,#6d28d9)', icon:'play-circle',   iconColor:'#c084fc', typeColor:'#c084fc', typeBg:'rgba(168,85,247,0.2)' },
-];
+﻿// ══ BOOKMARKS ══
 
 const bmTypeLabels = { course:'Kursus', lesson:'Pelajaran', article:'Artikel', project:'Proyek', quiz:'Quiz', discussion:'Diskusi' };
-const bmWeekActivity = [3,5,2,7,4,8,6];
-const bmWeekLabels   = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+const bmWeekLabels = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
 
 let bmActiveFilter = 'all';
 let bmSearchQuery  = '';
 let bmListTab      = 'all';
 
-function getBmItems() { return store.get('bookmarks_v2', defaultBookmarks); }
+function getBmItems() { return store.get('bookmarks_v2', []); }
 function saveBmItems(b) { store.set('bookmarks_v2', b); }
 
 function renderBookmarks() {

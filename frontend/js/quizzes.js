@@ -1,4 +1,4 @@
-// -- QUIZZES --
+﻿// -- QUIZZES --
 // QUIZZES
 // ----------------------------------------------
 const quizBank = [
@@ -67,12 +67,6 @@ const quizCategories = [
   { name:'Computer Vision',  count:7,  icon:'eye',          bg:'rgba(16,185,129,0.15)', color:'#34d399' },
   { name:'AI Ethics',        count:4,  icon:'shield',       bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
 ];
-const quizRecentActivity = [
-  { text:'Scored 90% on Python for AI',              pts:'+150 pts', time:'2 hours ago', color:'#34d399' },
-  { text:'Completed Machine Learning Basics',        pts:'+100 pts', time:'1 day ago',   color:'#a78bfa' },
-  { text:'Scored 80% on Deep Learning Fundamentals', pts:'+160 pts', time:'2 days ago',  color:'#60a5fa' },
-  { text:'Started NLP Basics Quiz',                  pts:'+20 pts',  time:'3 days ago',  color:'#fbbf24' },
-];
 
 let activeQuiz = null, quizCurrentQ = 0, quizScore = 0, quizAnswered = {}, activeQzCat = 'all';
 
@@ -129,7 +123,21 @@ function renderQzList() {
 }
 function renderQzRecentActivity() {
   const el = document.getElementById('qz-recent-activity'); if (!el) return;
-  el.innerHTML = quizRecentActivity.map(a=>`<div class="qz-recent-item"><div class="qz-recent-dot" style="background:${a.color}20"><i data-lucide="zap" style="width:12px;height:12px;color:${a.color}"></i></div><div style="flex:1"><div class="qz-recent-text">${a.text}</div><div class="qz-recent-time">${a.time}</div></div><div class="qz-recent-pts">${a.pts}</div></div>`).join('');
+  const scores = store.get('quiz_scores', {});
+  if (!Object.keys(scores).length) {
+    el.innerHTML = `<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:12px">Belum ada aktivitas quiz.</div>`;
+    return;
+  }
+  const colors = ['#34d399','#a78bfa','#60a5fa','#fbbf24'];
+  el.innerHTML = Object.entries(scores).map(([id, score], i) => {
+    const quiz = quizBank.find(q => q.id === id);
+    const color = colors[i % colors.length];
+    return `<div class="qz-recent-item">
+      <div class="qz-recent-dot" style="background:${color}20"><i data-lucide="zap" style="width:12px;height:12px;color:${color}"></i></div>
+      <div style="flex:1"><div class="qz-recent-text">Scored ${score}% on ${quiz?.title || id}</div></div>
+      <div class="qz-recent-pts" style="color:${color}">Best: ${score}%</div>
+    </div>`;
+  }).join('');
   lucide.createIcons();
 }
 function startQuiz(id) {

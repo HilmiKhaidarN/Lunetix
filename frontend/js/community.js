@@ -1,19 +1,5 @@
-// -- COMMUNITY --
-// COMMUNITY
-// ----------------------------------------------
-const defaultPosts = [
-  { id:1, author:'Arman',  avatar:'A', avatarBg:'linear-gradient(135deg,#7c3aed,#9d5cf6)', badge:'Top Contributor', time:'2 jam lalu',  tag:'Machine Learning', tagColor:'#a78bfa', tagBg:'rgba(124,58,237,0.15)', title:'Baru selesai kursus Machine Learning Fundamentals!', body:'Proyek prediksi harga rumah berhasil dengan akurasi 89%. Terima kasih Lunetix ??\nNext goal: belajar model deployment. Ada saran resource bagus?', likes:24, replies:8,  liked:false, reactors:['D','B','S','R'], extraReactors:5 },
-  { id:2, author:'Siti R.',avatar:'S', avatarBg:'linear-gradient(135deg,#1e40af,#3b82f6)', badge:'',               time:'5 jam lalu',  tag:'Deep Learning',    tagColor:'#60a5fa', tagBg:'rgba(59,130,246,0.15)',  title:'Ada yang bisa bantu? Stuck di Backpropagation ??',    body:'Gradient-nya selalu NaN setelah beberapa epoch. Learning rate sudah kecil tapi masih sama.\nAda tips debugging?',                                                                likes:12, replies:15, liked:false, reactors:['A','B','D','R'], extraReactors:8 },
-  { id:3, author:'Budi P.',avatar:'B', avatarBg:'linear-gradient(135deg,#065f46,#10b981)', badge:'',               time:'1 hari lalu', tag:'NLP',              tagColor:'#34d399', tagBg:'rgba(16,185,129,0.15)', title:'Tips buat mulai NLP: dari NLTK ke Transformers',      body:'Menurutku fondasi preprocessing itu kunci. Tokenization, stemming, TF-IDF dulu.\nBaru lanjut ke BERT atau model modern lainnya.',                                              likes:26, replies:15, liked:false, reactors:['D','A','S'],   extraReactors:12 },
-  { id:4, author:'Dewi K.',avatar:'D', avatarBg:'linear-gradient(135deg,#7f1d1d,#dc2626)', badge:'',               time:'2 jam lalu',  tag:'Computer Vision',  tagColor:'#f87171', tagBg:'rgba(239,68,68,0.15)',  title:'YOLOv8 beneran gila sih performanya!',               body:'Real-time object detection di webcam bisa 60+ FPS di laptop biasa. Highly recommend buat yang mau belajar Computer Vision!',                                                   likes:35, replies:20, liked:false, reactors:['A','B','S','R'], extraReactors:15 },
-];
-const leaderboard = [
-  { name:'Dewi K.', xp:4250, avatar:'D', bg:'linear-gradient(135deg,#7f1d1d,#dc2626)' },
-  { name:'Budi P.', xp:3890, avatar:'B', bg:'linear-gradient(135deg,#065f46,#10b981)' },
-  { name:'Arman',   xp:1250, avatar:'A', bg:'linear-gradient(135deg,#7c3aed,#9d5cf6)' },
-  { name:'Siti R.', xp:980,  avatar:'S', bg:'linear-gradient(135deg,#1e40af,#3b82f6)' },
-  { name:'Reza M.', xp:760,  avatar:'R', bg:'linear-gradient(135deg,#92400e,#f59e0b)' },
-];
+﻿// -- COMMUNITY --
+
 const trendingTags = ['#MachineLearning','#PyTorch','#BERT','#YOLOv8','#DataScience','#Python','#NLP','#CNN','#LLM','#RAG'];
 const cmStats = [
   { val:'12.4K', label:'Members',     trend:'+12% this month', icon:'users',          bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
@@ -23,7 +9,7 @@ const cmStats = [
 ];
 let cmActiveFilter = 'all';
 
-function getPosts() { return store.get('posts', defaultPosts); }
+function getPosts() { return store.get('posts', []); }
 function savePosts(p) { store.set('posts', p); }
 
 function renderCommunity() { renderCmStats(); renderFeed(); renderLeaderboard(); renderTrendingTags(); const session=getSession(); const av=document.getElementById('cm-post-avatar'); if(av&&session) av.textContent=session.avatar||session.name?.charAt(0)||'U'; }
@@ -62,8 +48,8 @@ function renderFeed() {
 function likePost(id) { const posts=getPosts(); const p=posts.find(x=>x.id===id); if(!p) return; p.liked=!p.liked; p.likes+=p.liked?1:-1; savePosts(posts); renderFeed(); }
 function renderLeaderboard() {
   const el = document.getElementById('leaderboard-list'); if (!el) return;
-  const medals=['??','??','??'];
-  el.innerHTML = leaderboard.map((u,i)=>`<div class="cm-lb-item"><div class="cm-lb-rank">${medals[i]||i+1}</div><div class="cm-post-avatar" style="background:${u.bg};width:30px;height:30px;font-size:12px;border-radius:50%">${u.avatar}</div><div class="cm-lb-name">${u.name}</div><div class="cm-lb-xp">${u.xp.toLocaleString()} XP</div></div>`).join('');
+  // Leaderboard akan diisi dari data real di masa depan
+  el.innerHTML = `<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:12px">Leaderboard akan segera hadir.</div>`;
 }
 function renderTrendingTags() {
   const el = document.getElementById('trending-tags'); if (!el) return;
