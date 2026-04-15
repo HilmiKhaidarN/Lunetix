@@ -2,6 +2,16 @@ const supabase = require('../config/supabase');
 
 const PASS_THRESHOLD = 80;
 
+// Mapping quiz_id → course_id
+// Sesuaikan jika ada quiz baru ditambahkan
+const QUIZ_COURSE_MAP = {
+  'ml-basics':  1,
+  'python-ai':  2,
+  'dl-basics':  3,
+  'nlp-basics': 4,
+  'cv-basics':  5,
+};
+
 function generateCredentialId(courseId, courseTitle, year, seq) {
   const code = courseTitle
     .split(' ')
@@ -41,7 +51,7 @@ async function issueCertificate(req, res) {
 
   if (existing) return res.json({ success: true, certificate: existing });
 
-  // Cek semua lesson selesai
+  // Cek kursus valid
   const { data: course } = await supabase
     .from('courses')
     .select('title')
@@ -50,16 +60,40 @@ async function issueCertificate(req, res) {
 
   if (!course) return res.status(404).json({ error: 'Kursus tidak ditemukan.' });
 
-  // Cek quiz lulus
-  const { data: quizAttempts } = await supabase
-    .from('quiz_attempts')
-    .select('passed')
+  // Cek akses kursus aktif
+  const { data: access } = await supabase
+    .from('course_access')
+    .select('status')
     .eq('user_id', userId)
-    .eq('passed', true);
+    .eq('course_id', courseId)
+    .single();
 
-  const quizPassed = quizAttempts && quizAttempts.length > 0;
-  if (!quizPassed) {
-    return res.status(403).json({ error: 'not_eligible', reason: 'Quiz belum lulus (min. 80%).' });
+  if (!access) {
+    return res.status(403).json({ error: 'not_eligible', reason: 'Kursus belum diklaim.' });
+  }
+  if (access.status === 'expired') {
+    return res.status(403).json({ error: 'not_eligible', reason: 'Akses kursus telah berakhir.' });
+  }
+
+  // Cek quiz spesifik untuk kursus ini sudah lulus
+  // Cari quiz_id yang berkorespondensi dengan courseId ini
+  const quizId = Object.entries(QUIZ_COURSE_MAP).find(([, cId]) => cId === courseId)?.[0];
+
+  if (quizId) {
+    const { data: quizAttempts } = await supabase
+      .from('quiz_attempts')
+      .select('passed')
+      .eq('user_id', userId)
+      .eq('quiz_id', quizId)
+      .eq('passed', true);
+
+    const quizPassed = quizAttempts && quizAttempts.length > 0;
+    if (!quizPassed) {
+      return res.status(403).json({
+        error: 'not_eligible',
+        reason: `Quiz kursus ini belum lulus (min. ${PASS_THRESHOLD}%).`,
+      });
+    }
   }
 
   // Ambil nama user
