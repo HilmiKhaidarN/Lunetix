@@ -1,32 +1,20 @@
 // ══════════════════════════════════════════════
-// CERTIFICATE ACCESS — Penerbitan Sertifikat
+// CERTIFICATE ACCESS — Penerbitan Sertifikat (API + localStorage fallback)
 // ══════════════════════════════════════════════
 
-// ── Helpers ──
+// ── localStorage helpers ──
 
 function loadCertificateData() {
   const raw = store.get('certificates', {});
-  if (typeof raw !== 'object' || raw === null) {
-    store.set('certificates', {});
-    return {};
-  }
-  return raw;
+  return (typeof raw === 'object' && raw !== null) ? raw : {};
 }
 
 function saveCertificateData(data) {
-  try {
-    store.set('certificates', data);
-    return true;
-  } catch (e) {
-    if (e.name === 'QuotaExceededError') {
-      showToast('Penyimpanan browser penuh.');
-      console.error('[CertificateAccess] localStorage quota exceeded:', e);
-    }
-    return false;
-  }
+  try { store.set('certificates', data); return true; }
+  catch (e) { console.error('[CertificateAccess] storage error:', e); return false; }
 }
 
-function generateCredentialId(courseId, year, seq) {
+function _generateCredentialIdLocal(courseId, year, seq) {
   const course = coursesData.find(c => c.id === courseId);
   const code = course
     ? course.title.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 4)
@@ -34,107 +22,152 @@ function generateCredentialId(courseId, year, seq) {
   return `LTX-${code}-${year}-${String(seq).padStart(3, '0')}`;
 }
 
-// ── Core Functions ──
+function _syncCertificatesToLocal(userId, apiCerts) {
+  const data = loadCertificateData();
+  data[userId] = apiCerts.map(c => ({
+    id:           c.id,
+    courseId:     c.course_id,
+    courseTitle:  c.course_title,
+    userName:     c.user_name,
+    issuedAt:     c.issued_at,
+    credentialId: c.credential_id,
+  }));
+  saveCertificateData(data);
+}
 
-/**
- * Memeriksa apakah pengguna memenuhi syarat untuk mendapatkan sertifikat.
- * @param {string} userId
- * @param {number} courseId
- * @returns {{ eligible: boolean, allLessonsDone: boolean, quizPassed: boolean }}
- */
+// ── Eligibility check (sync, pakai localStorage) ──
+
 function checkCertificateEligibility(userId, courseId) {
   const allLessonsDone = isAllLessonsCompleted(userId, courseId);
 
-  // Cari quizId yang sesuai dengan courseId
   const course = coursesData.find(c => c.id === courseId);
   let quizPassed = false;
   if (course) {
-    // Cari quiz yang berkaitan dengan kursus ini di quizBank
     const relatedQuiz = quizBank.find(q =>
       q.title.toLowerCase().includes(course.title.split(' ')[0].toLowerCase()) ||
       q.category === course.category
     );
     if (relatedQuiz) {
-      const session = getSession();
-      const uid = userId || (session ? String(session.id) : null);
-      if (uid) {
-        const status = getQuizPassStatus(uid, relatedQuiz.id);
-        quizPassed = status.passed;
-      }
+      const status = getQuizPassStatus(userId, relatedQuiz.id);
+      quizPassed = status.passed;
     }
   }
 
-  return {
-    eligible: allLessonsDone && quizPassed,
-    allLessonsDone,
-    quizPassed,
-  };
+  return { eligible: allLessonsDone && quizPassed, allLessonsDone, quizPassed };
 }
 
-/**
- * Menerbitkan sertifikat dan menyimpannya ke localStorage.
- * @param {string} userId
- * @param {number} courseId
- * @returns {{ success: boolean, certificate?: object, error?: string }}
- */
-function issueCertificate(userId, courseId) {
-  const eligibility = checkCertificateEligibility(userId, courseId);
-  if (!eligibility.eligible) {
-    return { success: false, error: 'not_eligible' };
+// ── API-first: ambil sertifikat ──
+
+async function getIssuedCertificatesAsync(userId) {
+  const session = getSession();
+  if (!session?.token) return getIssuedCertificates(userId);
+
+  try {
+    const data = await CertificatesAPI.getMine();
+    _syncCertificatesToLocal(userId, data.certificates);
+    return data.certificates.map(c => ({
+      id:           c.id,
+      courseId:     c.course_id,
+      courseTitle:  c.course_title,
+      userName:     c.user_name,
+      issuedAt:     c.issued_at,
+      credentialId: c.credential_id,
+    }));
+  } catch (err) {
+    console.warn('[CertificateAccess] API tidak tersedia, pakai localStorage.', err);
+    return getIssuedCertificates(userId);
   }
+}
+
+// ── API-first: terbitkan sertifikat ──
+
+async function issueCertificateAsync(userId, courseId) {
+  const session = getSession();
+  if (!session?.token) return _issueCertificateLocal(userId, courseId);
+
+  try {
+    const data = await CertificatesAPI.issue(courseId);
+    // Sync ke localStorage
+    const cert = {
+      id:           data.certificate.id,
+      courseId:     data.certificate.course_id,
+      courseTitle:  data.certificate.course_title,
+      userName:     data.certificate.user_name,
+      issuedAt:     data.certificate.issued_at,
+      credentialId: data.certificate.credential_id,
+    };
+    const localData = loadCertificateData();
+    if (!localData[userId]) localData[userId] = [];
+    const exists = localData[userId].find(c => c.courseId === courseId);
+    if (!exists) localData[userId].push(cert);
+    saveCertificateData(localData);
+    return { success: true, certificate: cert };
+  } catch (err) {
+    if (err?.error === 'not_eligible') return { success: false, error: 'not_eligible' };
+    console.warn('[CertificateAccess] API tidak tersedia, pakai localStorage.', err);
+    return _issueCertificateLocal(userId, courseId);
+  }
+}
+
+// ── localStorage fallback ──
+
+function _issueCertificateLocal(userId, courseId) {
+  const eligibility = checkCertificateEligibility(userId, courseId);
+  if (!eligibility.eligible) return { success: false, error: 'not_eligible' };
 
   const data = loadCertificateData();
   if (!data[userId]) data[userId] = [];
 
-  // Idempoten: jika sudah ada sertifikat untuk kursus ini, kembalikan yang ada
   const existing = data[userId].find(c => c.courseId === courseId);
   if (existing) return { success: true, certificate: existing };
 
-  const session = getSession();
-  const userName = session ? session.name : 'Pengguna';
-  const course = coursesData.find(c => c.id === courseId);
-  const courseTitle = course ? course.title : 'Kursus';
-  const year = new Date().getFullYear();
-  const seq = (data[userId].length || 0) + 1;
+  const session  = getSession();
+  const course   = coursesData.find(c => c.id === courseId);
+  const year     = new Date().getFullYear();
+  const seq      = (data[userId].length || 0) + 1;
 
   const certificate = {
-    id: `cert_${courseId}_${userId}_${Date.now()}`,
+    id:           `cert_${courseId}_${userId}_${Date.now()}`,
     courseId,
-    courseTitle,
-    userName,
-    issuedAt: new Date().toISOString(),
-    credentialId: generateCredentialId(courseId, year, seq),
+    courseTitle:  course?.title || 'Kursus',
+    userName:     session?.name || 'Pengguna',
+    issuedAt:     new Date().toISOString(),
+    credentialId: _generateCredentialIdLocal(courseId, year, seq),
   };
 
   data[userId].push(certificate);
-  const saved = saveCertificateData(data);
-  if (!saved) return { success: false, error: 'storage_error' };
-
-  return { success: true, certificate };
+  return saveCertificateData(data) ? { success: true, certificate } : { success: false, error: 'storage_error' };
 }
 
-/**
- * Mengambil sertifikat yang telah diterbitkan untuk pengguna.
- * @param {string} userId
- * @returns {Array}
- */
+// ── Sync wrappers (kompatibilitas kode lama) ──
+
+function issueCertificate(userId, courseId) {
+  return _issueCertificateLocal(userId, courseId);
+}
+
 function getIssuedCertificates(userId) {
-  const data = loadCertificateData();
-  return data[userId] || [];
+  return loadCertificateData()[userId] || [];
 }
 
-/**
- * Render tombol sertifikat di UI course-detail berdasarkan eligibility.
- * @param {string} userId
- * @param {number} courseId
- */
+// ── UI: render tombol sertifikat di course-detail ──
+
 function renderCertificateButton(userId, courseId) {
   const container = document.getElementById('cd-cert-section');
   if (!container) return;
 
-  const eligibility = checkCertificateEligibility(userId, courseId);
-  const issued = getIssuedCertificates(userId).find(c => c.courseId === courseId);
+  // Load dari API dulu
+  getIssuedCertificatesAsync(userId).then(certs => {
+    const issued = certs.find(c => c.courseId === courseId);
+    const eligibility = checkCertificateEligibility(userId, courseId);
+    _renderCertButtonUI(container, issued, eligibility, userId, courseId);
+  }).catch(() => {
+    const issued = getIssuedCertificates(userId).find(c => c.courseId === courseId);
+    const eligibility = checkCertificateEligibility(userId, courseId);
+    _renderCertButtonUI(container, issued, eligibility, userId, courseId);
+  });
+}
 
+function _renderCertButtonUI(container, issued, eligibility, userId, courseId) {
   if (issued) {
     container.innerHTML = `
       <div style="text-align:center;padding:20px">
@@ -151,7 +184,7 @@ function renderCertificateButton(userId, courseId) {
 
   const missingItems = [];
   if (!eligibility.allLessonsDone) missingItems.push('Selesaikan semua lesson');
-  if (!eligibility.quizPassed) missingItems.push('Lulus quiz (min. 80%)');
+  if (!eligibility.quizPassed)     missingItems.push('Lulus quiz (min. 80%)');
 
   container.innerHTML = `
     <div style="padding:20px">
@@ -178,19 +211,22 @@ function renderCertificateButton(userId, courseId) {
 }
 
 function handleGenerateCertificate(userId, courseId) {
-  const result = issueCertificate(userId, courseId);
-  if (result.success) {
-    showToast('🎓 Sertifikat berhasil diterbitkan!');
-    renderCertificateButton(userId, courseId);
-    // Buka sertifikat langsung
-    const cert = result.certificate;
-    downloadCert(
-      cert.courseTitle,
-      cert.userName,
-      new Date(cert.issuedAt).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
-      cert.credentialId
-    );
-  } else {
-    showToast('Gagal menerbitkan sertifikat. Pastikan semua syarat terpenuhi.');
-  }
+  const btn = event?.target;
+  if (btn) { btn.disabled = true; btn.textContent = 'Memproses...'; }
+
+  issueCertificateAsync(userId, courseId).then(result => {
+    if (result.success) {
+      showToast('🎓 Sertifikat berhasil diterbitkan!');
+      renderCertificateButton(userId, courseId);
+      const cert = result.certificate;
+      downloadCert(
+        cert.courseTitle, cert.userName,
+        new Date(cert.issuedAt).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }),
+        cert.credentialId
+      );
+    } else {
+      showToast('Gagal menerbitkan sertifikat. Pastikan semua syarat terpenuhi.');
+      if (btn) { btn.disabled = false; btn.textContent = 'Generate Sertifikat 🎉'; }
+    }
+  });
 }

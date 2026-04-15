@@ -1,41 +1,18 @@
-﻿// â”€â”€ Local Auth (localStorage) â”€â”€
+﻿// ══════════════════════════════════════════════
+// AUTH.JS — Authentication (API + localStorage fallback)
+// ══════════════════════════════════════════════
 
-const USERS_KEY = 'lunetix_users';
 const SESSION_KEY = 'lunetix_session';
+const API_BASE    = 'http://localhost:3000/api';
 
-// Seed default user
-function seedDefaultUser() {
-  const users = getUsers();
-  if (!users.find(u => u.email === 'demo@lunetix.ai')) {
-    users.push({
-      id: 1,
-      name: 'Arman',
-      email: 'demo@lunetix.ai',
-      password: 'demo1234',
-      avatar: 'A',
-      streak: 7,
-      points: 1250,
-      joinedAt: new Date().toISOString()
-    });
-    saveUsers(users);
-  }
-}
-
-function getUsers() {
-  return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
-}
-
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
+// ── Session helpers ──
 
 function getSession() {
   return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
 }
 
 function setSession(user) {
-  const { password, ...safe } = user;
-  localStorage.setItem(SESSION_KEY, JSON.stringify(safe));
+  localStorage.setItem(SESSION_KEY, JSON.stringify(user));
 }
 
 function clearSession() {
@@ -54,40 +31,80 @@ function requireGuest() {
   }
 }
 
-// â”€â”€ Login â”€â”€
-function handleLogin(e) {
+// ── Login ──
+async function handleLogin(e) {
   e.preventDefault();
-  const email = document.getElementById('email').value.trim();
+  const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
-  const errorEl = document.getElementById('error-msg');
+  const errorEl  = document.getElementById('error-msg');
+  const btn      = e.target.querySelector('button[type="submit"]');
 
   if (!email || !password) {
     showError(errorEl, 'Isi email dan password dulu ya.');
     return;
   }
 
-  const users = getUsers();
-  const user = users.find(u => u.email === email && u.password === password);
+  btn.disabled = true;
+  btn.textContent = 'Logging in...';
 
+  try {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showError(errorEl, data.error || 'Email atau password salah.');
+      return;
+    }
+
+    // Simpan session dengan token
+    setSession({
+      ...data.user,
+      token: data.token,
+      avatar: data.user.avatar || data.user.name?.charAt(0).toUpperCase(),
+    });
+
+    window.location.href = '/dashboard';
+
+  } catch (err) {
+    // Fallback: coba login lokal jika API tidak tersedia
+    console.warn('[Auth] API tidak tersedia, coba login lokal.', err);
+    _handleLoginLocal(email, password, errorEl);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Log In <i data-lucide="arrow-right" style="width:15px;height:15px"></i>';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+}
+
+function _handleLoginLocal(email, password, errorEl) {
+  const users = JSON.parse(localStorage.getItem('lunetix_users') || '[]');
+  const user  = users.find(u => u.email === email && u.password === password);
   if (!user) {
     showError(errorEl, 'Email atau password salah. Coba lagi.');
     return;
   }
-
-  setSession(user);
+  const { password: _, ...safe } = user;
+  setSession(safe);
   window.location.href = '/dashboard';
 }
 
-// â”€â”€ Register â”€â”€
-function handleRegister(e) {
+// ── Register ──
+async function handleRegister(e) {
   e.preventDefault();
-  const name = document.getElementById('fullname').value.trim();
-  const email = document.getElementById('email').value.trim();
+  const name     = document.getElementById('fullname').value.trim();
+  const email    = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
-  const confirm = document.getElementById('confirm-password').value;
-  const terms = document.getElementById('terms').checked;
-  const errorEl = document.getElementById('error-msg');
+  const confirm  = document.getElementById('confirm-password').value;
+  const terms    = document.getElementById('terms').checked;
+  const errorEl  = document.getElementById('error-msg');
+  const btn      = e.target.querySelector('button[type="submit"]');
 
+  // Validasi client-side
   if (!name || !email || !password || !confirm) {
     showError(errorEl, 'Semua field wajib diisi.');
     return;
@@ -105,30 +122,68 @@ function handleRegister(e) {
     return;
   }
 
-  const users = getUsers();
+  btn.disabled = true;
+  btn.textContent = 'Creating account...';
+
+  try {
+    const res = await fetch(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showError(errorEl, data.error || 'Gagal membuat akun.');
+      return;
+    }
+
+    // Simpan session dengan token
+    setSession({
+      ...data.user,
+      token: data.token,
+      avatar: data.user.avatar || name.charAt(0).toUpperCase(),
+    });
+
+    window.location.href = '/dashboard?new=1';
+
+  } catch (err) {
+    // Fallback: register lokal jika API tidak tersedia
+    console.warn('[Auth] API tidak tersedia, register lokal.', err);
+    _handleRegisterLocal(name, email, password, errorEl);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Create Account <i data-lucide="arrow-right" style="width:15px;height:15px"></i>';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }
+}
+
+function _handleRegisterLocal(name, email, password, errorEl) {
+  const users = JSON.parse(localStorage.getItem('lunetix_users') || '[]');
   if (users.find(u => u.email === email)) {
     showError(errorEl, 'Email sudah terdaftar. Coba login.');
     return;
   }
-
   const newUser = {
     id: Date.now(),
-    name,
-    email,
-    password,
+    name, email, password,
     avatar: name.charAt(0).toUpperCase(),
-    streak: 0,
-    points: 0,
-    joinedAt: new Date().toISOString()
+    account_type: 'free',
+    streak: 0, points: 0,
+    joinedAt: new Date().toISOString(),
   };
-
   users.push(newUser);
-  saveUsers(users);
-  setSession(newUser);
+  localStorage.setItem('lunetix_users', JSON.stringify(users));
+  const { password: _, ...safe } = newUser;
+  setSession(safe);
   window.location.href = '/dashboard?new=1';
 }
 
+// ── UI helpers ──
+
 function showError(el, msg) {
+  if (!el) return;
   el.textContent = msg;
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 4000);
@@ -143,9 +198,5 @@ function togglePassword(inputId, btn) {
     input.type = 'password';
     btn.innerHTML = '<i data-lucide="eye" style="width:15px;height:15px"></i>';
   }
-  lucide.createIcons();
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
-
-// â”€â”€ Init â”€â”€
-seedDefaultUser();
-

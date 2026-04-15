@@ -1,155 +1,156 @@
 // ══════════════════════════════════════════════
-// QUIZ ACCESS — Batas Percobaan Quiz Harian
+// QUIZ ACCESS — Batas Percobaan Quiz Harian (API + localStorage fallback)
 // ══════════════════════════════════════════════
 
 const MAX_QUIZ_ATTEMPTS_PER_DAY = 5;
 const QUIZ_PASS_THRESHOLD = 80;
 
-// ── Helpers ──
+// ── Pure helpers (tidak butuh API) ──
 
-function loadQuizAttemptData() {
-  const raw = store.get('quizAttempts', {});
-  if (typeof raw !== 'object' || raw === null) {
-    store.set('quizAttempts', {});
-    return {};
-  }
-  return raw;
+function getTodayWIB() {
+  const wibOffset = 7 * 60 * 60 * 1000;
+  return new Date(Date.now() + wibOffset).toISOString().slice(0, 10);
 }
 
-function saveQuizAttemptData(data) {
-  try {
-    store.set('quizAttempts', data);
-    return true;
-  } catch (e) {
-    if (e.name === 'QuotaExceededError') {
-      showToast('Penyimpanan browser penuh.');
-      console.error('[QuizAccess] localStorage quota exceeded:', e);
-    }
-    return false;
-  }
-}
-
-/**
- * Menghitung skor quiz berdasarkan jumlah benar dan total soal.
- * @param {number} correctAnswers
- * @param {number} totalQuestions
- * @returns {number} Skor 0-100
- */
 function calculateQuizScore(correctAnswers, totalQuestions) {
   if (totalQuestions <= 0) return 0;
-  const clamped = Math.max(0, Math.min(correctAnswers, totalQuestions));
-  return Math.round((clamped / totalQuestions) * 100);
+  return Math.round((Math.max(0, Math.min(correctAnswers, totalQuestions)) / totalQuestions) * 100);
 }
 
-/**
- * Mengevaluasi apakah skor lulus.
- * @param {number} score
- * @returns {{ passed: boolean }}
- */
 function evaluateQuizPass(score) {
   return { passed: score >= QUIZ_PASS_THRESHOLD };
 }
 
-/**
- * Mereset jumlah percobaan harian jika sudah melewati tengah malam WIB.
- * @param {string} userId
- * @param {string} quizId
- */
-function resetDailyAttemptsIfNeeded(userId, quizId) {
-  const data = loadQuizAttemptData();
-  if (!data[userId]) return;
-  const record = data[userId][quizId];
-  if (!record) return;
+// ── localStorage fallback helpers ──
 
-  const today = getTodayWIB();
-  if (record.lastAttemptDate !== today) {
-    record.attemptsToday = 0;
-    record.lastAttemptDate = today;
-    saveQuizAttemptData(data);
+function _loadQuizData() {
+  const raw = store.get('quizAttempts', {});
+  return (typeof raw === 'object' && raw !== null) ? raw : {};
+}
+
+function _saveQuizData(data) {
+  try { store.set('quizAttempts', data); return true; }
+  catch (e) { console.error('[QuizAccess] storage error:', e); return false; }
+}
+
+// ── API-first functions ──
+
+/**
+ * Memeriksa apakah pengguna masih bisa mengerjakan quiz hari ini.
+ * Coba API dulu, fallback ke localStorage.
+ */
+async function checkQuizAttemptAsync(quizId) {
+  const session = getSession();
+  if (!session?.token) return _checkQuizAttemptLocal(String(session?.id), quizId);
+
+  try {
+    const data = await QuizAPI.getStatus(quizId);
+    return {
+      canAttempt: data.canAttempt,
+      attemptsToday: data.attemptsToday,
+      maxAttempts: data.maxAttempts,
+      passed: data.passed,
+      bestScore: data.bestScore,
+    };
+  } catch (err) {
+    console.warn('[QuizAccess] API tidak tersedia, pakai localStorage.', err);
+    return _checkQuizAttemptLocal(String(session.id), quizId);
   }
 }
 
 /**
- * Memeriksa apakah pengguna masih bisa mengerjakan quiz hari ini.
- * @param {string} userId
- * @param {string} quizId
- * @returns {{ canAttempt: boolean, attemptsToday: number, maxAttempts: number, resetAt?: string }}
+ * Mencatat percobaan quiz ke API.
+ * Fallback ke localStorage jika API tidak tersedia.
  */
-function checkQuizAttempt(userId, quizId) {
-  resetDailyAttemptsIfNeeded(userId, quizId);
+async function recordQuizAttemptAsync(quizId, score) {
+  const session = getSession();
+  const clampedScore = Math.max(0, Math.min(100, score));
 
-  const data = loadQuizAttemptData();
+  if (!session?.token) return _recordQuizAttemptLocal(String(session?.id), quizId, clampedScore);
+
+  try {
+    const data = await QuizAPI.recordAttempt(quizId, clampedScore);
+    // Sync ke localStorage juga
+    _recordQuizAttemptLocal(String(session.id), quizId, clampedScore);
+    return data;
+  } catch (err) {
+    if (err?.error === 'daily_limit_reached') {
+      return { attemptsToday: MAX_QUIZ_ATTEMPTS_PER_DAY, passed: false, error: 'daily_limit_reached' };
+    }
+    console.warn('[QuizAccess] API tidak tersedia, pakai localStorage.', err);
+    return _recordQuizAttemptLocal(String(session.id), quizId, clampedScore);
+  }
+}
+
+// ── localStorage fallback implementations ──
+
+function _checkQuizAttemptLocal(userId, quizId) {
+  const data = _loadQuizData();
   const record = (data[userId] || {})[quizId];
+  const today = getTodayWIB();
+
+  // Reset jika hari berbeda
+  if (record && record.lastAttemptDate !== today) {
+    record.attemptsToday = 0;
+    record.lastAttemptDate = today;
+    _saveQuizData(data);
+  }
+
   const attemptsToday = record ? record.attemptsToday : 0;
-  const canAttempt = attemptsToday < MAX_QUIZ_ATTEMPTS_PER_DAY;
-
-  // Hitung waktu reset (00:00 WIB besok)
-  const wibOffset = 7 * 60 * 60 * 1000;
-  const nowWib = new Date(Date.now() + wibOffset);
-  const tomorrowWib = new Date(nowWib);
-  tomorrowWib.setUTCDate(tomorrowWib.getUTCDate() + 1);
-  tomorrowWib.setUTCHours(0 - 7, 0, 0, 0); // 00:00 WIB = 17:00 UTC hari sebelumnya
-  const resetAt = new Date(tomorrowWib.getTime() - wibOffset).toISOString();
-
   return {
-    canAttempt,
+    canAttempt: attemptsToday < MAX_QUIZ_ATTEMPTS_PER_DAY,
     attemptsToday,
     maxAttempts: MAX_QUIZ_ATTEMPTS_PER_DAY,
-    resetAt,
+    passed: record?.passed || false,
+    bestScore: record?.bestScore || 0,
   };
 }
 
-/**
- * Mencatat satu percobaan quiz yang telah dilakukan.
- * @param {string} userId
- * @param {string} quizId
- * @param {number} score - Skor dalam persen (0-100)
- * @returns {{ attemptsToday: number, passed: boolean, error?: string }}
- */
-function recordQuizAttempt(userId, quizId, score) {
-  const check = checkQuizAttempt(userId, quizId);
+function _recordQuizAttemptLocal(userId, quizId, score) {
+  const check = _checkQuizAttemptLocal(userId, quizId);
   if (!check.canAttempt) {
     return { attemptsToday: check.attemptsToday, passed: false, error: 'daily_limit_reached' };
   }
 
-  // Clamp skor
-  const clampedScore = Math.max(0, Math.min(100, score));
-  const passed = clampedScore >= QUIZ_PASS_THRESHOLD;
-
-  const data = loadQuizAttemptData();
+  const passed = score >= QUIZ_PASS_THRESHOLD;
+  const data = _loadQuizData();
   if (!data[userId]) data[userId] = {};
 
   const today = getTodayWIB();
   const existing = data[userId][quizId] || {
-    attemptsToday: 0,
-    lastAttemptDate: today,
-    passed: false,
-    bestScore: 0,
-    scores: [],
+    attemptsToday: 0, lastAttemptDate: today,
+    passed: false, bestScore: 0, scores: [],
   };
 
   existing.attemptsToday = (existing.lastAttemptDate === today ? existing.attemptsToday : 0) + 1;
   existing.lastAttemptDate = today;
-  existing.scores = [...(existing.scores || []), clampedScore];
-  existing.bestScore = Math.max(existing.bestScore || 0, clampedScore);
+  existing.scores = [...(existing.scores || []), score];
+  existing.bestScore = Math.max(existing.bestScore || 0, score);
   if (passed) existing.passed = true;
 
   data[userId][quizId] = existing;
-  saveQuizAttemptData(data);
+  _saveQuizData(data);
 
   return { attemptsToday: existing.attemptsToday, passed };
 }
 
-/**
- * Mengambil status kelulusan quiz.
- * @param {string} userId
- * @param {string} quizId
- * @returns {{ passed: boolean, bestScore: number }}
- */
+// ── Sync wrappers (untuk kompatibilitas kode lama) ──
+
+function checkQuizAttempt(userId, quizId) {
+  return _checkQuizAttemptLocal(userId, quizId);
+}
+
+function recordQuizAttempt(userId, quizId, score) {
+  return _recordQuizAttemptLocal(userId, quizId, score);
+}
+
 function getQuizPassStatus(userId, quizId) {
-  resetDailyAttemptsIfNeeded(userId, quizId);
-  const data = loadQuizAttemptData();
+  const data = _loadQuizData();
   const record = (data[userId] || {})[quizId];
   if (!record) return { passed: false, bestScore: 0 };
   return { passed: !!record.passed, bestScore: record.bestScore || 0 };
+}
+
+function resetDailyAttemptsIfNeeded(userId, quizId) {
+  _checkQuizAttemptLocal(userId, quizId); // sudah handle reset di dalamnya
 }

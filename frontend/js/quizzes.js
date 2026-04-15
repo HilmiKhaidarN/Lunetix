@@ -135,17 +135,22 @@ function renderQzRecentActivity() {
 function startQuiz(id) {
   activeQuiz = quizBank.find(q=>q.id===id); if (!activeQuiz) return;
 
-  // Cek batas percobaan harian
+  // Cek batas percobaan harian via API
   const session = getSession();
-  if (session && typeof checkQuizAttempt === 'function') {
-    const userId = String(session.id);
-    const attemptStatus = checkQuizAttempt(userId, id);
-    if (!attemptStatus.canAttempt) {
-      showToast(`Quiz terkunci. Batas ${attemptStatus.maxAttempts}x percobaan hari ini tercapai. Coba lagi besok!`);
-      return;
-    }
+  if (session) {
+    checkQuizAttemptAsync(id).then(status => {
+      if (!status.canAttempt) {
+        showToast(`Quiz terkunci. Batas ${status.maxAttempts}x percobaan hari ini tercapai. Coba lagi besok!`);
+        return;
+      }
+      _startQuizPlay();
+    });
+  } else {
+    _startQuizPlay();
   }
+}
 
+function _startQuizPlay() {
   quizCurrentQ=0; quizScore=0; quizAnswered={};
   document.getElementById('quiz-list-view').style.display='none';
   document.getElementById('quiz-play-view').style.display='block';
@@ -191,10 +196,14 @@ function showQuizFinalResult() {
   const scores=store.get('quiz_scores',{}); const isNew=!scores[activeQuiz.id]||pct>scores[activeQuiz.id];
   if(isNew){scores[activeQuiz.id]=pct;store.set('quiz_scores',scores);}
 
-  // Catat percobaan ke quizAccess
+  // Catat percobaan ke API (async, non-blocking)
   const session = getSession();
-  if (session && typeof recordQuizAttempt === 'function') {
-    recordQuizAttempt(String(session.id), activeQuiz.id, pct);
+  if (session) {
+    recordQuizAttemptAsync(activeQuiz.id, pct).then(result => {
+      if (result?.error === 'daily_limit_reached') {
+        showToast('Batas percobaan hari ini tercapai.');
+      }
+    }).catch(() => {});
   }
   document.getElementById('quiz-play-progress').style.width='100%';
   document.getElementById('quiz-play-content').innerHTML=`<div class="card" style="text-align:center;padding:40px 24px">

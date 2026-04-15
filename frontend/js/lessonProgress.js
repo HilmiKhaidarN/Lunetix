@@ -1,35 +1,21 @@
 // ══════════════════════════════════════════════
-// LESSON PROGRESS — Penyelesaian Lesson Berurutan
+// LESSON PROGRESS — Penyelesaian Lesson Berurutan (API + localStorage fallback)
 // ══════════════════════════════════════════════
 
-// ── Helpers ──
+// ── localStorage fallback helpers ──
 
-function loadLessonProgressData() {
+function _loadLessonData() {
   const raw = store.get('lessonProgress', {});
-  if (typeof raw !== 'object' || raw === null) {
-    store.set('lessonProgress', {});
-    return {};
-  }
-  return raw;
+  return (typeof raw === 'object' && raw !== null) ? raw : {};
 }
 
-function saveLessonProgressData(data) {
-  try {
-    store.set('lessonProgress', data);
-    return true;
-  } catch (e) {
-    if (e.name === 'QuotaExceededError') {
-      showToast('Penyimpanan browser penuh.');
-      console.error('[LessonProgress] localStorage quota exceeded:', e);
-    }
-    return false;
-  }
+function _saveLessonData(data) {
+  try { store.set('lessonProgress', data); return true; }
+  catch (e) { console.error('[LessonProgress] storage error:', e); return false; }
 }
 
 /**
- * Mengambil daftar semua lesson dari sebuah kursus (dari courseRegistry).
- * @param {number} courseId
- * @returns {string[]} Array lessonId berurutan
+ * Mengambil daftar semua lessonId dari sebuah kursus (dari courseRegistry).
  */
 function getCourseAllLessons(courseId) {
   const content = courseRegistry[courseId];
@@ -37,7 +23,6 @@ function getCourseAllLessons(courseId) {
   const lessons = [];
   content.curriculum.forEach(mod => {
     mod.lessons.forEach(l => {
-      // Buat lessonId dari title jika tidak ada id
       const lessonId = l.id || (courseId + '-' + l.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
       lessons.push(lessonId);
     });
@@ -45,104 +30,126 @@ function getCourseAllLessons(courseId) {
   return lessons;
 }
 
-// ── Core Functions ──
+// ── API-first functions ──
 
 /**
- * Mengambil daftar lesson yang telah diselesaikan dalam sebuah kursus.
- * @param {string} userId
- * @param {number} courseId
- * @returns {string[]} Array lessonId yang sudah selesai
+ * Mengambil daftar lesson yang sudah selesai dari API.
+ * Fallback ke localStorage.
  */
-function getCompletedLessons(userId, courseId) {
-  const data = loadLessonProgressData();
+async function getCompletedLessonsAsync(courseId) {
+  const session = getSession();
+  if (!session?.token) return _getCompletedLessonsLocal(String(session?.id), courseId);
+
+  try {
+    const data = await LessonsAPI.getProgress(courseId);
+    // Sync ke localStorage
+    _syncCompletedLessonsToLocal(String(session.id), courseId, data.completedLessons);
+    return data.completedLessons;
+  } catch (err) {
+    console.warn('[LessonProgress] API tidak tersedia, pakai localStorage.', err);
+    return _getCompletedLessonsLocal(String(session.id), courseId);
+  }
+}
+
+/**
+ * Menandai lesson sebagai selesai via API.
+ * Fallback ke localStorage.
+ */
+async function completeLessonAsync(courseId, lessonId) {
+  const session = getSession();
+  if (!session?.token) return _completeLessonLocal(String(session?.id), courseId, lessonId);
+
+  try {
+    const data = await LessonsAPI.complete(courseId, lessonId);
+    // Sync ke localStorage
+    _syncCompletedLessonsToLocal(String(session.id), courseId, data.completedLessons);
+
+    const allLessons = getCourseAllLessons(courseId);
+    const idx = allLessons.indexOf(lessonId);
+    const nextLessonId = idx < allLessons.length - 1 ? allLessons[idx + 1] : undefined;
+    const courseCompleted = allLessons.every(id => data.completedLessons.includes(id));
+
+    return { completed: true, nextLessonId, courseCompleted };
+  } catch (err) {
+    console.warn('[LessonProgress] API tidak tersedia, pakai localStorage.', err);
+    return _completeLessonLocal(String(session.id), courseId, lessonId);
+  }
+}
+
+// ── localStorage sync helper ──
+
+function _syncCompletedLessonsToLocal(userId, courseId, completedLessons) {
+  const data = _loadLessonData();
+  if (!data[userId]) data[userId] = {};
+  data[userId][courseId] = {
+    completedLessons,
+    lastCompletedAt: new Date().toISOString(),
+    allCompleted: completedLessons.length === getCourseAllLessons(courseId).length,
+  };
+  _saveLessonData(data);
+}
+
+// ── localStorage fallback implementations ──
+
+function _getCompletedLessonsLocal(userId, courseId) {
+  const data = _loadLessonData();
   const record = (data[userId] || {})[courseId];
   return record ? (record.completedLessons || []) : [];
 }
 
-/**
- * Memeriksa apakah sebuah lesson dapat diakses oleh pengguna.
- * @param {string} userId
- * @param {number} courseId
- * @param {string} lessonId
- * @returns {{ accessible: boolean, reason?: string }}
- */
+function _completeLessonLocal(userId, courseId, lessonId) {
+  const access = isLessonAccessible(userId, courseId, lessonId);
+  if (!access.accessible) return { completed: false, courseCompleted: false };
+
+  const data = _loadLessonData();
+  if (!data[userId]) data[userId] = {};
+  if (!data[userId][courseId]) {
+    data[userId][courseId] = { completedLessons: [], lastCompletedAt: null, allCompleted: false };
+  }
+
+  const record = data[userId][courseId];
+  if (!record.completedLessons.includes(lessonId)) {
+    record.completedLessons.push(lessonId);
+    record.lastCompletedAt = new Date().toISOString();
+  }
+
+  const allLessons = getCourseAllLessons(courseId);
+  record.allCompleted = allLessons.every(id => record.completedLessons.includes(id));
+  _saveLessonData(data);
+
+  const idx = allLessons.indexOf(lessonId);
+  const nextLessonId = idx < allLessons.length - 1 ? allLessons[idx + 1] : undefined;
+  return { completed: true, nextLessonId, courseCompleted: record.allCompleted };
+}
+
+// ── Sync wrappers (kompatibilitas kode lama) ──
+
+function getCompletedLessons(userId, courseId) {
+  return _getCompletedLessonsLocal(userId, courseId);
+}
+
+function completeLesson(userId, courseId, lessonId) {
+  return _completeLessonLocal(userId, courseId, lessonId);
+}
+
 function isLessonAccessible(userId, courseId, lessonId) {
   const allLessons = getCourseAllLessons(courseId);
   if (!allLessons.length) return { accessible: false, reason: 'invalid_lesson' };
 
   const lessonIndex = allLessons.indexOf(lessonId);
   if (lessonIndex === -1) return { accessible: false, reason: 'invalid_lesson' };
-
-  // Lesson pertama selalu accessible
   if (lessonIndex === 0) return { accessible: true };
 
-  // Lesson lain hanya accessible jika lesson sebelumnya sudah selesai
-  const completed = getCompletedLessons(userId, courseId);
+  const completed = _getCompletedLessonsLocal(userId, courseId);
   const prevLessonId = allLessons[lessonIndex - 1];
-  if (completed.includes(prevLessonId)) {
-    return { accessible: true };
-  }
-
-  return { accessible: false, reason: 'previous_not_completed' };
+  return completed.includes(prevLessonId)
+    ? { accessible: true }
+    : { accessible: false, reason: 'previous_not_completed' };
 }
 
-/**
- * Memeriksa apakah semua lesson dalam kursus telah diselesaikan.
- * @param {string} userId
- * @param {number} courseId
- * @returns {boolean}
- */
 function isAllLessonsCompleted(userId, courseId) {
   const allLessons = getCourseAllLessons(courseId);
   if (!allLessons.length) return false;
-  const completed = getCompletedLessons(userId, courseId);
+  const completed = _getCompletedLessonsLocal(userId, courseId);
   return allLessons.every(id => completed.includes(id));
-}
-
-/**
- * Menandai sebuah lesson sebagai selesai dan membuka lesson berikutnya.
- * @param {string} userId
- * @param {number} courseId
- * @param {string} lessonId
- * @returns {{ completed: boolean, nextLessonId?: string, courseCompleted: boolean }}
- */
-function completeLesson(userId, courseId, lessonId) {
-  const access = isLessonAccessible(userId, courseId, lessonId);
-  if (!access.accessible) {
-    return { completed: false, courseCompleted: false };
-  }
-
-  const data = loadLessonProgressData();
-  if (!data[userId]) data[userId] = {};
-  if (!data[userId][courseId]) {
-    data[userId][courseId] = {
-      completedLessons: [],
-      lastCompletedAt: null,
-      allCompleted: false,
-    };
-  }
-
-  const record = data[userId][courseId];
-
-  // Idempoten: jika sudah selesai, kembalikan state saat ini
-  if (record.completedLessons.includes(lessonId)) {
-    const allLessons = getCourseAllLessons(courseId);
-    const idx = allLessons.indexOf(lessonId);
-    const nextLessonId = idx < allLessons.length - 1 ? allLessons[idx + 1] : undefined;
-    return { completed: true, nextLessonId, courseCompleted: record.allCompleted };
-  }
-
-  record.completedLessons.push(lessonId);
-  record.lastCompletedAt = new Date().toISOString();
-
-  const allLessons = getCourseAllLessons(courseId);
-  const allDone = allLessons.every(id => record.completedLessons.includes(id));
-  record.allCompleted = allDone;
-
-  saveLessonProgressData(data);
-
-  const idx = allLessons.indexOf(lessonId);
-  const nextLessonId = idx < allLessons.length - 1 ? allLessons[idx + 1] : undefined;
-
-  return { completed: true, nextLessonId, courseCompleted: allDone };
 }

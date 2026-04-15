@@ -1,42 +1,13 @@
 ﻿// ══ CERTIFICATES ══
 
-const certData = [
-  {
-    id: 1,
-    title: 'Machine Learning Fundamentals',
-    status: 'earned',
-    issued: 'January 2024',
-    credId: 'LTX-MLF-2024-001',
-    bg: 'linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#1e1b4b 100%)',
-    desc: 'Has successfully completed the course and demonstrated understanding of core machine learning concepts.',
-  },
-  {
-    id: 2,
-    title: 'Python for AI',
-    status: 'earned',
-    issued: 'February 2024',
-    credId: 'LTX-PYAI-2024-002',
-    bg: 'linear-gradient(135deg,#064e3b 0%,#065f46 50%,#064e3b 100%)',
-    desc: 'Has successfully completed the course and demonstrated proficiency in Python for AI development.',
-  },
-  {
-    id: 3,
-    title: 'Deep Learning Essentials',
-    status: 'progress',
-    issued: null,
-    credId: null,
-    bg: 'linear-gradient(135deg,#1e3a5f 0%,#1e40af 50%,#1e3a5f 100%)',
-    progress: 25,
-    lessons: '6/24',
-    desc: 'Complete all lessons and the final quiz to unlock this certificate.',
-  },
-];
+// certData akan diisi dari API + kursus yang diklaim
+let certData = [];
 
 const certJourney = [
-  { title: 'First Step',        desc: 'Complete your first lesson',  date: 'May 10, 2024', done: true  },
-  { title: 'Quick Learner',     desc: 'Finish 5 lessons',            date: 'May 12, 2024', done: true  },
-  { title: 'Course Completed',  desc: 'Earn your first certificate', date: 'May 15, 2024', done: true  },
-  { title: 'Keep Going!',       desc: 'Earn 5 more certificates',    date: '3/5',           done: false },
+  { title: 'First Step',       desc: 'Complete your first lesson',  date: 'May 10, 2024', done: true  },
+  { title: 'Quick Learner',    desc: 'Finish 5 lessons',            date: 'May 12, 2024', done: true  },
+  { title: 'Course Completed', desc: 'Earn your first certificate', date: 'May 15, 2024', done: true  },
+  { title: 'Keep Going!',      desc: 'Earn 5 more certificates',    date: '3/5',           done: false },
 ];
 
 let certActiveFilter = 'all';
@@ -56,8 +27,61 @@ const SVG = {
 };
 
 // ── Main render ──
-function renderCertificates() {
+async function renderCertificates() {
+  // Load sertifikat dari API
+  const session = getSession();
+  if (session) {
+    const userId = String(session.id);
+    try {
+      const issued = await getIssuedCertificatesAsync(userId);
+      const claimed = await getClaimedCoursesAsync(userId);
+
+      // Build certData dari data real
+      certData = [];
+
+      // Tambahkan sertifikat yang sudah diterbitkan
+      issued.forEach(cert => {
+        const course = coursesData.find(c => c.id === cert.courseId);
+        certData.push({
+          id:      cert.courseId,
+          title:   cert.courseTitle,
+          status:  'earned',
+          issued:  new Date(cert.issuedAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+          credId:  cert.credentialId,
+          bg:      course ? course.thumbBg.replace('135deg', '135deg').replace(')', ' 100%)').replace('linear-gradient(', 'linear-gradient(') : 'linear-gradient(135deg,#1e1b4b,#312e81)',
+          desc:    `Has successfully completed ${cert.courseTitle} and demonstrated mastery of the subject.`,
+        });
+      });
+
+      // Tambahkan kursus yang diklaim tapi belum dapat sertifikat
+      claimed.forEach(access => {
+        const alreadyEarned = certData.find(c => c.id === access.courseId);
+        if (alreadyEarned) return;
+        const course = coursesData.find(c => c.id === access.courseId);
+        if (!course) return;
+        const completed = getCompletedLessons(userId, access.courseId);
+        const allLessons = getCourseAllLessons(access.courseId);
+        const progress = allLessons.length ? Math.round((completed.length / allLessons.length) * 100) : 0;
+        certData.push({
+          id:       access.courseId,
+          title:    course.title,
+          status:   access.status === 'expired' ? 'locked' : 'progress',
+          issued:   null,
+          credId:   null,
+          bg:       course.thumbBg,
+          progress,
+          lessons:  `${completed.length}/${allLessons.length}`,
+          desc:     'Complete all lessons and the final quiz to unlock this certificate.',
+        });
+      });
+
+    } catch (err) {
+      console.warn('[Certificates] API error, pakai data lokal.', err);
+    }
+  }
+
   renderCertStats();
+
   renderCertGrid();
   renderCertJourney();
 }

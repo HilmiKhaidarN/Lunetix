@@ -1,38 +1,23 @@
 // ══════════════════════════════════════════════
-// COURSE ACCESS — Manajemen Akses Kursus
+// COURSE ACCESS — Manajemen Akses Kursus (API + localStorage fallback)
 // ══════════════════════════════════════════════
 
-const MAX_CLAIMS_FREE = 1;
-const MAX_CLAIMS_PRO  = 2;
+const MAX_CLAIMS_FREE  = 1;
+const MAX_CLAIMS_PRO   = 2;
 const ACCESS_DAYS_FREE = 90;
 const ACCESS_DAYS_PRO  = 180;
 
-// ── Helpers ──
-
-function getTodayWIB() {
-  const wibOffset = 7 * 60 * 60 * 1000;
-  const wibDate = new Date(Date.now() + wibOffset);
-  return wibDate.toISOString().slice(0, 10);
-}
+// ── localStorage helpers ──
 
 function loadCourseAccessData() {
   const raw = store.get('courseAccess', {});
-  if (typeof raw !== 'object' || raw === null) {
-    store.set('courseAccess', {});
-    return {};
-  }
-  return raw;
+  return (typeof raw === 'object' && raw !== null) ? raw : {};
 }
 
 function saveCourseAccessData(data) {
-  try {
-    store.set('courseAccess', data);
-    return true;
-  } catch (e) {
-    if (e.name === 'QuotaExceededError') {
-      showToast('Penyimpanan browser penuh. Harap bersihkan data browser.');
-      console.error('[CourseAccess] localStorage quota exceeded:', e);
-    }
+  try { store.set('courseAccess', data); return true; }
+  catch (e) {
+    if (e.name === 'QuotaExceededError') showToast('Penyimpanan browser penuh.');
     return false;
   }
 }
@@ -44,16 +29,75 @@ function calculateExpiryDate(claimedAt, accountType) {
   return d.toISOString();
 }
 
-// ── Core Functions ──
+function _syncClaimedCoursesToLocal(userId, apiCourses) {
+  const data = loadCourseAccessData();
+  if (!data[userId]) data[userId] = {};
+  apiCourses.forEach(c => {
+    data[userId][c.course_id] = {
+      courseId:          c.course_id,
+      claimedAt:         c.claimed_at,
+      expiresAt:         c.expires_at,
+      status:            c.status,
+      accountTypeAtClaim: c.account_type_at_claim,
+    };
+  });
+  saveCourseAccessData(data);
+}
 
-/**
- * Mengklaim sebuah kursus untuk pengguna.
- * @param {string} userId
- * @param {number} courseId
- * @param {'free'|'pro'} accountType
- * @returns {{ success: boolean, error?: string }}
- */
-function claimCourse(userId, courseId, accountType) {
+// ── API-first: klaim kursus ──
+
+async function claimCourseAsync(courseId) {
+  const session = getSession();
+  if (!session?.token) return _claimCourseLocal(String(session?.id), courseId, session?.account_type || 'free');
+
+  try {
+    const data = await CoursesAPI.claim(courseId);
+    // Sync ke localStorage
+    const userId = String(session.id);
+    const localData = loadCourseAccessData();
+    if (!localData[userId]) localData[userId] = {};
+    localData[userId][courseId] = {
+      courseId,
+      claimedAt:          data.access.claimed_at,
+      expiresAt:          data.access.expires_at,
+      status:             'active',
+      accountTypeAtClaim: data.access.account_type_at_claim,
+    };
+    saveCourseAccessData(localData);
+    return { success: true };
+  } catch (err) {
+    if (err?.error === 'already_claimed') return { success: false, error: 'already_claimed' };
+    if (err?.error === 'limit_reached')   return { success: false, error: 'limit_reached' };
+    console.warn('[CourseAccess] API tidak tersedia, klaim lokal.', err);
+    return _claimCourseLocal(String(session.id), courseId, session?.account_type || 'free');
+  }
+}
+
+// ── API-first: ambil kursus yang diklaim ──
+
+async function getClaimedCoursesAsync(userId) {
+  const session = getSession();
+  if (!session?.token) return getClaimedCourses(userId);
+
+  try {
+    const data = await CoursesAPI.getMyCourses();
+    _syncClaimedCoursesToLocal(userId, data.courses);
+    return data.courses.map(c => ({
+      courseId:          c.course_id,
+      claimedAt:         c.claimed_at,
+      expiresAt:         c.expires_at,
+      status:            c.status,
+      accountTypeAtClaim: c.account_type_at_claim,
+    }));
+  } catch (err) {
+    console.warn('[CourseAccess] API tidak tersedia, pakai localStorage.', err);
+    return getClaimedCourses(userId);
+  }
+}
+
+// ── localStorage fallback ──
+
+function _claimCourseLocal(userId, courseId, accountType) {
   const course = coursesData.find(c => c.id === courseId);
   if (!course) return { success: false, error: 'invalid_course' };
 
@@ -61,46 +105,42 @@ function claimCourse(userId, courseId, accountType) {
   if (!data[userId]) data[userId] = {};
 
   const userClaims = data[userId];
-  const claimCount = Object.keys(userClaims).length;
-  const maxClaims = accountType === 'pro' ? MAX_CLAIMS_PRO : MAX_CLAIMS_FREE;
+  const maxClaims  = accountType === 'pro' ? MAX_CLAIMS_PRO : MAX_CLAIMS_FREE;
 
-  if (userClaims[courseId]) return { success: false, error: 'already_claimed' };
-  if (claimCount >= maxClaims) return { success: false, error: 'limit_reached' };
+  if (userClaims[courseId])                    return { success: false, error: 'already_claimed' };
+  if (Object.keys(userClaims).length >= maxClaims) return { success: false, error: 'limit_reached' };
 
   const claimedAt = new Date().toISOString();
-  const expiresAt = calculateExpiryDate(claimedAt, accountType);
-
   userClaims[courseId] = {
-    courseId,
-    claimedAt,
-    expiresAt,
-    status: 'active',
+    courseId, claimedAt,
+    expiresAt:          calculateExpiryDate(claimedAt, accountType),
+    status:             'active',
     accountTypeAtClaim: accountType,
   };
 
-  const saved = saveCourseAccessData(data);
-  if (!saved) return { success: false, error: 'storage_error' };
-  return { success: true };
+  return saveCourseAccessData(data) ? { success: true } : { success: false, error: 'storage_error' };
 }
 
-/**
- * Memeriksa apakah pengguna memiliki akses aktif ke kursus.
- * @param {string} userId
- * @param {number} courseId
- * @returns {{ hasAccess: boolean, status: 'active'|'expired'|'not_claimed', daysLeft?: number }}
- */
-function checkCourseAccess(userId, courseId) {
-  const data = loadCourseAccessData();
-  const userClaims = data[userId] || {};
-  const record = userClaims[courseId];
+// ── Sync wrappers (kompatibilitas kode lama) ──
 
+function claimCourse(userId, courseId, accountType) {
+  return _claimCourseLocal(userId, courseId, accountType);
+}
+
+function getClaimedCourses(userId) {
+  const data = loadCourseAccessData();
+  return Object.values(data[userId] || {});
+}
+
+function checkCourseAccess(userId, courseId) {
+  const data  = loadCourseAccessData();
+  const record = (data[userId] || {})[courseId];
   if (!record) return { hasAccess: false, status: 'not_claimed' };
 
-  const now = Date.now();
+  const now     = Date.now();
   const expires = new Date(record.expiresAt).getTime();
 
   if (now > expires) {
-    // Update status to expired if not already
     if (record.status !== 'expired') {
       record.status = 'expired';
       saveCourseAccessData(data);
@@ -112,52 +152,38 @@ function checkCourseAccess(userId, courseId) {
   return { hasAccess: true, status: 'active', daysLeft };
 }
 
-/**
- * Memuat semua kursus yang diklaim oleh pengguna beserta statusnya.
- * @param {string} userId
- * @returns {Array}
- */
-function getClaimedCourses(userId) {
-  const data = loadCourseAccessData();
-  const userClaims = data[userId] || {};
-  return Object.values(userClaims);
-}
-
-/**
- * Memperbarui status akses semua kursus berdasarkan tanggal saat ini.
- * Dipanggil saat aplikasi dibuka.
- * @param {string} userId
- */
 function refreshAccessStatuses(userId) {
   const data = loadCourseAccessData();
-  const userClaims = data[userId] || {};
   let changed = false;
-
-  Object.values(userClaims).forEach(record => {
-    const now = Date.now();
-    const expires = new Date(record.expiresAt).getTime();
-    if (now > expires && record.status !== 'expired') {
+  Object.values(data[userId] || {}).forEach(record => {
+    if (Date.now() > new Date(record.expiresAt).getTime() && record.status !== 'expired') {
       record.status = 'expired';
       changed = true;
     }
   });
-
   if (changed) saveCourseAccessData(data);
 }
 
-/**
- * Menampilkan popup klaim kursus setelah registrasi.
- * Popup tidak dapat ditutup sebelum pengguna memilih kursus.
- */
+// ── Popup klaim kursus ──
+
+let _selectedClaimCourseId = null;
+
 function showClaimPopup() {
   const session = getSession();
   if (!session) return;
 
-  // Cek apakah sudah pernah klaim
-  const claimed = getClaimedCourses(String(session.id));
-  if (claimed.length > 0) return;
+  // Cek via API dulu, lalu tampilkan popup jika belum klaim
+  getClaimedCoursesAsync(String(session.id)).then(claimed => {
+    if (claimed.length > 0) return;
+    _renderClaimPopup(session);
+  }).catch(() => {
+    const claimed = getClaimedCourses(String(session.id));
+    if (claimed.length > 0) return;
+    _renderClaimPopup(session);
+  });
+}
 
-  // Buat overlay popup
+function _renderClaimPopup(session) {
   let overlay = document.getElementById('claim-popup-overlay');
   if (overlay) overlay.remove();
 
@@ -166,7 +192,6 @@ function showClaimPopup() {
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
 
   const availableCourses = coursesData.filter(c => c.status !== 'coming');
-  const accountType = session.accountType || 'free';
 
   overlay.innerHTML = `
     <div style="background:var(--bg-card,#1a1a3e);border:1px solid var(--border-accent,rgba(124,58,237,0.4));border-radius:16px;padding:32px;max-width:560px;width:100%;max-height:80vh;overflow-y:auto">
@@ -201,29 +226,23 @@ function showClaimPopup() {
   lucide.createIcons();
 }
 
-let _selectedClaimCourseId = null;
-
 function selectClaimCourse(courseId) {
   _selectedClaimCourseId = courseId;
-
   document.querySelectorAll('.claim-course-item').forEach(el => {
     const isSelected = parseInt(el.dataset.id) === courseId;
     el.style.borderColor = isSelected ? 'rgba(124,58,237,0.8)' : 'rgba(255,255,255,0.1)';
-    el.style.background = isSelected ? 'rgba(124,58,237,0.15)' : 'transparent';
+    el.style.background   = isSelected ? 'rgba(124,58,237,0.15)' : 'transparent';
     const check = el.querySelector('.claim-check');
     if (check) {
-      check.style.background = isSelected ? '#7c3aed' : 'transparent';
+      check.style.background  = isSelected ? '#7c3aed' : 'transparent';
       check.style.borderColor = isSelected ? '#7c3aed' : 'rgba(255,255,255,0.2)';
-      check.innerHTML = isSelected ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>' : '';
+      check.innerHTML = isSelected
+        ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
+        : '';
     }
   });
-
   const btn = document.getElementById('claim-confirm-btn');
-  if (btn) {
-    btn.disabled = false;
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
-  }
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
 }
 
 function confirmClaimCourse() {
@@ -231,28 +250,41 @@ function confirmClaimCourse() {
   const session = getSession();
   if (!session) return;
 
-  const accountType = session.accountType || 'free';
-  const result = claimCourse(String(session.id), _selectedClaimCourseId, accountType);
+  const btn = document.getElementById('claim-confirm-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Memproses...'; }
 
-  if (result.success) {
-    const course = coursesData.find(c => c.id === _selectedClaimCourseId);
-    const overlay = document.getElementById('claim-popup-overlay');
-    if (overlay) overlay.remove();
-    _selectedClaimCourseId = null;
-    showToast(`🎉 Kursus "${course?.title}" berhasil diklaim! Selamat belajar.`);
-    // Refresh notifikasi & status
-    refreshAccessStatuses(String(session.id));
-    checkExpiryNotifications(String(session.id));
-  } else {
-    showToast('Gagal mengklaim kursus. Coba lagi.');
-  }
+  claimCourseAsync(_selectedClaimCourseId).then(result => {
+    if (result.success) {
+      const course = coursesData.find(c => c.id === _selectedClaimCourseId);
+      document.getElementById('claim-popup-overlay')?.remove();
+      _selectedClaimCourseId = null;
+      showToast(`🎉 Kursus "${course?.title}" berhasil diklaim! Selamat belajar.`);
+      refreshAccessStatuses(String(session.id));
+      checkExpiryNotifications(String(session.id));
+      if (typeof renderCourses === 'function') renderCourses();
+    } else {
+      const msg = result.error === 'limit_reached' ? 'Batas klaim kursus tercapai.'
+        : result.error === 'already_claimed' ? 'Kursus sudah diklaim.'
+        : 'Gagal mengklaim kursus. Coba lagi.';
+      showToast(msg);
+      if (btn) { btn.disabled = false; btn.textContent = 'Mulai Belajar'; btn.style.opacity = '1'; }
+    }
+  });
 }
 
-// ── Inisialisasi saat app dibuka ──
+// ── Init saat app dibuka ──
+
 function initCourseAccess() {
   const session = getSession();
   if (!session) return;
   const userId = String(session.id);
-  refreshAccessStatuses(userId);
-  checkExpiryNotifications(userId);
+
+  // Sync dari API ke localStorage di background
+  getClaimedCoursesAsync(userId).then(() => {
+    refreshAccessStatuses(userId);
+    checkExpiryNotifications(userId);
+  }).catch(() => {
+    refreshAccessStatuses(userId);
+    checkExpiryNotifications(userId);
+  });
 }

@@ -171,8 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const session = getSession();
 
-  // Populate user info
-  document.querySelectorAll('.user-name').forEach(el => el.textContent = session.name);
+  // Sync session dari API jika ada token (background, non-blocking)
+  if (session?.token) {
+    fetch('http://localhost:3000/api/auth/me', {
+      headers: { Authorization: `Bearer ${session.token}` }
+    })
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (data?.user) setSession({ ...data.user, token: session.token });
+    })
+    .catch(() => {});
+  }
   document.querySelectorAll('.user-avatar').forEach(el => el.textContent = session.avatar || session.name.charAt(0));
   document.querySelectorAll('.user-streak').forEach(el => el.textContent = session.streak || 7);
   document.querySelectorAll('.user-points').forEach(el => el.textContent = (session.points || 1250).toLocaleString());
