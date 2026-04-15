@@ -48,6 +48,7 @@ const AuthAPI = {
   register: (body) => apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
   login: (body) => apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
   getMe: () => apiFetch('/auth/me'),
+  updateProfile: (body) => apiFetch('/auth/profile', { method: 'PUT', body: JSON.stringify(body) }),
 };
 
 // ── Quiz ──

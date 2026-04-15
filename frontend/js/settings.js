@@ -89,25 +89,29 @@ function togglePref(key) {
   showToast((prefs[key] ? 'Enabled' : 'Disabled') + ': ' + key.replace(/_/g,' '));
 }
 
-// â”€â”€ Save profile â”€â”€
-function saveSettings() {
+// -- Save profile (quick save dari sidebar settings) --
+async function saveSettings() {
   const name = document.getElementById('settings-name-input')?.value.trim();
   if (!name) { showToast('Nama tidak boleh kosong.'); return; }
-  const users = getUsers();
   const session = getSession();
-  const user = users.find(u => u.email === session.email);
-  if (user) {
-    user.name = name;
-    user.avatar = name.charAt(0).toUpperCase();
-    saveUsers(users);
-    setSession(user);
+  if (!session) return;
+  try {
+    const data = await AuthAPI.updateProfile({ name });
+    setSession({ ...session, ...data.user });
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = data.user.name);
+    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = data.user.avatar);
+    showToast('Profil berhasil disimpan! v');
+  } catch (err) {
+    console.warn('[Settings] API tidak tersedia, simpan lokal.', err);
+    const updated = { ...session, name, avatar: name.charAt(0).toUpperCase() };
+    setSession(updated);
     document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
-    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = user.avatar);
-    showToast('Profil berhasil disimpan! âœ“');
+    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = updated.avatar);
+    showToast('Profil disimpan (offline). v');
   }
 }
 
-// â”€â”€ ACCOUNT TAB â”€â”€
+// -- ACCOUNT TAB --
 function stInitAccount() {
   const session = getSession();
   if (!session) return;
@@ -123,7 +127,7 @@ function stInitAccount() {
   set('acc-github', user.github || '');
 }
 
-function saveAccountInfo() {
+async function saveAccountInfo() {
   const name     = document.getElementById('acc-name')?.value.trim();
   const bio      = document.getElementById('acc-bio')?.value.trim();
   const website  = document.getElementById('acc-website')?.value.trim();
@@ -131,18 +135,22 @@ function saveAccountInfo() {
   const github   = document.getElementById('acc-github')?.value.trim();
   if (!name) { showToast('Nama tidak boleh kosong.'); return; }
   const session = getSession();
-  const users = getUsers();
-  const user = users.find(u => u.email === session.email);
-  if (user) {
-    Object.assign(user, { name, bio, website, linkedin, github, avatar: name.charAt(0).toUpperCase() });
-    saveUsers(users);
-    setSession(user);
+  if (!session) return;
+  try {
+    const data = await AuthAPI.updateProfile({ name, bio, website, linkedin, github });
+    setSession({ ...session, ...data.user, bio, website, linkedin, github });
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = data.user.name);
+    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = data.user.avatar);
+    showToast('Account info saved! v');
+  } catch (err) {
+    console.warn('[Settings] API tidak tersedia, simpan lokal.', err);
+    const updated = { ...session, name, bio, website, linkedin, github, avatar: name.charAt(0).toUpperCase() };
+    setSession(updated);
     document.querySelectorAll('.user-name').forEach(el => el.textContent = name);
-    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = user.avatar);
+    document.querySelectorAll('.user-avatar').forEach(el => el.textContent = updated.avatar);
+    showToast('Account info saved (offline). v');
   }
-  showToast('Account info saved! âœ“');
 }
-
 // â”€â”€ NOTIFICATIONS TAB â”€â”€
 function stInitNotifications() {
   const prefs = store.get('prefs', {});
@@ -650,4 +658,5 @@ function applyBmFilterAndClose() {
   if (typeof renderBookmarks === 'function') renderBookmarks();
   showToast(`Filter diterapkan: ${cat}`);
 }
+
 

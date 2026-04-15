@@ -99,4 +99,40 @@ async function getMe(req, res) {
   return res.json({ user: profile });
 }
 
-module.exports = { register, login, getMe };
+// PUT /api/auth/profile
+async function updateProfile(req, res) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
+
+  const token = authHeader.split(' ')[1];
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) return res.status(401).json({ error: 'Invalid token' });
+
+  const { name, bio, website, linkedin, github } = req.body;
+  if (!name || !name.trim()) {
+    return res.status(400).json({ error: 'Nama tidak boleh kosong.' });
+  }
+
+  const updates = {
+    name: name.trim(),
+    avatar: name.trim().charAt(0).toUpperCase(),
+    updated_at: new Date().toISOString(),
+  };
+  if (bio      !== undefined) updates.bio      = bio;
+  if (website  !== undefined) updates.website  = website;
+  if (linkedin !== undefined) updates.linkedin = linkedin;
+  if (github   !== undefined) updates.github   = github;
+
+  const { data: profile, error: updateErr } = await supabase
+    .from('users')
+    .update(updates)
+    .eq('id', user.id)
+    .select('id, name, email, avatar, account_type, streak, points, joined_at')
+    .single();
+
+  if (updateErr) return res.status(500).json({ error: updateErr.message });
+
+  return res.json({ success: true, user: profile });
+}
+
+module.exports = { register, login, getMe, updateProfile };
