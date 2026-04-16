@@ -142,16 +142,14 @@ function renderNotifList() {
   }
 
   el.innerHTML = notifData.map(n => {
-    return <div class="notif-item " onclick="markNotifRead('')">
-      <div class="notif-icon" style="background:">
-        <i data-lucide="" style="width:14px;height:14px;color:"></i>
-      </div>
-      <div style="flex:1">
-        <div class="notif-text"></div>
-        <div class="notif-time"></div>
-      </div>
-      
-    </div>;
+    const isUnread = n.unread;
+    return '<div class="notif-item ' + (isUnread ? 'unread' : '') + '" onclick="markNotifRead(\\'' + n.id + '\\')">'+
+      '<div class="notif-icon" style="background:' + n.iconBg + '">'+
+      '<i data-lucide="' + n.icon + '" style="width:14px;height:14px;color:' + n.iconColor + '"></i></div>'+
+      '<div style="flex:1"><div class="notif-text">' + n.text + '</div>'+
+      '<div class="notif-time">' + n.time + '</div></div>'+
+      (isUnread ? '<div class="notif-unread-dot"></div>' : '') +
+      '</div>';
   }).join('');
   lucide.createIcons();
 }
@@ -169,6 +167,8 @@ function markAllRead() {
   NotificationsAPI.markAllRead().catch(() => {});
   showToast('Semua notifikasi ditandai dibaca.');
 }
+
+function toggleNotifDropdown() {
   const dd = document.getElementById('notif-dropdown');
   const pd = document.getElementById('profile-dropdown');
   if (!dd) return;

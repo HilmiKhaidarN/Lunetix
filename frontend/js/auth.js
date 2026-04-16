@@ -5,7 +5,8 @@
 const SESSION_KEY = 'lunetix_session';
 // Auto-detect: pakai /api (relative) di production Vercel,
 // pakai localhost saat development lokal
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+// Gunakan nama berbeda untuk menghindari konflik dengan api.js di dashboard
+const AUTH_API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   ? 'http://localhost:3000/api'
   : '/api';
 
@@ -52,7 +53,7 @@ async function handleLogin(e) {
   btn.textContent = 'Logging in...';
 
   try {
-    const res = await fetch(`${API_BASE}/auth/login`, {
+    const res = await fetch(`${AUTH_API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -130,7 +131,7 @@ async function handleRegister(e) {
   btn.textContent = 'Creating account...';
 
   try {
-    const res = await fetch(`${API_BASE}/auth/register`, {
+    const res = await fetch(`${AUTH_API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
@@ -204,3 +205,4 @@ function togglePassword(inputId, btn) {
   }
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
+
