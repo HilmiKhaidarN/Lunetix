@@ -212,7 +212,7 @@ function renderProgressCert(c) {
       </div>
       <div class="cert-card-actions" style="margin-top:10px">
         <button class="btn btn-primary btn-full" style="padding:7px;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px"
-          onclick="window.navigateTo&&navigateTo('courses')">
+          onclick="window.location.href='/course/${c.id}'">
           Continue Learning ${SVG.arrow}
         </button>
       </div>

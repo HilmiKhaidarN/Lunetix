@@ -40,18 +40,10 @@ function _syncCertificatesToLocal(userId, apiCerts) {
 function checkCertificateEligibility(userId, courseId) {
   const allLessonsDone = isAllLessonsCompleted(userId, courseId);
 
-  const course = coursesData.find(c => c.id === courseId);
-  let quizPassed = false;
-  if (course) {
-    const relatedQuiz = quizBank.find(q =>
-      q.title.toLowerCase().includes(course.title.split(' ')[0].toLowerCase()) ||
-      q.category === course.category
-    );
-    if (relatedQuiz) {
-      const status = getQuizPassStatus(userId, relatedQuiz.id);
-      quizPassed = status.passed;
-    }
-  }
+  // Cek quiz akhir kursus sudah lulus (format: "final-{courseId}")
+  const finalQuizId = `final-${courseId}`;
+  const finalQuizStatus = getQuizPassStatus(userId, finalQuizId);
+  const quizPassed = finalQuizStatus.passed;
 
   return { eligible: allLessonsDone && quizPassed, allLessonsDone, quizPassed };
 }
@@ -184,7 +176,7 @@ function _renderCertButtonUI(container, issued, eligibility, userId, courseId) {
 
   const missingItems = [];
   if (!eligibility.allLessonsDone) missingItems.push('Selesaikan semua lesson');
-  if (!eligibility.quizPassed)     missingItems.push('Lulus quiz (min. 80%)');
+  if (!eligibility.quizPassed)     missingItems.push('Lulus quiz akhir kursus (min. 80%)');
 
   container.innerHTML = `
     <div style="padding:20px">
