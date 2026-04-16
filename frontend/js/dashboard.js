@@ -131,7 +131,8 @@ function timeAgo(dateStr) {
 }
 
 function renderNotifList() {
-  const el = document.getElementById('notif-list'); if (!el) return;
+  const el = document.getElementById('notif-list'); 
+  if (!el) return;
   const unreadCount = notifData.filter(n => n.unread).length;
   const dot = document.getElementById('notif-dot');
   if (dot) dot.style.display = unreadCount > 0 ? 'block' : 'none';
@@ -143,13 +144,18 @@ function renderNotifList() {
 
   el.innerHTML = notifData.map(n => {
     const isUnread = n.unread;
-    return '<div class="notif-item ' + (isUnread ? 'unread' : '') + '" onclick="markNotifRead(\\'' + n.id + '\\')">'+
-      '<div class="notif-icon" style="background:' + n.iconBg + '">'+
-      '<i data-lucide="' + n.icon + '" style="width:14px;height:14px;color:' + n.iconColor + '"></i></div>'+
-      '<div style="flex:1"><div class="notif-text">' + n.text + '</div>'+
-      '<div class="notif-time">' + n.time + '</div></div>'+
-      (isUnread ? '<div class="notif-unread-dot"></div>' : '') +
-      '</div>';
+    const unreadClass = isUnread ? 'unread' : '';
+    const unreadDot = isUnread ? '<div class="notif-unread-dot"></div>' : '';
+    return `<div class="notif-item ${unreadClass}" onclick="markNotifRead('${n.id}')">
+      <div class="notif-icon" style="background:${n.iconBg}">
+        <i data-lucide="${n.icon}" style="width:14px;height:14px;color:${n.iconColor}"></i>
+      </div>
+      <div style="flex:1">
+        <div class="notif-text">${n.text}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+      ${unreadDot}
+    </div>`;
   }).join('');
   lucide.createIcons();
 }
