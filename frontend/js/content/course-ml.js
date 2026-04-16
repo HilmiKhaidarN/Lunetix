@@ -352,3 +352,196 @@ full_pipeline.fit(X_train, y_train)
   <ul id="ml-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — MACHINE LEARNING FUNDAMENTALS
+// Sumber: Sanfoundry ML MCQ (sanfoundry.com/1000-machine-learning-questions-answers),
+//         GeeksforGeeks ML Quiz (geeksforgeeks.org/quizzes/model-evaluation-Techniques-in-machine-learning),
+//         Gyansetu ML MCQ (gyansetu.in/blog/machine-learning-mcq-interview-preparation)
+// ══════════════════════════════════════════════
+courseML.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Pengenalan Machine Learning",
+    questions: [
+      {
+        q: "Machine Learning adalah subset dari bidang apa?",
+        opts: ["Data Engineering", "Artificial Intelligence", "Software Engineering", "Database Management"],
+        ans: 1
+      },
+      {
+        q: "Manakah yang BUKAN merupakan aplikasi nyata Machine Learning?",
+        opts: ["Filter spam email", "Rekomendasi Netflix", "Kompilasi kode program", "Deteksi fraud kartu kredit"],
+        ans: 2
+      },
+      {
+        q: "Apa perbedaan utama antara AI dan Machine Learning?",
+        opts: ["AI dan ML adalah hal yang sama", "AI adalah bidang lebih luas, ML adalah subset AI yang belajar dari data", "ML lebih luas dari AI", "AI hanya untuk robot, ML untuk software"],
+        ans: 1
+      },
+      {
+        q: "Definisi Machine Learning menurut Tom Mitchell (1997) menekankan bahwa program belajar dari...",
+        opts: ["Instruksi programmer", "Pengalaman (experience) terhadap tugas tertentu", "Database yang besar", "Aturan if-else yang kompleks"],
+        ans: 1
+      },
+      {
+        q: "Deep Learning adalah subset dari...",
+        opts: ["Artificial Intelligence saja", "Database", "Machine Learning", "Software Engineering"],
+        ans: 2
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Jenis-Jenis Machine Learning",
+    questions: [
+      {
+        q: "Algoritma mana yang termasuk Supervised Learning?",
+        opts: ["K-Means Clustering", "DBSCAN", "Linear Regression", "PCA"],
+        ans: 2
+      },
+      {
+        q: "Unsupervised Learning bekerja dengan data yang...",
+        opts: ["Berlabel lengkap", "Tidak berlabel", "Hanya berisi angka", "Sudah dinormalisasi"],
+        ans: 1
+      },
+      {
+        q: "Reinforcement Learning menggunakan konsep apa untuk memandu proses belajar?",
+        opts: ["Label kelas", "Reward dan penalty", "Clustering", "Dimensionality reduction"],
+        ans: 1
+      },
+      {
+        q: "Manakah contoh masalah Unsupervised Learning?",
+        opts: ["Klasifikasi email spam", "Prediksi harga rumah", "Segmentasi pelanggan berdasarkan perilaku", "Deteksi penyakit dari foto X-ray"],
+        ans: 2
+      },
+      {
+        q: "Self-Supervised Learning digunakan oleh model seperti GPT karena...",
+        opts: ["Tidak membutuhkan data sama sekali", "Model membuat label sendiri dari data yang ada (misal: prediksi kata berikutnya)", "Lebih cepat dari supervised learning", "Tidak memerlukan GPU"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: Algoritma Dasar ML",
+    questions: [
+      {
+        q: "Linear Regression meminimalkan error menggunakan metode apa?",
+        opts: ["Maximum Likelihood", "Ordinary Least Squares (OLS)", "Gradient Boosting", "Entropy"],
+        ans: 1
+      },
+      {
+        q: "Apa yang membedakan Logistic Regression dari Linear Regression?",
+        opts: ["Logistic Regression lebih cepat", "Logistic Regression menggunakan fungsi sigmoid untuk output probabilitas 0-1", "Linear Regression untuk klasifikasi, Logistic untuk regresi", "Tidak ada perbedaan"],
+        ans: 1
+      },
+      {
+        q: "Random Forest adalah contoh dari teknik apa?",
+        opts: ["Single model", "Ensemble method (bagging)", "Unsupervised learning", "Dimensionality reduction"],
+        ans: 1
+      },
+      {
+        q: "Mengapa KNN memerlukan feature scaling sebelum digunakan?",
+        opts: ["Untuk mempercepat training", "Karena KNN sensitif terhadap skala fitur saat menghitung jarak", "Karena KNN tidak bisa memproses angka besar", "Untuk mengurangi overfitting"],
+        ans: 1
+      },
+      {
+        q: "Kernel Trick pada SVM digunakan untuk...",
+        opts: ["Mempercepat komputasi", "Memetakan data ke dimensi lebih tinggi agar linearly separable", "Mengurangi jumlah fitur", "Menghindari overfitting"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Evaluasi Model",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan True Positive (TP) dalam confusion matrix?",
+        opts: ["Prediksi negatif yang benar", "Prediksi positif yang salah", "Prediksi positif yang benar", "Prediksi negatif yang salah"],
+        ans: 2
+      },
+      {
+        q: "Kapan F1-Score lebih tepat digunakan daripada Accuracy?",
+        opts: ["Ketika dataset seimbang", "Ketika dataset tidak seimbang (imbalanced)", "Ketika hanya ada dua kelas", "Ketika model sangat akurat"],
+        ans: 1
+      },
+      {
+        q: "Apa tujuan utama K-Fold Cross-Validation?",
+        opts: ["Mempercepat training", "Mengevaluasi model secara lebih robust dengan multiple splits", "Mengurangi ukuran dataset", "Meningkatkan akurasi otomatis"],
+        ans: 1
+      },
+      {
+        q: "Model dengan training accuracy 99% tapi test accuracy 60% mengalami...",
+        opts: ["Underfitting", "Overfitting", "Performa normal", "Data leakage"],
+        ans: 1
+      },
+      {
+        q: "GridSearchCV digunakan untuk...",
+        opts: ["Mencari dataset terbaik", "Mencari kombinasi hyperparameter terbaik secara exhaustive", "Memvisualisasikan model", "Mengurangi dimensi data"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 4,
+    moduleTitle: "Modul 5: Feature Engineering & Pipeline",
+    questions: [
+      {
+        q: "StandardScaler melakukan normalisasi dengan cara...",
+        opts: ["Mengubah nilai ke range 0-1", "Mengurangi mean dan membagi dengan standar deviasi (z-score)", "Menghapus outlier", "Mengisi missing values"],
+        ans: 1
+      },
+      {
+        q: "Kapan One-Hot Encoding sebaiknya digunakan?",
+        opts: ["Untuk fitur numerik", "Untuk fitur kategorikal nominal (tidak ada urutan)", "Untuk fitur dengan banyak nilai unik (high cardinality)", "Untuk fitur ordinal"],
+        ans: 1
+      },
+      {
+        q: "Apa keuntungan menggunakan Scikit-learn Pipeline?",
+        opts: ["Mempercepat komputasi GPU", "Mencegah data leakage dan memudahkan deployment", "Mengurangi jumlah fitur otomatis", "Meningkatkan akurasi model"],
+        ans: 1
+      },
+      {
+        q: "Teknik apa yang digunakan untuk menangani missing values dengan mempertimbangkan nilai tetangga terdekat?",
+        opts: ["SimpleImputer dengan mean", "KNNImputer", "Hapus baris", "Forward fill"],
+        ans: 1
+      },
+      {
+        q: "Feature importance dari Random Forest berguna untuk...",
+        opts: ["Mempercepat training", "Memilih fitur yang paling relevan (feature selection)", "Mengurangi overfitting secara otomatis", "Mengisi missing values"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — MACHINE LEARNING FUNDAMENTALS (20 Soal)
+// Sumber: Sanfoundry ML MCQ (sanfoundry.com/1000-machine-learning-questions-answers),
+//         Gyansetu ML MCQ (gyansetu.in/blog/machine-learning-mcq-interview-preparation),
+//         GeeksforGeeks Model Evaluation Quiz (geeksforgeeks.org/quizzes/model-evaluation-Techniques-in-machine-learning)
+// ══════════════════════════════════════════════
+courseML.finalQuiz = [
+  { q: "Machine Learning adalah subset dari bidang apa?", opts: ["Data Engineering", "Artificial Intelligence", "Software Engineering", "Database Management"], ans: 1 },
+  { q: "Algoritma mana yang termasuk Supervised Learning?", opts: ["K-Means", "DBSCAN", "Linear Regression", "PCA"], ans: 2 },
+  { q: "Apa yang dimaksud dengan overfitting?", opts: ["Model terlalu sederhana", "Model hafal data training tapi buruk di data baru", "Model tidak bisa dilatih", "Model membutuhkan terlalu banyak memori"], ans: 1 },
+  { q: "Metrik apa yang paling tepat untuk dataset imbalanced?", opts: ["Accuracy", "F1-Score", "Mean Squared Error", "R-squared"], ans: 1 },
+  { q: "Apa fungsi Cross-Validation?", opts: ["Mempercepat training", "Mengevaluasi model secara lebih robust dengan multiple splits", "Mengurangi ukuran dataset", "Meningkatkan akurasi otomatis"], ans: 1 },
+  { q: "Random Forest menggunakan teknik apa?", opts: ["Single model", "Ensemble method (bagging)", "Unsupervised learning", "Dimensionality reduction"], ans: 1 },
+  { q: "Apa yang diukur oleh Precision?", opts: ["Semua positif yang terdeteksi", "Ketepatan prediksi positif: TP/(TP+FP)", "Semua negatif yang terdeteksi", "Rata-rata akurasi"], ans: 1 },
+  { q: "Kernel Trick pada SVM digunakan untuk...", opts: ["Mempercepat komputasi", "Memetakan data ke dimensi lebih tinggi agar linearly separable", "Mengurangi jumlah fitur", "Menghindari overfitting"], ans: 1 },
+  { q: "Apa perbedaan Supervised dan Unsupervised Learning?", opts: ["Supervised menggunakan GPU", "Supervised menggunakan data berlabel, Unsupervised tidak", "Supervised lebih lambat", "Tidak ada perbedaan"], ans: 1 },
+  { q: "StandardScaler melakukan normalisasi dengan cara...", opts: ["Mengubah nilai ke range 0-1", "Mengurangi mean dan membagi dengan standar deviasi", "Menghapus outlier", "Mengisi missing values"], ans: 1 },
+  { q: "Algoritma mana yang paling cocok untuk prediksi nilai kontinu?", opts: ["Logistic Regression", "K-Means", "Linear Regression", "Decision Tree Classifier"], ans: 2 },
+  { q: "Apa yang dimaksud dengan Recall (Sensitivity)?", opts: ["Ketepatan prediksi positif", "Kelengkapan deteksi positif: TP/(TP+FN)", "Rata-rata akurasi", "Jumlah prediksi benar"], ans: 1 },
+  { q: "GridSearchCV digunakan untuk...", opts: ["Mencari dataset terbaik", "Mencari kombinasi hyperparameter terbaik", "Memvisualisasikan model", "Mengurangi dimensi data"], ans: 1 },
+  { q: "Apa yang dimaksud dengan underfitting?", opts: ["Model terlalu kompleks", "Model terlalu sederhana, tidak bisa menangkap pola", "Model terlalu cepat", "Model menggunakan terlalu banyak data"], ans: 1 },
+  { q: "One-Hot Encoding digunakan untuk...", opts: ["Fitur numerik", "Fitur kategorikal nominal (tidak ada urutan)", "Fitur ordinal", "Fitur dengan nilai kontinu"], ans: 1 },
+  { q: "Apa keuntungan menggunakan Scikit-learn Pipeline?", opts: ["Mempercepat GPU", "Mencegah data leakage dan memudahkan deployment", "Mengurangi jumlah fitur otomatis", "Meningkatkan akurasi model"], ans: 1 },
+  { q: "Gradient Boosting (XGBoost) membangun model secara...", opts: ["Paralel seperti Random Forest", "Sekuensial — setiap model baru fokus pada error model sebelumnya", "Acak tanpa urutan", "Berdasarkan voting mayoritas"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Bias-Variance Tradeoff?", opts: ["Tradeoff antara kecepatan dan akurasi", "Overfitting = high variance, Underfitting = high bias — perlu sweet spot", "Tradeoff antara training dan testing", "Tradeoff antara precision dan recall"], ans: 1 },
+  { q: "KNNImputer mengisi missing values berdasarkan...", opts: ["Nilai mean kolom", "Nilai dari K tetangga terdekat", "Nilai median kolom", "Nilai 0"], ans: 1 },
+  { q: "Apa metrik evaluasi yang digunakan untuk masalah regresi?", opts: ["Accuracy dan F1-Score", "MSE, RMSE, MAE, R-squared", "Precision dan Recall", "AUC-ROC"], ans: 1 }
+];

@@ -251,3 +251,160 @@ model.compile(optimizer=optimizer, loss=<span class="str">'sparse_categorical_cr
   <ul id="ethics-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — AI ETHICS & SAFETY
+// Sumber: InterviewNode ML Ethics Questions (interviewnode.com/post/machine-learning-interview-questions-on-ethics-fairness-and-explainability),
+//         Databricks SHAP Fairlearn (databricks.com/blog/mitigating-bias-machine-learning-shap-and-fairlearn),
+//         MDPI AI Bias Survey (mdpi.com/2413-4155/6/1/3)
+// ══════════════════════════════════════════════
+courseAIEthics.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Fondasi Etika AI",
+    questions: [
+      {
+        q: "Mengapa etika AI menjadi semakin penting saat ini?",
+        opts: ["Karena AI terlalu mahal", "Karena AI semakin banyak digunakan untuk keputusan yang berdampak besar pada kehidupan manusia", "Karena AI tidak akurat", "Karena AI membutuhkan terlalu banyak data"],
+        ans: 1
+      },
+      {
+        q: "Kasus COMPAS (2016) menunjukkan masalah apa dalam AI?",
+        opts: ["Model terlalu lambat", "Algoritma prediksi recidivism terbukti bias rasial — lebih sering salah memprediksi orang kulit hitam sebagai berisiko tinggi", "Model tidak akurat secara keseluruhan", "Model terlalu mahal untuk dioperasikan"],
+        ans: 1
+      },
+      {
+        q: "Prinsip 'Transparency' dalam Responsible AI berarti...",
+        opts: ["AI harus gratis untuk semua", "Proses pengambilan keputusan AI harus dapat dijelaskan dan dipahami", "AI harus open source", "AI tidak boleh menyimpan data"],
+        ans: 1
+      },
+      {
+        q: "EU AI Act (2024) mengklasifikasikan sistem AI berdasarkan...",
+        opts: ["Harga dan kompleksitas", "Tingkat risiko (unacceptable, high, limited, minimal)", "Negara pembuatnya", "Jumlah pengguna"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan 'Human Oversight' dalam prinsip Responsible AI?",
+        opts: ["Manusia harus menulis semua kode AI", "Manusia harus tetap dalam kontrol, terutama untuk keputusan berisiko tinggi", "AI tidak boleh digunakan tanpa pengawasan 24 jam", "Semua keputusan AI harus disetujui manusia"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Bias & Fairness dalam AI",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan 'Historical Bias' dalam ML?",
+        opts: ["Bug dalam kode lama", "Data training mencerminkan ketidakadilan historis yang ada di masyarakat", "Model yang sudah usang", "Kesalahan dalam preprocessing"],
+        ans: 1
+      },
+      {
+        q: "Amazon menonaktifkan tool rekrutmen AI-nya pada 2018 karena...",
+        opts: ["Terlalu lambat", "Terbukti bias terhadap perempuan karena dilatih pada resume historis yang didominasi laki-laki", "Terlalu mahal", "Tidak akurat secara keseluruhan"],
+        ans: 1
+      },
+      {
+        q: "Demographic Parity sebagai metrik fairness berarti...",
+        opts: ["Semua kelompok mendapat akurasi yang sama", "Tingkat prediksi positif harus sama di semua kelompok demografis", "Model harus dilatih dengan data seimbang", "Semua kelompok harus memiliki jumlah data yang sama"],
+        ans: 1
+      },
+      {
+        q: "Teknik mitigasi bias 'Pre-processing' dilakukan...",
+        opts: ["Setelah model di-deploy", "Sebelum training — memperbaiki bias di data (resampling, reweighting)", "Selama training dengan constraint", "Setelah prediksi dengan threshold adjustment"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan 'Feedback Loop Bias'?",
+        opts: ["Bug dalam feedback form", "Prediksi model mempengaruhi data masa depan, memperkuat bias awal secara siklikal", "Bias yang muncul dari feedback pengguna", "Kesalahan dalam evaluasi model"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: Transparansi & Explainability",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan 'Black Box' model dalam ML?",
+        opts: ["Model yang berjalan di server tersembunyi", "Model yang membuat prediksi tanpa penjelasan yang dapat dipahami manusia (misal: deep neural network)", "Model yang tidak akurat", "Model yang hanya bisa diakses oleh admin"],
+        ans: 1
+      },
+      {
+        q: "SHAP (SHapley Additive exPlanations) menggunakan konsep dari bidang apa?",
+        opts: ["Statistik klasik", "Game theory (Shapley values) untuk menghitung kontribusi setiap fitur", "Teori informasi", "Optimasi konveks"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan SHAP dan LIME?",
+        opts: ["Tidak ada perbedaan", "SHAP memberikan penjelasan global yang konsisten secara matematis, LIME memberikan penjelasan lokal per prediksi dengan model linear sederhana", "LIME lebih akurat dari SHAP", "SHAP hanya untuk tree-based models"],
+        ans: 1
+      },
+      {
+        q: "Mengapa Explainable AI (XAI) penting dalam konteks regulasi seperti GDPR?",
+        opts: ["Untuk mempercepat model", "GDPR memberikan 'right to explanation' — pengguna berhak mendapat penjelasan atas keputusan otomatis yang mempengaruhi mereka", "Untuk mengurangi biaya komputasi", "Untuk meningkatkan akurasi model"],
+        ans: 1
+      },
+      {
+        q: "Model Cards digunakan untuk...",
+        opts: ["Menyimpan model ke cloud", "Mendokumentasikan performa model, batasan, dan pertimbangan etika secara transparan", "Mengoptimasi hyperparameter", "Membuat visualisasi model"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: AI Safety & Privacy",
+    questions: [
+      {
+        q: "Adversarial Examples adalah...",
+        opts: ["Contoh data yang sulit untuk model", "Input yang sengaja dimodifikasi dengan perturbasi kecil untuk menipu model AI", "Data training yang berkualitas buruk", "Contoh dari domain yang berbeda"],
+        ans: 1
+      },
+      {
+        q: "Federated Learning menjaga privasi dengan cara...",
+        opts: ["Mengenkripsi semua data", "Model dilatih di perangkat lokal — hanya gradient yang dikirim ke server, data tidak pernah meninggalkan perangkat", "Menghapus data setelah training", "Menggunakan data sintetis"],
+        ans: 1
+      },
+      {
+        q: "Differential Privacy memberikan jaminan apa?",
+        opts: ["Model 100% akurat", "Jaminan matematis bahwa informasi individu tidak bisa diekstrak dari model atau output statistik", "Data selalu terenkripsi", "Model tidak bisa di-hack"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan 'AI Alignment Problem'?",
+        opts: ["Masalah teknis dalam menyejajarkan layer neural network", "Tantangan memastikan sistem AI yang sangat cerdas bertindak sesuai dengan nilai dan tujuan manusia", "Masalah kompatibilitas software", "Kesulitan dalam deployment AI"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — AI ETHICS & SAFETY (20 Soal)
+// Sumber: InterviewNode ML Ethics (interviewnode.com/post/machine-learning-interview-questions-on-ethics-fairness-and-explainability),
+//         Databricks SHAP Fairlearn (databricks.com/blog/mitigating-bias-machine-learning-shap-and-fairlearn),
+//         MDPI AI Bias Survey (mdpi.com/2413-4155/6/1/3)
+// ══════════════════════════════════════════════
+courseAIEthics.finalQuiz = [
+  { q: "Apa yang dimaksud dengan 'algorithmic bias'?", opts: ["Bug dalam kode", "Ketidakadilan sistematis dalam output model akibat data atau desain yang bias", "Model yang terlalu lambat", "Kesalahan dalam deployment"], ans: 1 },
+  { q: "Apa itu SHAP dalam Explainable AI?", opts: ["Teknik training baru", "Metode untuk menjelaskan kontribusi setiap fitur terhadap prediksi model", "Jenis neural network", "Metrik evaluasi"], ans: 1 },
+  { q: "Apa itu Federated Learning?", opts: ["Training model di satu server besar", "Training model di perangkat lokal tanpa mengirim data ke server pusat", "Teknik augmentasi data", "Metode kompresi model"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'AI Alignment'?", opts: ["Menyejajarkan layer neural network", "Memastikan AI bertindak sesuai dengan nilai dan tujuan manusia", "Teknik optimasi", "Metode evaluasi model"], ans: 1 },
+  { q: "Regulasi AI mana yang dikeluarkan oleh Uni Eropa?", opts: ["AI Safety Act", "EU AI Act", "Digital AI Regulation", "European ML Policy"], ans: 1 },
+  { q: "Kasus COMPAS menunjukkan masalah apa?", opts: ["Model terlalu lambat", "Bias rasial dalam algoritma prediksi recidivism", "Model tidak akurat", "Model terlalu mahal"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'Historical Bias'?", opts: ["Bug dalam kode lama", "Data training mencerminkan ketidakadilan historis di masyarakat", "Model yang sudah usang", "Kesalahan dalam preprocessing"], ans: 1 },
+  { q: "SHAP menggunakan konsep dari bidang apa?", opts: ["Statistik klasik", "Game theory (Shapley values)", "Teori informasi", "Optimasi konveks"], ans: 1 },
+  { q: "Differential Privacy memberikan jaminan apa?", opts: ["Model 100% akurat", "Jaminan matematis bahwa informasi individu tidak bisa diekstrak dari model", "Data selalu terenkripsi", "Model tidak bisa di-hack"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'Feedback Loop Bias'?", opts: ["Bug dalam feedback form", "Prediksi model mempengaruhi data masa depan, memperkuat bias awal", "Bias dari feedback pengguna", "Kesalahan dalam evaluasi model"], ans: 1 },
+  { q: "Prinsip 'Transparency' dalam Responsible AI berarti...", opts: ["AI harus gratis", "Proses pengambilan keputusan AI harus dapat dijelaskan dan dipahami", "AI harus open source", "AI tidak boleh menyimpan data"], ans: 1 },
+  { q: "Teknik mitigasi bias 'Pre-processing' dilakukan...", opts: ["Setelah model di-deploy", "Sebelum training — memperbaiki bias di data", "Selama training dengan constraint", "Setelah prediksi dengan threshold adjustment"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'Black Box' model?", opts: ["Model yang berjalan di server tersembunyi", "Model yang membuat prediksi tanpa penjelasan yang dapat dipahami manusia", "Model yang tidak akurat", "Model yang hanya bisa diakses admin"], ans: 1 },
+  { q: "GDPR memberikan 'right to explanation' yang berarti...", opts: ["Pengguna bisa melihat kode model", "Pengguna berhak mendapat penjelasan atas keputusan otomatis yang mempengaruhi mereka", "Pengguna bisa menghapus model", "Pengguna bisa mengubah keputusan model"], ans: 1 },
+  { q: "Adversarial Examples adalah...", opts: ["Contoh data yang sulit untuk model", "Input yang sengaja dimodifikasi dengan perturbasi kecil untuk menipu model AI", "Data training berkualitas buruk", "Contoh dari domain berbeda"], ans: 1 },
+  { q: "Model Cards digunakan untuk...", opts: ["Menyimpan model ke cloud", "Mendokumentasikan performa, batasan, dan pertimbangan etika model secara transparan", "Mengoptimasi hyperparameter", "Membuat visualisasi model"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'Representation Bias'?", opts: ["Model yang terlalu besar", "Kelompok tertentu kurang terwakili dalam data training", "Bias dalam representasi visual", "Kesalahan dalam encoding data"], ans: 1 },
+  { q: "LIME (Local Interpretable Model-agnostic Explanations) menjelaskan prediksi dengan...", opts: ["Menghitung Shapley values", "Membangun model linear sederhana di sekitar titik data yang ingin dijelaskan", "Menggunakan gradient", "Menampilkan feature importance global"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'Reward Hacking' dalam AI Safety?", opts: ["Meretas sistem reward", "AI menemukan cara memaksimalkan reward yang tidak sesuai tujuan sebenarnya", "Memanipulasi data reward", "Mengurangi reward secara artifisial"], ans: 1 },
+  { q: "Demographic Parity sebagai metrik fairness berarti...", opts: ["Semua kelompok mendapat akurasi sama", "Tingkat prediksi positif harus sama di semua kelompok demografis", "Model dilatih dengan data seimbang", "Semua kelompok memiliki jumlah data sama"], ans: 1 }
+];

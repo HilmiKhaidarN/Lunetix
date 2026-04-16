@@ -222,3 +222,160 @@ unknown_encodings = face_recognition.face_encodings(unknown_image)
   <ul id="cv-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — COMPUTER VISION WITH PYTHON
+// Sumber: AIMCQs CNN (aimcqs.com/convolutional-neural-networks),
+//         Lolaapp CNN Quiz (lolaapp.com/convolutional-neural-networks-quiz),
+//         GeeksforGeeks Object Detection (geeksforgeeks.org/object-detection-with-yolo-and-opencv)
+// ══════════════════════════════════════════════
+courseComputerVision.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Dasar Computer Vision",
+    questions: [
+      {
+        q: "Gambar RGB memiliki berapa channel?",
+        opts: ["1", "2", "3", "4"],
+        ans: 2
+      },
+      {
+        q: "Mengapa OpenCV menggunakan format BGR bukan RGB?",
+        opts: ["BGR lebih akurat", "Alasan historis dari implementasi awal OpenCV yang mengikuti konvensi Windows BMP", "BGR lebih cepat diproses", "BGR menggunakan lebih sedikit memori"],
+        ans: 1
+      },
+      {
+        q: "Apa kegunaan Color Space HSV dalam Computer Vision?",
+        opts: ["Meningkatkan resolusi gambar", "Lebih intuitif untuk filtering warna tertentu karena memisahkan hue dari brightness", "Mengurangi ukuran file gambar", "Meningkatkan kontras gambar"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan pixel dalam gambar digital?",
+        opts: ["Unit terkecil gambar dengan nilai intensitas warna", "Ukuran file gambar", "Resolusi gambar", "Format file gambar"],
+        ans: 0
+      },
+      {
+        q: "Fungsi cv2.resize() digunakan untuk...",
+        opts: ["Mengubah format gambar", "Mengubah dimensi (lebar dan tinggi) gambar", "Mengubah color space", "Mendeteksi objek"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Image Processing",
+    questions: [
+      {
+        q: "Apa fungsi Gaussian Blur dalam image processing?",
+        opts: ["Mendeteksi tepi gambar", "Mengurangi noise dengan menghaluskan gambar menggunakan distribusi Gaussian", "Meningkatkan ketajaman gambar", "Mengubah warna gambar"],
+        ans: 1
+      },
+      {
+        q: "Algoritma Canny Edge Detection digunakan untuk...",
+        opts: ["Menghaluskan gambar", "Mendeteksi tepi (edges) dalam gambar", "Mengubah gambar ke grayscale", "Mendeteksi wajah"],
+        ans: 1
+      },
+      {
+        q: "Apa keunggulan Bilateral Filter dibanding Gaussian Blur?",
+        opts: ["Bilateral Filter lebih cepat", "Bilateral Filter menghaluskan gambar sambil mempertahankan tepi (edges)", "Bilateral Filter menggunakan lebih sedikit memori", "Bilateral Filter lebih mudah diimplementasikan"],
+        ans: 1
+      },
+      {
+        q: "Data Augmentation dalam training CNN bertujuan untuk...",
+        opts: ["Mempercepat training", "Memperbanyak data training secara artifisial untuk mencegah overfitting", "Meningkatkan resolusi gambar", "Mengurangi ukuran model"],
+        ans: 1
+      },
+      {
+        q: "Adaptive Thresholding lebih baik dari Global Thresholding untuk gambar dengan...",
+        opts: ["Pencahayaan seragam", "Pencahayaan tidak seragam (varying illumination)", "Gambar berwarna", "Gambar beresolusi tinggi"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: CNN untuk Computer Vision",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan 'stride' dalam Convolutional Layer?",
+        opts: ["Ukuran filter", "Langkah pergeseran filter saat sliding over input — stride 2 mengurangi dimensi output menjadi setengah", "Jumlah filter", "Padding yang ditambahkan"],
+        ans: 1
+      },
+      {
+        q: "YOLO (You Only Look Once) terkenal karena...",
+        opts: ["Akurasi tertinggi di antara semua detector", "Kecepatan real-time — memproses seluruh gambar dalam satu forward pass", "Ukuran model yang sangat kecil", "Tidak memerlukan GPU"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan Semantic Segmentation dan Instance Segmentation?",
+        opts: ["Tidak ada perbedaan", "Semantic memberi label per pixel per kelas, Instance membedakan setiap objek individu", "Instance lebih lambat tapi kurang akurat", "Semantic hanya untuk gambar medis"],
+        ans: 1
+      },
+      {
+        q: "Faster R-CNN menggunakan komponen apa yang membedakannya dari R-CNN biasa?",
+        opts: ["Lebih banyak layer", "Region Proposal Network (RPN) yang terintegrasi sehingga jauh lebih cepat", "Menggunakan LSTM", "Menggunakan Transformer"],
+        ans: 1
+      },
+      {
+        q: "Mengapa Transfer Learning sangat efektif untuk Computer Vision?",
+        opts: ["Model pre-trained lebih kecil", "Model pre-trained pada ImageNet sudah belajar fitur visual umum (edges, textures, shapes) yang berguna untuk banyak task", "Transfer Learning tidak memerlukan GPU", "Transfer Learning selalu menghasilkan akurasi 100%"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Advanced Computer Vision",
+    questions: [
+      {
+        q: "Face Recognition berbeda dari Face Detection karena...",
+        opts: ["Face Detection lebih akurat", "Face Detection hanya menemukan lokasi wajah, Face Recognition mengidentifikasi siapa orangnya", "Face Recognition lebih cepat", "Keduanya adalah hal yang sama"],
+        ans: 1
+      },
+      {
+        q: "MediaPipe digunakan untuk task apa dalam Computer Vision?",
+        opts: ["Object detection saja", "Pose estimation, hand tracking, face mesh — real-time di perangkat mobile", "Image segmentation saja", "Text recognition"],
+        ans: 1
+      },
+      {
+        q: "Optical Flow digunakan untuk menganalisis apa dalam video?",
+        opts: ["Warna dominan dalam frame", "Pergerakan objek antar frame berturut-turut", "Kualitas video", "Deteksi wajah"],
+        ans: 1
+      },
+      {
+        q: "Apa metrik yang umum digunakan untuk mengevaluasi object detection?",
+        opts: ["Accuracy dan F1-Score", "mAP (mean Average Precision)", "MSE dan RMSE", "AUC-ROC"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — COMPUTER VISION WITH PYTHON (20 Soal)
+// Sumber: AIMCQs CNN (aimcqs.com/convolutional-neural-networks),
+//         Lolaapp CNN Quiz (lolaapp.com/convolutional-neural-networks-quiz),
+//         GeeksforGeeks YOLO OpenCV (geeksforgeeks.org/object-detection-with-yolo-and-opencv)
+// ══════════════════════════════════════════════
+courseComputerVision.finalQuiz = [
+  { q: "Berapa channel gambar RGB?", opts: ["1", "2", "3", "4"], ans: 2 },
+  { q: "Fungsi Pooling Layer dalam CNN?", opts: ["Menambah parameter", "Mengurangi dimensi spatial dan komputasi", "Meningkatkan resolusi gambar", "Menambah channel"], ans: 1 },
+  { q: "YOLO terkenal karena?", opts: ["Akurasi tertinggi", "Kecepatan real-time detection dalam satu forward pass", "Ukuran model kecil", "Mudah dilatih"], ans: 1 },
+  { q: "Apa itu Transfer Learning dalam CV?", opts: ["Pindah gambar antar server", "Gunakan model pre-trained ImageNet untuk task baru", "Augmentasi data", "Kompresi gambar"], ans: 1 },
+  { q: "Library Python paling populer untuk CV?", opts: ["Pandas", "NumPy", "OpenCV", "Matplotlib"], ans: 2 },
+  { q: "Mengapa OpenCV menggunakan format BGR bukan RGB?", opts: ["BGR lebih akurat", "Alasan historis dari implementasi awal OpenCV", "BGR lebih cepat", "BGR menggunakan lebih sedikit memori"], ans: 1 },
+  { q: "Apa fungsi Gaussian Blur?", opts: ["Mendeteksi tepi", "Mengurangi noise dengan menghaluskan gambar", "Meningkatkan ketajaman", "Mengubah warna"], ans: 1 },
+  { q: "Apa yang dilakukan Canny Edge Detection?", opts: ["Menghaluskan gambar", "Mendeteksi tepi (edges) dalam gambar", "Mengubah ke grayscale", "Mendeteksi wajah"], ans: 1 },
+  { q: "Apa perbedaan Semantic dan Instance Segmentation?", opts: ["Tidak ada perbedaan", "Semantic memberi label per kelas, Instance membedakan setiap objek individu", "Instance lebih lambat tapi kurang akurat", "Semantic hanya untuk gambar medis"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'stride' dalam CNN?", opts: ["Ukuran filter", "Langkah pergeseran filter — stride 2 mengurangi dimensi output menjadi setengah", "Jumlah filter", "Padding yang ditambahkan"], ans: 1 },
+  { q: "Data Augmentation bertujuan untuk...", opts: ["Mempercepat training", "Memperbanyak data training secara artifisial untuk mencegah overfitting", "Meningkatkan resolusi gambar", "Mengurangi ukuran model"], ans: 1 },
+  { q: "Faster R-CNN lebih cepat dari R-CNN karena...", opts: ["Lebih sedikit layer", "Region Proposal Network (RPN) yang terintegrasi", "Menggunakan LSTM", "Menggunakan Transformer"], ans: 1 },
+  { q: "Face Recognition berbeda dari Face Detection karena...", opts: ["Face Detection lebih akurat", "Face Detection menemukan lokasi wajah, Face Recognition mengidentifikasi siapa orangnya", "Face Recognition lebih cepat", "Keduanya sama"], ans: 1 },
+  { q: "Apa metrik evaluasi untuk object detection?", opts: ["Accuracy dan F1-Score", "mAP (mean Average Precision)", "MSE dan RMSE", "AUC-ROC"], ans: 1 },
+  { q: "Apa keunggulan Bilateral Filter dibanding Gaussian Blur?", opts: ["Lebih cepat", "Menghaluskan gambar sambil mempertahankan tepi (edges)", "Menggunakan lebih sedikit memori", "Lebih mudah diimplementasikan"], ans: 1 },
+  { q: "Arsitektur CNN mana yang memperkenalkan skip connections?", opts: ["AlexNet", "VGG", "ResNet", "LeNet"], ans: 2 },
+  { q: "MediaPipe digunakan untuk task apa?", opts: ["Object detection saja", "Pose estimation, hand tracking, face mesh — real-time di mobile", "Image segmentation saja", "Text recognition"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Optical Flow?", opts: ["Warna dominan dalam frame", "Pergerakan objek antar frame berturut-turut dalam video", "Kualitas video", "Deteksi wajah"], ans: 1 },
+  { q: "Activation function yang umum digunakan di Convolutional Layer?", opts: ["Sigmoid", "Tanh", "ReLU", "Softmax"], ans: 2 },
+  { q: "Apa kegunaan Color Space HSV dalam CV?", opts: ["Meningkatkan resolusi", "Lebih intuitif untuk filtering warna tertentu karena memisahkan hue dari brightness", "Mengurangi ukuran file", "Meningkatkan kontras"], ans: 1 }
+];

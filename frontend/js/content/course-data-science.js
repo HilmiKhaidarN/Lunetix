@@ -244,3 +244,160 @@ plt.show()</div>
   <ul id="ds-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — DATA SCIENCE WITH AI
+// Sumber: GeeksforGeeks Data Science Quiz (geeksforgeeks.org/quizzes/data-science-quiz),
+//         Sanfoundry Data Science MCQ (sanfoundry.com/1000-data-science-questions-answers),
+//         Analytics Vidhya Statistics Questions (analyticsvidhya.com/blog/2022/08/top-40-data-science-statistics-interview-questions)
+// ══════════════════════════════════════════════
+courseDataScience.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Fondasi Data Science",
+    questions: [
+      {
+        q: "Apa perbedaan Mean dan Median dalam statistik deskriptif?",
+        opts: ["Tidak ada perbedaan", "Mean adalah rata-rata aritmatika, Median adalah nilai tengah — Median lebih robust terhadap outlier", "Median selalu lebih besar dari Mean", "Mean hanya untuk data kategorikal"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan p-value dalam hypothesis testing?",
+        opts: ["Probabilitas hipotesis alternatif benar", "Probabilitas mendapatkan hasil seekstrem ini jika null hypothesis benar", "Ukuran effect size", "Tingkat kepercayaan (confidence level)"],
+        ans: 1
+      },
+      {
+        q: "Distribusi mana yang paling sering diasumsikan dalam statistik inferensial?",
+        opts: ["Uniform Distribution", "Poisson Distribution", "Normal (Gaussian) Distribution", "Exponential Distribution"],
+        ans: 2
+      },
+      {
+        q: "Jika p-value = 0.03 dan alpha = 0.05, apa kesimpulannya?",
+        opts: ["Gagal menolak null hypothesis", "Tolak null hypothesis — hasil signifikan secara statistik", "Tidak bisa disimpulkan", "Perlu lebih banyak data"],
+        ans: 1
+      },
+      {
+        q: "Apa yang diukur oleh Standard Deviation?",
+        opts: ["Nilai tengah data", "Seberapa jauh data tersebar dari mean", "Nilai maksimum data", "Korelasi antar variabel"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Exploratory Data Analysis (EDA)",
+    questions: [
+      {
+        q: "Apa tujuan utama EDA (Exploratory Data Analysis)?",
+        opts: ["Langsung membangun model ML", "Investigasi awal data untuk menemukan pola, anomali, dan hubungan sebelum modeling", "Membersihkan data saja", "Membuat laporan akhir"],
+        ans: 1
+      },
+      {
+        q: "Metode IQR (Interquartile Range) digunakan untuk...",
+        opts: ["Mengisi missing values", "Mendeteksi outlier — nilai di luar Q1-1.5*IQR atau Q3+1.5*IQR", "Menghitung korelasi", "Mengurangi dimensi data"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan korelasi dan kausalitas?",
+        opts: ["Keduanya sama", "Korelasi menunjukkan hubungan statistik, kausalitas menunjukkan hubungan sebab-akibat", "Kausalitas lebih mudah dibuktikan", "Korelasi selalu berarti kausalitas"],
+        ans: 1
+      },
+      {
+        q: "Correlation matrix heatmap berguna untuk...",
+        opts: ["Menampilkan distribusi satu variabel", "Memvisualisasikan kekuatan hubungan linear antar semua pasangan variabel numerik", "Mendeteksi outlier", "Membandingkan dua dataset"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan Skewness dalam distribusi data?",
+        opts: ["Ukuran penyebaran data", "Ukuran asimetri distribusi — positif berarti ekor panjang ke kanan, negatif ke kiri", "Jumlah outlier", "Nilai rata-rata data"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: Data Wrangling & Feature Engineering",
+    questions: [
+      {
+        q: "Apa strategi terbaik untuk menangani missing values pada kolom numerik?",
+        opts: ["Selalu hapus baris yang memiliki missing values", "Tergantung konteks: imputasi dengan mean/median untuk data normal, atau KNNImputer untuk data kompleks", "Selalu isi dengan 0", "Biarkan saja, model akan menanganinya"],
+        ans: 1
+      },
+      {
+        q: "Apa tujuan Feature Scaling (StandardScaler/MinMaxScaler)?",
+        opts: ["Mengurangi jumlah fitur", "Menyamakan skala fitur agar algoritma yang sensitif terhadap skala (KNN, SVM, NN) bekerja optimal", "Menghapus outlier", "Mengisi missing values"],
+        ans: 1
+      },
+      {
+        q: "PCA (Principal Component Analysis) digunakan untuk...",
+        opts: ["Meningkatkan akurasi model secara langsung", "Mengurangi dimensi data sambil mempertahankan variance maksimum", "Mendeteksi outlier", "Mengisi missing values"],
+        ans: 1
+      },
+      {
+        q: "Mengapa feature scaling WAJIB dilakukan sebelum PCA?",
+        opts: ["Untuk mempercepat komputasi", "Karena PCA sensitif terhadap skala — fitur dengan skala besar akan mendominasi principal components", "Untuk mengurangi noise", "Karena PCA tidak bisa memproses angka besar"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan 'data leakage' dalam machine learning?",
+        opts: ["Data yang hilang dari database", "Informasi dari test set yang bocor ke training set, menyebabkan evaluasi yang terlalu optimis", "Data yang tidak terenkripsi", "Missing values yang tidak ditangani"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Data Visualization & Storytelling",
+    questions: [
+      {
+        q: "Prinsip utama visualisasi data yang efektif adalah...",
+        opts: ["Menggunakan sebanyak mungkin warna", "Menyampaikan insight dengan jelas dan jujur tanpa menyesatkan pembaca", "Membuat grafik yang kompleks dan detail", "Menggunakan 3D chart sebisa mungkin"],
+        ans: 1
+      },
+      {
+        q: "Apa keunggulan Plotly dibanding Matplotlib untuk visualisasi?",
+        opts: ["Plotly lebih cepat", "Plotly menghasilkan chart interaktif (zoom, hover, filter) yang ideal untuk dashboard web", "Plotly lebih mudah diinstall", "Plotly menggunakan lebih sedikit kode"],
+        ans: 1
+      },
+      {
+        q: "Streamlit digunakan untuk...",
+        opts: ["Membuat model ML", "Membuat web app data science interaktif dengan Python tanpa perlu HTML/CSS/JS", "Memvisualisasikan data statis", "Mengelola database"],
+        ans: 1
+      },
+      {
+        q: "Jenis chart apa yang paling tepat untuk menampilkan perubahan nilai seiring waktu?",
+        opts: ["Pie chart", "Bar chart", "Line chart", "Scatter plot"],
+        ans: 2
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — DATA SCIENCE WITH AI (20 Soal)
+// Sumber: GeeksforGeeks Data Science Quiz (geeksforgeeks.org/quizzes/data-science-quiz),
+//         Sanfoundry Data Science MCQ (sanfoundry.com/1000-data-science-questions-answers),
+//         Analytics Vidhya Statistics (analyticsvidhya.com/blog/2022/08/top-40-data-science-statistics-interview-questions)
+// ══════════════════════════════════════════════
+courseDataScience.finalQuiz = [
+  { q: "Apa perbedaan Mean dan Median?", opts: ["Tidak ada perbedaan", "Mean adalah rata-rata, Median adalah nilai tengah — Median lebih robust terhadap outlier", "Median selalu lebih besar dari Mean", "Mean hanya untuk data kategorikal"], ans: 1 },
+  { q: "Apa yang dimaksud dengan p-value?", opts: ["Probabilitas hipotesis benar", "Probabilitas mendapatkan hasil seekstrem ini jika H0 benar", "Ukuran effect size", "Tingkat kepercayaan"], ans: 1 },
+  { q: "Tujuan PCA (Principal Component Analysis)?", opts: ["Meningkatkan akurasi model", "Mengurangi dimensi data sambil mempertahankan variance maksimum", "Mendeteksi outlier", "Mengisi missing values"], ans: 1 },
+  { q: "Apa itu EDA?", opts: ["Teknik training model", "Proses investigasi awal data untuk menemukan pola dan anomali", "Metode evaluasi model", "Teknik deployment"], ans: 1 },
+  { q: "Distribusi yang sering diasumsikan dalam statistik inferensial?", opts: ["Uniform Distribution", "Poisson Distribution", "Normal (Gaussian) Distribution", "Exponential Distribution"], ans: 2 },
+  { q: "Apa yang diukur oleh Standard Deviation?", opts: ["Nilai tengah data", "Seberapa jauh data tersebar dari mean", "Nilai maksimum data", "Korelasi antar variabel"], ans: 1 },
+  { q: "Metode IQR digunakan untuk...", opts: ["Mengisi missing values", "Mendeteksi outlier", "Menghitung korelasi", "Mengurangi dimensi data"], ans: 1 },
+  { q: "Apa perbedaan korelasi dan kausalitas?", opts: ["Keduanya sama", "Korelasi menunjukkan hubungan statistik, kausalitas menunjukkan sebab-akibat", "Kausalitas lebih mudah dibuktikan", "Korelasi selalu berarti kausalitas"], ans: 1 },
+  { q: "Mengapa feature scaling WAJIB sebelum PCA?", opts: ["Untuk mempercepat komputasi", "PCA sensitif terhadap skala — fitur besar akan mendominasi principal components", "Untuk mengurangi noise", "PCA tidak bisa memproses angka besar"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'data leakage'?", opts: ["Data yang hilang dari database", "Informasi dari test set yang bocor ke training set", "Data yang tidak terenkripsi", "Missing values yang tidak ditangani"], ans: 1 },
+  { q: "t-SNE digunakan untuk...", opts: ["Meningkatkan akurasi model", "Memvisualisasikan data berdimensi tinggi dalam 2D/3D", "Mengisi missing values", "Mendeteksi outlier"], ans: 1 },
+  { q: "Apa yang dilakukan Streamlit?", opts: ["Membuat model ML", "Membuat web app data science interaktif dengan Python", "Memvisualisasikan data statis", "Mengelola database"], ans: 1 },
+  { q: "Jika p-value = 0.03 dan alpha = 0.05, kesimpulannya?", opts: ["Gagal menolak null hypothesis", "Tolak null hypothesis — hasil signifikan", "Tidak bisa disimpulkan", "Perlu lebih banyak data"], ans: 1 },
+  { q: "Apa keunggulan Plotly dibanding Matplotlib?", opts: ["Plotly lebih cepat", "Plotly menghasilkan chart interaktif (zoom, hover, filter)", "Plotly lebih mudah diinstall", "Plotly menggunakan lebih sedikit kode"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Skewness?", opts: ["Ukuran penyebaran data", "Ukuran asimetri distribusi", "Jumlah outlier", "Nilai rata-rata data"], ans: 1 },
+  { q: "Apa strategi terbaik untuk missing values pada kolom numerik?", opts: ["Selalu hapus baris", "Tergantung konteks: imputasi mean/median atau KNNImputer", "Selalu isi dengan 0", "Biarkan saja"], ans: 1 },
+  { q: "Apa yang dilakukan df.describe() di Pandas?", opts: ["Menampilkan 5 baris pertama", "Menampilkan statistik deskriptif (mean, std, min, max, quartiles)", "Menampilkan tipe data", "Menampilkan jumlah missing values"], ans: 1 },
+  { q: "UMAP lebih baik dari t-SNE untuk dataset besar karena...", opts: ["UMAP lebih akurat", "UMAP jauh lebih cepat dan mempertahankan struktur global lebih baik", "UMAP menggunakan lebih sedikit memori", "UMAP lebih mudah diimplementasikan"], ans: 1 },
+  { q: "Apa yang dimaksud dengan A/B Testing?", opts: ["Testing dua model ML", "Uji hipotesis untuk membandingkan dua versi produk/fitur secara statistik", "Testing dua dataset", "Membandingkan dua algoritma"], ans: 1 },
+  { q: "Apa tujuan Feature Engineering?", opts: ["Mengurangi jumlah data", "Membuat dan memilih fitur yang relevan untuk meningkatkan performa model", "Mempercepat training", "Mengurangi overfitting secara otomatis"], ans: 1 }
+];

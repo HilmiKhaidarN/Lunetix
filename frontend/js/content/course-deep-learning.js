@@ -279,3 +279,197 @@ output = generator(<span class="str">"Artificial Intelligence will"</span>, max_
   <ul id="dl-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — DEEP LEARNING ESSENTIALS
+// Sumber: Gyansetu Deep Learning MCQ (gyansetu.in/blog/60-deep-learning-objective-type-quiz-mcqs),
+//         AIMCQs Neural Networks (aimcqs.com/neural-network),
+//         AIMCQs CNN (aimcqs.com/convolutional-neural-networks),
+//         ExploreDatabase RNN vs LSTM MCQ (exploredatabase.com/2026/02/rnn-vs-lstm-mcq-with-answers)
+// ══════════════════════════════════════════════
+courseDeepLearning.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Fondasi Neural Networks",
+    questions: [
+      {
+        q: "Apa fungsi bias term dalam sebuah neuron artifisial?",
+        opts: ["Mencegah overfitting", "Menggeser fungsi aktivasi agar model lebih fleksibel", "Mengurangi komputasi", "Menormalisasi input data"],
+        ans: 1
+      },
+      {
+        q: "Activation function mana yang paling umum digunakan di hidden layers saat ini?",
+        opts: ["Sigmoid", "Tanh", "ReLU (Rectified Linear Unit)", "Linear"],
+        ans: 2
+      },
+      {
+        q: "Apa yang terjadi pada output layer untuk masalah multi-class classification?",
+        opts: ["Menggunakan ReLU", "Menggunakan Softmax untuk menghasilkan distribusi probabilitas", "Menggunakan Sigmoid", "Tidak menggunakan activation function"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan Forward Propagation?",
+        opts: ["Proses update weights", "Proses menghitung output dari input melalui semua layer secara berurutan", "Proses menghitung gradient", "Proses inisialisasi weights"],
+        ans: 1
+      },
+      {
+        q: "Mengapa inisialisasi weights dengan He Initialization (sqrt(2/n)) penting untuk ReLU?",
+        opts: ["Untuk mempercepat komputasi", "Untuk mencegah vanishing/exploding gradient di awal training", "Untuk mengurangi jumlah parameter", "Untuk meningkatkan akurasi"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Training Neural Networks",
+    questions: [
+      {
+        q: "Loss function mana yang digunakan untuk masalah klasifikasi biner?",
+        opts: ["Mean Squared Error", "Binary Cross-Entropy", "Categorical Cross-Entropy", "Huber Loss"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dilakukan Backpropagation?",
+        opts: ["Menjalankan data dari input ke output", "Menghitung gradient loss terhadap setiap weight menggunakan chain rule", "Menginisialisasi weights secara acak", "Mengurangi jumlah layer"],
+        ans: 1
+      },
+      {
+        q: "Apa keunggulan optimizer Adam dibanding SGD biasa?",
+        opts: ["Adam lebih sederhana", "Adam menggunakan adaptive learning rate per parameter sehingga konvergen lebih cepat", "Adam tidak memerlukan learning rate", "Adam hanya untuk CNN"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi Dropout dalam neural network?",
+        opts: ["Mempercepat training", "Secara acak mematikan neuron selama training untuk mencegah overfitting", "Mengurangi jumlah layer", "Meningkatkan learning rate"],
+        ans: 1
+      },
+      {
+        q: "Batch Normalization membantu training dengan cara...",
+        opts: ["Mengurangi jumlah data", "Menormalisasi aktivasi setiap layer sehingga training lebih stabil dan cepat", "Menghapus neuron yang tidak aktif", "Meningkatkan ukuran batch"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: Convolutional Neural Networks (CNN)",
+    questions: [
+      {
+        q: "Apa fungsi Convolutional Layer dalam CNN?",
+        opts: ["Mengurangi dimensi gambar", "Mendeteksi fitur lokal (edges, textures) menggunakan filter/kernel yang slide over input", "Mengklasifikasikan gambar secara langsung", "Menghubungkan semua neuron"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dilakukan Max Pooling?",
+        opts: ["Mengambil rata-rata dari region", "Mengambil nilai maksimum dari region untuk mengurangi dimensi spatial", "Menambah parameter model", "Meningkatkan resolusi gambar"],
+        ans: 1
+      },
+      {
+        q: "Arsitektur CNN mana yang memperkenalkan Residual Connections (skip connections)?",
+        opts: ["AlexNet", "VGG", "ResNet", "LeNet"],
+        ans: 2
+      },
+      {
+        q: "Dalam Transfer Learning, apa yang dimaksud dengan 'fine-tuning'?",
+        opts: ["Melatih model dari awal", "Membekukan semua layer pre-trained", "Membuka beberapa layer terakhir pre-trained model untuk dilatih ulang pada data baru", "Menghapus layer terakhir"],
+        ans: 2
+      },
+      {
+        q: "Mengapa CNN lebih efisien dari Fully Connected Network untuk data gambar?",
+        opts: ["CNN menggunakan lebih banyak parameter", "CNN menggunakan weight sharing — filter yang sama diaplikasikan ke seluruh gambar", "CNN tidak memerlukan training", "CNN lebih mudah diimplementasikan"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Recurrent Neural Networks (RNN & LSTM)",
+    questions: [
+      {
+        q: "Mengapa RNN cocok untuk data sekuensial seperti teks dan time series?",
+        opts: ["RNN lebih cepat dari CNN", "RNN memiliki memory — output timestep sebelumnya digunakan sebagai input timestep berikutnya", "RNN tidak memerlukan data berlabel", "RNN menggunakan lebih sedikit memori"],
+        ans: 1
+      },
+      {
+        q: "Apa masalah utama RNN standar untuk sequence yang panjang?",
+        opts: ["Terlalu banyak parameter", "Vanishing gradient — gradient mengecil eksponensial saat backpropagation melalui banyak timestep", "Terlalu lambat untuk data pendek", "Tidak bisa memproses teks"],
+        ans: 1
+      },
+      {
+        q: "LSTM mengatasi vanishing gradient dengan mekanisme apa?",
+        opts: ["Dropout yang lebih besar", "Cell state dan gating mechanism (forget, input, output gate)", "Lebih banyak layer", "Learning rate yang lebih kecil"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi Forget Gate dalam LSTM?",
+        opts: ["Menambah informasi baru ke cell state", "Memutuskan informasi mana dari cell state yang harus dilupakan", "Menghasilkan output akhir", "Menginisialisasi cell state"],
+        ans: 1
+      },
+      {
+        q: "Apa keunggulan Bidirectional LSTM dibanding LSTM biasa?",
+        opts: ["Lebih cepat", "Memproses sequence dari dua arah (maju dan mundur) sehingga menangkap konteks lebih baik", "Menggunakan lebih sedikit memori", "Tidak memerlukan data berlabel"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 4,
+    moduleTitle: "Modul 5: Transformers & Modern DL",
+    questions: [
+      {
+        q: "Apa inovasi utama dari paper 'Attention Is All You Need' (2017)?",
+        opts: ["Memperkenalkan CNN untuk NLP", "Memperkenalkan Self-Attention Mechanism yang menggantikan RNN", "Memperkenalkan Dropout", "Memperkenalkan Batch Normalization"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi Positional Encoding dalam Transformer?",
+        opts: ["Mengurangi dimensi input", "Menambahkan informasi posisi token karena Transformer tidak memproses secara sekuensial", "Menginisialisasi weights", "Mengurangi overfitting"],
+        ans: 1
+      },
+      {
+        q: "BERT (Bidirectional Encoder Representations from Transformers) paling cocok untuk task apa?",
+        opts: ["Generasi teks panjang", "Pemahaman teks: klasifikasi, NER, question answering", "Generasi gambar", "Prediksi time series"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan utama antara BERT dan GPT?",
+        opts: ["BERT lebih besar dari GPT", "BERT adalah encoder bidirectional (pemahaman), GPT adalah decoder autoregressive (generasi)", "GPT lebih akurat untuk klasifikasi", "Tidak ada perbedaan arsitektur"],
+        ans: 1
+      },
+      {
+        q: "GAN (Generative Adversarial Network) terdiri dari dua komponen utama yaitu...",
+        opts: ["Encoder dan Decoder", "Generator dan Discriminator yang saling berkompetisi", "CNN dan RNN", "Attention dan Feed-Forward"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — DEEP LEARNING ESSENTIALS (20 Soal)
+// Sumber: Gyansetu Deep Learning MCQ (gyansetu.in/blog/60-deep-learning-objective-type-quiz-mcqs),
+//         AIMCQs Fundamentals (aimcqs.com/fundamentals),
+//         ExploreDatabase RNN vs LSTM (exploredatabase.com/2026/02/rnn-vs-lstm-mcq-with-answers)
+// ══════════════════════════════════════════════
+courseDeepLearning.finalQuiz = [
+  { q: "Apa fungsi activation function dalam neural network?", opts: ["Mempercepat training", "Menambahkan non-linearitas ke model", "Mengurangi ukuran model", "Menginisialisasi weights"], ans: 1 },
+  { q: "Apa yang dilakukan Backpropagation?", opts: ["Forward pass data", "Menghitung gradient dan update weights via chain rule", "Teknik regularisasi", "Inisialisasi weights"], ans: 1 },
+  { q: "Mengapa LSTM lebih baik dari RNN biasa untuk sequence panjang?", opts: ["LSTM lebih cepat", "LSTM memiliki memory cell yang mengatasi vanishing gradient", "LSTM menggunakan lebih sedikit parameter", "LSTM tidak memerlukan training"], ans: 1 },
+  { q: "Apa itu Transfer Learning?", opts: ["Memindahkan data antar server", "Menggunakan model pre-trained sebagai starting point untuk task baru", "Teknik kompresi model", "Metode augmentasi data"], ans: 1 },
+  { q: "Komponen utama yang membedakan Transformer dari RNN?", opts: ["Jumlah layer lebih banyak", "Self-Attention Mechanism", "Penggunaan CNN", "Ukuran batch lebih besar"], ans: 1 },
+  { q: "Activation function mana yang paling umum di hidden layers?", opts: ["Sigmoid", "Tanh", "ReLU", "Linear"], ans: 2 },
+  { q: "Loss function untuk klasifikasi multi-class?", opts: ["MSE", "Binary Cross-Entropy", "Categorical Cross-Entropy", "Huber Loss"], ans: 2 },
+  { q: "Apa fungsi Dropout dalam neural network?", opts: ["Mempercepat training", "Mematikan neuron acak saat training untuk mencegah overfitting", "Mengurangi jumlah layer", "Meningkatkan learning rate"], ans: 1 },
+  { q: "Apa yang dilakukan Max Pooling dalam CNN?", opts: ["Menambah parameter", "Mengambil nilai maksimum dari region untuk mengurangi dimensi", "Meningkatkan resolusi", "Menambah channel"], ans: 1 },
+  { q: "Optimizer mana yang menggunakan adaptive learning rate per parameter?", opts: ["SGD", "Momentum", "Adam", "Adagrad saja"], ans: 2 },
+  { q: "Apa yang dimaksud dengan vanishing gradient?", opts: ["Gradient terlalu besar", "Gradient mengecil eksponensial saat backprop di layer dalam", "Gradient hilang dari memori", "Teknik regularisasi"], ans: 1 },
+  { q: "Batch Normalization membantu training dengan cara...", opts: ["Mengurangi jumlah data", "Menormalisasi aktivasi setiap layer untuk training lebih stabil", "Menghapus neuron tidak aktif", "Meningkatkan ukuran batch"], ans: 1 },
+  { q: "Arsitektur CNN mana yang memperkenalkan skip connections?", opts: ["AlexNet", "VGG", "ResNet", "LeNet"], ans: 2 },
+  { q: "BERT adalah model jenis apa?", opts: ["Autoregressive decoder", "Bidirectional encoder", "CNN untuk teks", "RNN biasa"], ans: 1 },
+  { q: "Apa fungsi Forget Gate dalam LSTM?", opts: ["Menambah informasi baru", "Memutuskan informasi mana yang harus dilupakan dari cell state", "Menghasilkan output akhir", "Menginisialisasi cell state"], ans: 1 },
+  { q: "GAN terdiri dari dua komponen yaitu...", opts: ["Encoder dan Decoder", "Generator dan Discriminator", "CNN dan RNN", "Attention dan Feed-Forward"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Fine-tuning dalam Transfer Learning?", opts: ["Melatih model dari awal", "Membuka beberapa layer terakhir pre-trained untuk dilatih ulang pada data baru", "Membekukan semua layer", "Menghapus layer terakhir"], ans: 1 },
+  { q: "Positional Encoding dalam Transformer digunakan untuk...", opts: ["Mengurangi dimensi input", "Menambahkan informasi posisi token karena Transformer tidak memproses sekuensial", "Menginisialisasi weights", "Mengurangi overfitting"], ans: 1 },
+  { q: "Apa keunggulan Bidirectional LSTM?", opts: ["Lebih cepat", "Memproses sequence dari dua arah untuk konteks lebih baik", "Menggunakan lebih sedikit memori", "Tidak memerlukan data berlabel"], ans: 1 },
+  { q: "CNN cocok untuk data apa?", opts: ["Time series", "Teks", "Gambar/data grid", "Tabular"], ans: 2 }
+];

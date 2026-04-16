@@ -260,3 +260,160 @@ answer = qa_chain.run(<span class="str">"Apa itu machine learning?"</span>)</div
   <ul id="nlp-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — NATURAL LANGUAGE PROCESSING
+// Sumber: ExploreDatabase NLP MCQ (exploredatabase.com/2025/10/nlp-mcq-quiz-advanced),
+//         T4Tutorials NLP MCQ (t4tutorials.com/natural-language-processing-mcqs-2),
+//         GeeksforGeeks NLP Quiz (geeksforgeeks.org/quizzes/natural-language-processing-quiz)
+// ══════════════════════════════════════════════
+courseNLP.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Fondasi NLP",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan Tokenization dalam NLP?",
+        opts: ["Enkripsi teks untuk keamanan", "Memecah teks menjadi unit-unit kecil (token) seperti kata atau kalimat", "Menerjemahkan teks ke bahasa lain", "Mengompres teks agar lebih kecil"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan Stemming dan Lemmatization?",
+        opts: ["Tidak ada perbedaan", "Stemming memotong akhiran secara kasar, Lemmatization mengembalikan ke bentuk dasar kamus yang valid", "Lemmatization lebih cepat dari Stemming", "Stemming lebih akurat dari Lemmatization"],
+        ans: 1
+      },
+      {
+        q: "Apa itu Stop Words dalam NLP?",
+        opts: ["Kata yang menghentikan program", "Kata umum (the, is, a) yang sering dihapus karena tidak membawa makna penting", "Kata kunci paling penting dalam dokumen", "Kata asing dalam teks"],
+        ans: 1
+      },
+      {
+        q: "Library Python mana yang paling populer untuk NLP preprocessing?",
+        opts: ["NumPy dan Pandas", "NLTK dan spaCy", "TensorFlow dan PyTorch", "Matplotlib dan Seaborn"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dilakukan Regular Expression (regex) dalam text preprocessing?",
+        opts: ["Menerjemahkan teks", "Mencocokkan dan memanipulasi pola teks secara fleksibel", "Mengklasifikasikan sentimen", "Membuat word embeddings"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Text Representation",
+    questions: [
+      {
+        q: "Apa kelemahan utama Bag of Words (BoW)?",
+        opts: ["Terlalu lambat", "Mengabaikan urutan kata dan konteks semantik", "Membutuhkan terlalu banyak memori", "Tidak bisa memproses teks panjang"],
+        ans: 1
+      },
+      {
+        q: "TF-IDF memberikan bobot tinggi pada kata yang...",
+        opts: ["Sering muncul di semua dokumen", "Sering muncul di dokumen ini tapi jarang di dokumen lain", "Paling pendek", "Paling sering dihapus"],
+        ans: 1
+      },
+      {
+        q: "Properti menarik Word2Vec: king - man + woman ≈ queen. Ini menunjukkan bahwa Word2Vec...",
+        opts: ["Hanya menghitung frekuensi kata", "Menangkap hubungan semantik dan analogis antar kata dalam ruang vektor", "Menggunakan aturan gramatikal eksplisit", "Tidak bisa memproses kata langka"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan Word2Vec dengan Contextual Embeddings seperti BERT?",
+        opts: ["Word2Vec lebih akurat", "Word2Vec menghasilkan satu vektor per kata, BERT menghasilkan vektor berbeda tergantung konteks kalimat", "BERT lebih lambat tapi tidak lebih akurat", "Tidak ada perbedaan signifikan"],
+        ans: 1
+      },
+      {
+        q: "Subword Tokenization (BPE) digunakan oleh GPT dan BERT karena...",
+        opts: ["Lebih cepat dari word tokenization", "Menangani kata langka dan kata baru dengan memecahnya menjadi subword units", "Menggunakan lebih sedikit memori", "Lebih mudah diimplementasikan"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: NLP Tasks Klasik",
+    questions: [
+      {
+        q: "Sentiment Analysis digunakan untuk...",
+        opts: ["Menerjemahkan teks", "Menentukan sentimen (positif/negatif/netral) dari teks", "Mengidentifikasi entitas dalam teks", "Meringkas dokumen panjang"],
+        ans: 1
+      },
+      {
+        q: "Named Entity Recognition (NER) mengidentifikasi apa dalam teks?",
+        opts: ["Sentimen keseluruhan teks", "Entitas seperti nama orang, organisasi, lokasi, tanggal", "Topik utama dokumen", "Kata-kata yang paling sering muncul"],
+        ans: 1
+      },
+      {
+        q: "Apa tantangan utama dalam Sentiment Analysis untuk teks berbahasa Indonesia?",
+        opts: ["Tidak ada library yang tersedia", "Slang, singkatan, campur kode (code-switching), dan sarkasme", "Terlalu sedikit data", "Bahasa Indonesia terlalu sederhana"],
+        ans: 1
+      },
+      {
+        q: "Model pre-trained mana yang paling cocok untuk task Text Classification?",
+        opts: ["GPT-4 (decoder only)", "BERT (bidirectional encoder)", "Word2Vec", "TF-IDF"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan Zero-shot Classification?",
+        opts: ["Klasifikasi tanpa data training sama sekali", "Mengklasifikasikan teks ke kategori yang tidak pernah dilihat saat training, menggunakan pemahaman semantik LLM", "Klasifikasi dengan hanya satu contoh", "Klasifikasi menggunakan aturan manual"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Large Language Models",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan 'emergent capabilities' pada Large Language Models?",
+        opts: ["Kemampuan yang diprogram secara eksplisit", "Kemampuan yang muncul secara tidak terduga seiring bertambahnya skala model, tanpa dilatih secara eksplisit", "Kemampuan untuk belajar dari satu contoh", "Kemampuan untuk menghasilkan gambar"],
+        ans: 1
+      },
+      {
+        q: "Teknik prompting 'Chain-of-Thought' (CoT) meningkatkan performa LLM dengan cara...",
+        opts: ["Memberikan lebih banyak contoh", "Meminta model berpikir step-by-step sebelum memberikan jawaban akhir", "Menggunakan model yang lebih besar", "Mengurangi panjang prompt"],
+        ans: 1
+      },
+      {
+        q: "RAG (Retrieval Augmented Generation) mengatasi masalah apa pada LLM?",
+        opts: ["Model terlalu lambat", "Pengetahuan yang outdated dan hallucination, dengan mengambil dokumen relevan sebagai konteks", "Model terlalu besar", "Biaya komputasi yang tinggi"],
+        ans: 1
+      },
+      {
+        q: "Fine-tuning LLM berbeda dari training dari awal karena...",
+        opts: ["Fine-tuning lebih mahal", "Fine-tuning menggunakan pre-trained weights sebagai starting point, jauh lebih efisien", "Fine-tuning menghasilkan model yang lebih besar", "Fine-tuning tidak memerlukan data"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — NATURAL LANGUAGE PROCESSING (20 Soal)
+// Sumber: ExploreDatabase NLP MCQ (exploredatabase.com/2025/10/nlp-mcq-quiz-advanced),
+//         T4Tutorials NLP MCQ (t4tutorials.com/natural-language-processing-mcqs-2),
+//         GeeksforGeeks NLP Quiz (geeksforgeeks.org/quizzes/natural-language-processing-quiz)
+// ══════════════════════════════════════════════
+courseNLP.finalQuiz = [
+  { q: "Apa itu Tokenization dalam NLP?", opts: ["Enkripsi teks", "Memecah teks menjadi unit-unit kecil (token)", "Menerjemahkan teks", "Mengompres teks"], ans: 1 },
+  { q: "Perbedaan TF-IDF vs Bag of Words?", opts: ["TF-IDF lebih lambat", "TF-IDF mempertimbangkan frekuensi kata di seluruh dokumen", "BoW lebih akurat", "Tidak ada perbedaan"], ans: 1 },
+  { q: "Keunggulan Word2Vec dibanding BoW?", opts: ["Lebih cepat", "Menangkap makna semantik antar kata", "Menggunakan lebih sedikit memori", "Tidak perlu training"], ans: 1 },
+  { q: "Apa itu Named Entity Recognition?", opts: ["Mengenali nama file", "Identifikasi entitas (orang, tempat, org) dalam teks", "Memberi nama model", "Teknik tokenisasi"], ans: 1 },
+  { q: "Apa itu RAG?", opts: ["Teknik training baru", "Gabungkan retrieval dokumen dengan generasi LLM", "Jenis tokenizer", "Metode fine-tuning"], ans: 1 },
+  { q: "BERT adalah model jenis apa?", opts: ["Autoregressive decoder", "Bidirectional encoder", "CNN untuk teks", "RNN biasa"], ans: 1 },
+  { q: "Apa itu stop words?", opts: ["Kata yang menghentikan program", "Kata umum yang sering dihapus saat preprocessing", "Kata kunci penting", "Kata asing"], ans: 1 },
+  { q: "Perbedaan stemming dan lemmatization?", opts: ["Tidak ada", "Stemming potong akhiran kasar, lemmatization kembalikan ke bentuk dasar kamus", "Lemmatization lebih cepat", "Stemming lebih akurat"], ans: 1 },
+  { q: "Apa kelemahan utama Bag of Words?", opts: ["Terlalu lambat", "Mengabaikan urutan kata dan konteks semantik", "Membutuhkan terlalu banyak memori", "Tidak bisa memproses teks panjang"], ans: 1 },
+  { q: "Subword Tokenization (BPE) digunakan karena...", opts: ["Lebih cepat", "Menangani kata langka dengan memecahnya menjadi subword units", "Menggunakan lebih sedikit memori", "Lebih mudah diimplementasikan"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Sentiment Analysis?", opts: ["Menerjemahkan teks", "Menentukan sentimen (positif/negatif/netral) dari teks", "Mengidentifikasi entitas", "Meringkas dokumen"], ans: 1 },
+  { q: "Apa itu Chain-of-Thought prompting?", opts: ["Memberikan lebih banyak contoh", "Meminta model berpikir step-by-step sebelum menjawab", "Menggunakan model lebih besar", "Mengurangi panjang prompt"], ans: 1 },
+  { q: "Apa keunggulan Contextual Embeddings (BERT) vs Word2Vec?", opts: ["BERT lebih cepat", "BERT menghasilkan vektor berbeda tergantung konteks kalimat", "Word2Vec lebih akurat", "Tidak ada perbedaan"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'emergent capabilities' pada LLM?", opts: ["Kemampuan yang diprogram eksplisit", "Kemampuan yang muncul tidak terduga seiring bertambahnya skala model", "Kemampuan untuk belajar dari satu contoh", "Kemampuan menghasilkan gambar"], ans: 1 },
+  { q: "Library Python mana yang populer untuk NLP preprocessing?", opts: ["NumPy dan Pandas", "NLTK dan spaCy", "TensorFlow dan PyTorch", "Matplotlib dan Seaborn"], ans: 1 },
+  { q: "Apa fungsi Part-of-Speech (POS) tagging?", opts: ["Menentukan sentimen", "Memberikan label gramatikal (noun, verb, adj) ke setiap kata", "Mendeteksi entitas", "Meringkas teks"], ans: 1 },
+  { q: "Fine-tuning LLM berbeda dari training dari awal karena...", opts: ["Fine-tuning lebih mahal", "Fine-tuning menggunakan pre-trained weights, jauh lebih efisien", "Fine-tuning menghasilkan model lebih besar", "Fine-tuning tidak memerlukan data"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Zero-shot Classification?", opts: ["Klasifikasi tanpa data training", "Mengklasifikasikan ke kategori yang tidak pernah dilihat saat training menggunakan pemahaman semantik LLM", "Klasifikasi dengan satu contoh", "Klasifikasi menggunakan aturan manual"], ans: 1 },
+  { q: "Apa itu Coreference Resolution dalam NLP?", opts: ["Mendeteksi duplikat teks", "Mengidentifikasi semua ekspresi yang merujuk ke entitas yang sama dalam teks", "Menerjemahkan kata ganti", "Mendeteksi plagiarisme"], ans: 1 },
+  { q: "GPT menggunakan arsitektur apa?", opts: ["Bidirectional encoder", "Autoregressive decoder (prediksi token berikutnya)", "Encoder-Decoder", "CNN untuk teks"], ans: 1 }
+];

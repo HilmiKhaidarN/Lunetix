@@ -343,3 +343,196 @@ output = generator(<span class="str">"Artificial Intelligence will"</span>, max_
   <ul id="python-ai-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — PYTHON FOR AI
+// Sumber: GeeksforGeeks NumPy Quiz (geeksforgeeks.org/quizzes/python-numpy-quiz),
+//         Sanfoundry Pandas MCQ (sanfoundry.com/data-science-questions-answers-pandas-data-structure),
+//         Analytics Vidhya Python MCQ (analyticsvidhya.com/blog/2024/02/mcqs-on-basic-python-with-answers)
+// ══════════════════════════════════════════════
+coursePythonAI.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Python Essentials untuk AI",
+    questions: [
+      {
+        q: "Apa keunggulan utama Python untuk pengembangan AI dibanding bahasa lain?",
+        opts: ["Python paling cepat di antara semua bahasa", "Ekosistem library AI yang kaya dan sintaks yang mudah dibaca", "Python satu-satunya bahasa yang mendukung ML", "Python tidak memerlukan instalasi"],
+        ans: 1
+      },
+      {
+        q: "Apa output dari: x = [i**2 for i in range(5)]?",
+        opts: ["[1, 4, 9, 16, 25]", "[0, 1, 4, 9, 16]", "[0, 1, 2, 3, 4]", "Error"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi dari virtual environment (venv) dalam Python?",
+        opts: ["Mempercepat eksekusi kode", "Mengisolasi dependensi proyek agar tidak konflik antar proyek", "Mengompilasi kode Python", "Menghubungkan ke database"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan antara list dan tuple di Python?",
+        opts: ["Tidak ada perbedaan", "List mutable (bisa diubah), tuple immutable (tidak bisa diubah)", "Tuple lebih lambat dari list", "List hanya untuk angka, tuple untuk string"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan lambda function di Python?",
+        opts: ["Fungsi yang berjalan di background", "Fungsi anonim satu baris yang bisa digunakan sebagai argumen", "Fungsi rekursif", "Fungsi yang hanya menerima satu argumen"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: NumPy – Komputasi Numerik",
+    questions: [
+      {
+        q: "Apa output dari: import numpy as np; a = np.array([[1,2],[3,4]]); print(a.shape)?",
+        opts: ["(4,)", "(2, 2)", "[2, 2]", "4"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan Broadcasting dalam NumPy?",
+        opts: ["Mengirim data ke server lain", "Operasi array dengan shape berbeda secara otomatis tanpa menyalin data", "Menyiarkan hasil ke layar", "Teknik kompresi array"],
+        ans: 1
+      },
+      {
+        q: "Fungsi NumPy mana yang digunakan untuk perkalian matriks?",
+        opts: ["np.multiply()", "np.dot() atau operator @", "np.cross()", "np.matmul() saja"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan np.zeros((3,4)) dan np.ones((3,4))?",
+        opts: ["Tidak ada perbedaan", "zeros mengisi dengan 0, ones mengisi dengan 1", "zeros lebih cepat", "ones hanya untuk integer"],
+        ans: 1
+      },
+      {
+        q: "Mengapa NumPy jauh lebih cepat dari Python list untuk operasi numerik?",
+        opts: ["NumPy menggunakan lebih banyak RAM", "NumPy diimplementasikan dalam C dan menggunakan operasi vectorized", "NumPy menggunakan GPU secara otomatis", "NumPy menyimpan data di cloud"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: Pandas – Manipulasi Data",
+    questions: [
+      {
+        q: "Apa perbedaan antara df.loc[] dan df.iloc[] di Pandas?",
+        opts: ["Tidak ada perbedaan", "loc menggunakan label/nama, iloc menggunakan posisi integer", "iloc lebih cepat dari loc", "loc hanya untuk baris, iloc hanya untuk kolom"],
+        ans: 1
+      },
+      {
+        q: "Fungsi Pandas apa yang digunakan untuk melihat statistik deskriptif (mean, std, min, max)?",
+        opts: ["df.info()", "df.head()", "df.describe()", "df.shape"],
+        ans: 2
+      },
+      {
+        q: "Bagaimana cara mengisi missing values dengan median di Pandas?",
+        opts: ["df.fillna(df.mean())", "df.fillna(df.median())", "df.dropna()", "df.replace(NaN, 0)"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi df.groupby('kota')['gaji'].mean()?",
+        opts: ["Mengurutkan data berdasarkan kota", "Menghitung rata-rata gaji untuk setiap kota", "Menggabungkan dua DataFrame", "Menghapus kolom kota"],
+        ans: 1
+      },
+      {
+        q: "Apa output dari df.isnull().sum()?",
+        opts: ["Total baris DataFrame", "Jumlah missing values per kolom", "Jumlah nilai unik per kolom", "Tipe data setiap kolom"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Matplotlib & Seaborn – Visualisasi",
+    questions: [
+      {
+        q: "Jenis plot apa yang paling tepat untuk menampilkan distribusi satu variabel numerik?",
+        opts: ["Scatter plot", "Bar chart", "Histogram", "Pie chart"],
+        ans: 2
+      },
+      {
+        q: "Apa kegunaan Seaborn heatmap dalam EDA?",
+        opts: ["Menampilkan gambar", "Memvisualisasikan matriks korelasi antar variabel", "Membuat animasi", "Menampilkan distribusi data"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan utama Seaborn dengan Matplotlib?",
+        opts: ["Seaborn lebih cepat", "Seaborn dibangun di atas Matplotlib dengan tampilan lebih menarik dan fungsi statistik bawaan", "Matplotlib lebih modern", "Seaborn tidak bisa membuat scatter plot"],
+        ans: 1
+      },
+      {
+        q: "Fungsi plt.subplot(1, 2, 1) berarti...",
+        opts: ["Membuat 1 plot dengan ukuran 2x1", "Grid 1 baris 2 kolom, aktifkan subplot ke-1", "Membuat 2 plot secara vertikal", "Mengatur ukuran figure"],
+        ans: 1
+      },
+      {
+        q: "Apa kegunaan sns.pairplot() dalam analisis data?",
+        opts: ["Membandingkan dua dataset", "Menampilkan scatter plot semua kombinasi pasangan fitur sekaligus", "Membuat heatmap korelasi", "Menampilkan distribusi satu variabel"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 4,
+    moduleTitle: "Modul 5: Scikit-learn & AI Libraries",
+    questions: [
+      {
+        q: "Apa pola API yang konsisten di Scikit-learn untuk semua model?",
+        opts: ["load(), run(), save()", "fit(), predict(), transform()", "train(), test(), evaluate()", "build(), compile(), fit()"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan utama TensorFlow/Keras dengan PyTorch?",
+        opts: ["TensorFlow lebih akurat", "PyTorch lebih fleksibel dan 'Pythonic', populer di riset; Keras lebih mudah untuk prototyping", "PyTorch tidak bisa digunakan untuk production", "Tidak ada perbedaan signifikan"],
+        ans: 1
+      },
+      {
+        q: "Hugging Face Transformers digunakan untuk...",
+        opts: ["Transformasi data tabular", "Menggunakan pre-trained model NLP (BERT, GPT, dll.) dengan mudah", "Visualisasi data", "Komputasi numerik"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi model.compile() di Keras?",
+        opts: ["Membuat arsitektur model", "Mengonfigurasi optimizer, loss function, dan metrics sebelum training", "Menyimpan model ke disk", "Memuat dataset"],
+        ans: 1
+      },
+      {
+        q: "Apa keuntungan menggunakan Jupyter Notebook untuk pengembangan AI?",
+        opts: ["Lebih cepat dari script Python biasa", "Kode dijalankan per cell dan hasilnya langsung terlihat — ideal untuk eksplorasi data", "Otomatis deploy ke cloud", "Tidak memerlukan instalasi Python"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — PYTHON FOR AI (20 Soal)
+// Sumber: GeeksforGeeks NumPy Quiz (geeksforgeeks.org/quizzes/python-numpy-quiz),
+//         Sanfoundry Pandas MCQ (sanfoundry.com/data-science-questions-answers-pandas-data-structure),
+//         Analytics Vidhya Python MCQ (analyticsvidhya.com/blog/2024/02/mcqs-on-basic-python-with-answers)
+// ══════════════════════════════════════════════
+coursePythonAI.finalQuiz = [
+  { q: "Library Python mana yang digunakan untuk komputasi array numerik?", opts: ["Pandas", "Matplotlib", "NumPy", "Seaborn"], ans: 2 },
+  { q: "Apa output dari: np.array([1,2,3]).shape?", opts: ["(1,3)", "(3,)", "[3]", "3"], ans: 1 },
+  { q: "Fungsi Pandas untuk statistik deskriptif DataFrame?", opts: ["df.info()", "df.describe()", "df.head()", "df.shape"], ans: 1 },
+  { q: "Apa itu Broadcasting dalam NumPy?", opts: ["Kirim data ke server", "Operasi array shape berbeda secara otomatis", "Siarkan hasil ke layar", "Kompresi data"], ans: 1 },
+  { q: "Library paling populer untuk deep learning di Python?", opts: ["Scikit-learn", "Pandas", "TensorFlow/PyTorch", "Matplotlib"], ans: 2 },
+  { q: "Cara membaca CSV dengan Pandas?", opts: ["pd.open_csv()", "pd.read_csv()", "pd.load_csv()", "pd.import_csv()"], ans: 1 },
+  { q: "Apa itu list comprehension?", opts: ["Cara membuat list panjang", "Sintaks ringkas untuk membuat list dari iterable", "Fungsi bawaan Python", "Tipe data baru"], ans: 1 },
+  { q: "Fungsi train_test_split digunakan untuk?", opts: ["Melatih model", "Membagi dataset menjadi training dan testing", "Menguji model", "Membagi fitur"], ans: 1 },
+  { q: "Apa perbedaan df.loc[] dan df.iloc[]?", opts: ["Tidak ada perbedaan", "loc menggunakan label, iloc menggunakan posisi integer", "iloc lebih cepat dari loc", "loc hanya untuk baris"], ans: 1 },
+  { q: "Apa fungsi np.zeros((3,4))?", opts: ["Array 3x4 berisi angka acak", "Array 3x4 berisi semua 0", "Array 3x4 berisi semua 1", "Array 1D berisi 12 elemen"], ans: 1 },
+  { q: "Apa kegunaan sns.heatmap() dalam EDA?", opts: ["Menampilkan gambar", "Memvisualisasikan matriks korelasi", "Membuat animasi", "Menampilkan distribusi"], ans: 1 },
+  { q: "Apa fungsi model.compile() di Keras?", opts: ["Membuat arsitektur model", "Mengonfigurasi optimizer, loss, dan metrics", "Menyimpan model", "Memuat dataset"], ans: 1 },
+  { q: "Apa yang dilakukan df.fillna(df.median())?", opts: ["Menghapus missing values", "Mengisi missing values dengan nilai median", "Menghapus kolom dengan missing values", "Mengganti semua nilai dengan median"], ans: 1 },
+  { q: "Apa keunggulan PyTorch dibanding TensorFlow untuk riset?", opts: ["PyTorch lebih cepat", "PyTorch lebih fleksibel dan Pythonic, mudah di-debug", "PyTorch lebih mudah di-deploy", "PyTorch menggunakan lebih sedikit memori"], ans: 1 },
+  { q: "Apa output dari: np.arange(0, 10, 2)?", opts: ["[0,1,2,3,4,5,6,7,8,9]", "[0,2,4,6,8]", "[2,4,6,8,10]", "[0,2,4,6,8,10]"], ans: 1 },
+  { q: "Hugging Face pipeline('sentiment-analysis') menggunakan model apa secara default?", opts: ["GPT-2", "DistilBERT fine-tuned untuk sentiment", "BERT base", "T5"], ans: 1 },
+  { q: "Apa fungsi df.groupby('kota')['gaji'].mean()?", opts: ["Mengurutkan data", "Menghitung rata-rata gaji per kota", "Menggabungkan DataFrame", "Menghapus kolom kota"], ans: 1 },
+  { q: "Apa yang dimaksud dengan virtual environment (venv)?", opts: ["Server virtual", "Isolasi dependensi proyek agar tidak konflik", "Lingkungan cloud", "Emulator Python"], ans: 1 },
+  { q: "Apa fungsi plt.subplot(1, 2, 1)?", opts: ["Membuat 1 plot ukuran 2x1", "Grid 1 baris 2 kolom, aktifkan subplot ke-1", "Membuat 2 plot vertikal", "Mengatur ukuran figure"], ans: 1 },
+  { q: "Apa kegunaan Jupyter Notebook untuk AI development?", opts: ["Lebih cepat dari script Python", "Kode dijalankan per cell dan hasilnya langsung terlihat", "Otomatis deploy ke cloud", "Tidak memerlukan instalasi Python"], ans: 1 }
+];

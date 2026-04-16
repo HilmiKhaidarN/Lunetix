@@ -232,3 +232,160 @@ obs, _ = env.reset()
   <ul id="rl-sources"></ul>
 </div>
 `;
+
+// ══════════════════════════════════════════════
+// QUIZ PER MODUL — REINFORCEMENT LEARNING
+// Sumber: T4Tutorials RL MCQ (t4tutorials.com/reinforcement-learning-mcqs),
+//         EasyExamNotes RL MCQ (easyexamnotes.com/rl-techniques-mcqs),
+//         DevInterview Q-Learning (devinterview.io/blog/q-learning-interview-questions)
+// ══════════════════════════════════════════════
+courseRL.moduleQuizzes = [
+  {
+    moduleIndex: 0,
+    moduleTitle: "Modul 1: Fondasi Reinforcement Learning",
+    questions: [
+      {
+        q: "Apa yang dimaksud dengan 'agent' dalam Reinforcement Learning?",
+        opts: ["Dataset yang digunakan untuk training", "Entitas yang belajar dan membuat keputusan dengan berinteraksi dengan environment", "Fungsi reward", "Algoritma optimasi"],
+        ans: 1
+      },
+      {
+        q: "Apa itu 'reward' dalam konteks RL?",
+        opts: ["Kecepatan training model", "Sinyal numerik dari environment yang menunjukkan kualitas tindakan agent", "Jumlah parameter model", "Ukuran dataset training"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan 'policy' dalam RL?",
+        opts: ["Aturan lingkungan", "Strategi agent — fungsi yang memetakan state ke action", "Fungsi reward", "Nilai discount factor"],
+        ans: 1
+      },
+      {
+        q: "Discount factor (gamma) dalam RL mengontrol...",
+        opts: ["Kecepatan learning", "Seberapa penting reward masa depan dibanding reward sekarang (0=hanya sekarang, 1=jangka panjang)", "Jumlah episode training", "Ukuran action space"],
+        ans: 1
+      },
+      {
+        q: "Apa yang dimaksud dengan Markov Property dalam MDP?",
+        opts: ["State berikutnya bergantung pada semua history", "State berikutnya hanya bergantung pada state dan action saat ini, bukan history sebelumnya", "Reward selalu positif", "Action space harus diskrit"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 1,
+    moduleTitle: "Modul 2: Tabular Methods",
+    questions: [
+      {
+        q: "Apa itu Exploration vs Exploitation tradeoff dalam RL?",
+        opts: ["Tradeoff antara kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru (explore) vs menggunakan tindakan terbaik yang diketahui (exploit)", "Tradeoff antara training dan testing", "Tradeoff antara reward dan penalty"],
+        ans: 1
+      },
+      {
+        q: "Epsilon-greedy policy mengatasi exploration-exploitation dengan cara...",
+        opts: ["Selalu memilih action terbaik", "Dengan probabilitas epsilon memilih action acak (explore), sisanya memilih action terbaik (exploit)", "Selalu memilih action acak", "Menggunakan model terpisah untuk exploration"],
+        ans: 1
+      },
+      {
+        q: "Apa perbedaan Q-Learning dan SARSA?",
+        opts: ["Q-Learning lebih lambat", "Q-Learning off-policy (belajar dari optimal policy), SARSA on-policy (belajar dari policy yang sedang dijalankan)", "SARSA lebih akurat untuk semua kasus", "Tidak ada perbedaan signifikan"],
+        ans: 1
+      },
+      {
+        q: "Q-Learning update rule: Q(s,a) ← Q(s,a) + α[r + γ max Q(s',a') - Q(s,a)]. Apa yang dimaksud dengan α?",
+        opts: ["Discount factor", "Learning rate — seberapa cepat Q-value diperbarui", "Exploration rate", "Reward maksimum"],
+        ans: 1
+      },
+      {
+        q: "Monte Carlo Methods dalam RL belajar dari...",
+        opts: ["Setiap langkah (step)", "Episode lengkap — menunggu sampai episode selesai untuk update value function", "Model environment", "Data offline saja"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 2,
+    moduleTitle: "Modul 3: Deep Reinforcement Learning",
+    questions: [
+      {
+        q: "Apa inovasi utama DQN (Deep Q-Network) dibanding Q-Learning tabular?",
+        opts: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training dengan neural network", "Lebih cepat untuk state space kecil", "Tidak memerlukan reward"],
+        ans: 1
+      },
+      {
+        q: "Apa fungsi Experience Replay Buffer dalam DQN?",
+        opts: ["Menyimpan model terbaik", "Menyimpan transisi (s,a,r,s') dan sampling secara acak untuk mengurangi korelasi antar sampel", "Mempercepat komputasi GPU", "Mengurangi ukuran neural network"],
+        ans: 1
+      },
+      {
+        q: "Policy Gradient methods langsung mengoptimasi apa?",
+        opts: ["Q-function", "Policy π secara langsung tanpa perlu Q-function", "Value function V(s)", "Reward function"],
+        ans: 1
+      },
+      {
+        q: "PPO (Proximal Policy Optimization) membatasi update policy dengan tujuan...",
+        opts: ["Mempercepat training", "Mencegah perubahan policy yang terlalu besar dalam satu update — menghindari catastrophic forgetting", "Mengurangi jumlah parameter", "Meningkatkan exploration"],
+        ans: 1
+      },
+      {
+        q: "Actor-Critic methods menggabungkan...",
+        opts: ["CNN dan RNN", "Policy Gradient (Actor) dan Value Function (Critic) untuk mengurangi variance", "Q-Learning dan Monte Carlo", "DQN dan SARSA"],
+        ans: 1
+      }
+    ]
+  },
+  {
+    moduleIndex: 3,
+    moduleTitle: "Modul 4: Advanced RL",
+    questions: [
+      {
+        q: "RLHF (Reinforcement Learning from Human Feedback) digunakan untuk melatih model seperti...",
+        opts: ["Model computer vision", "ChatGPT dan model bahasa besar lainnya agar sesuai preferensi manusia", "Model time series", "Model clustering"],
+        ans: 1
+      },
+      {
+        q: "Dalam RLHF, Reward Model dilatih dari...",
+        opts: ["Data berlabel otomatis", "Perbandingan output yang dibuat oleh manusia (mana yang lebih baik)", "Hasil Q-Learning", "Data dari environment simulator"],
+        ans: 1
+      },
+      {
+        q: "Apa tantangan utama Multi-Agent RL dibanding single-agent RL?",
+        opts: ["Lebih sedikit data yang dibutuhkan", "Environment menjadi non-stationary karena semua agent belajar secara bersamaan", "Lebih mudah diimplementasikan", "Tidak memerlukan reward function"],
+        ans: 1
+      },
+      {
+        q: "Model-Based RL berbeda dari Model-Free RL karena...",
+        opts: ["Model-Based lebih lambat", "Model-Based membangun model internal environment untuk perencanaan, lebih efisien dalam penggunaan data", "Model-Free lebih akurat", "Model-Based tidak memerlukan interaksi dengan environment"],
+        ans: 1
+      }
+    ]
+  }
+];
+
+// ══════════════════════════════════════════════
+// QUIZ AKHIR KURSUS — REINFORCEMENT LEARNING (20 Soal)
+// Sumber: T4Tutorials RL MCQ (t4tutorials.com/reinforcement-learning-mcqs),
+//         EasyExamNotes RL MCQ (easyexamnotes.com/rl-techniques-mcqs),
+//         DevInterview Q-Learning (devinterview.io/blog/q-learning-interview-questions)
+// ══════════════════════════════════════════════
+courseRL.finalQuiz = [
+  { q: "Apa yang dimaksud dengan 'reward' dalam RL?", opts: ["Kecepatan training", "Sinyal feedback dari environment yang menunjukkan kualitas tindakan", "Jumlah parameter model", "Ukuran dataset"], ans: 1 },
+  { q: "Apa itu Exploration vs Exploitation tradeoff?", opts: ["Tradeoff kecepatan dan akurasi", "Tradeoff antara mencoba tindakan baru vs menggunakan tindakan terbaik yang diketahui", "Tradeoff training dan testing", "Tradeoff reward dan penalty"], ans: 1 },
+  { q: "Perbedaan Q-Learning dan SARSA?", opts: ["Q-Learning lebih lambat", "Q-Learning off-policy, SARSA on-policy", "SARSA lebih akurat", "Tidak ada perbedaan"], ans: 1 },
+  { q: "Inovasi utama DQN dibanding Q-Learning biasa?", opts: ["Menggunakan lebih banyak data", "Experience Replay dan Target Network untuk stabilitas training", "Lebih cepat", "Tidak memerlukan reward"], ans: 1 },
+  { q: "RLHF digunakan untuk melatih model apa?", opts: ["Model computer vision", "Large Language Models seperti ChatGPT", "Model time series", "Model clustering"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'policy' dalam RL?", opts: ["Aturan lingkungan", "Strategi agent — fungsi yang memetakan state ke action", "Fungsi reward", "Nilai discount factor"], ans: 1 },
+  { q: "Discount factor (gamma) mengontrol...", opts: ["Kecepatan learning", "Seberapa penting reward masa depan dibanding sekarang", "Jumlah episode training", "Ukuran action space"], ans: 1 },
+  { q: "Apa itu Markov Property?", opts: ["State berikutnya bergantung pada semua history", "State berikutnya hanya bergantung pada state dan action saat ini", "Reward selalu positif", "Action space harus diskrit"], ans: 1 },
+  { q: "Epsilon-greedy policy mengatasi exploration-exploitation dengan...", opts: ["Selalu memilih action terbaik", "Dengan probabilitas epsilon memilih acak, sisanya memilih terbaik", "Selalu memilih acak", "Menggunakan model terpisah"], ans: 1 },
+  { q: "Apa fungsi Experience Replay Buffer dalam DQN?", opts: ["Menyimpan model terbaik", "Menyimpan transisi dan sampling acak untuk mengurangi korelasi antar sampel", "Mempercepat komputasi GPU", "Mengurangi ukuran neural network"], ans: 1 },
+  { q: "PPO membatasi update policy untuk...", opts: ["Mempercepat training", "Mencegah perubahan policy terlalu besar — menghindari catastrophic forgetting", "Mengurangi jumlah parameter", "Meningkatkan exploration"], ans: 1 },
+  { q: "Actor-Critic menggabungkan...", opts: ["CNN dan RNN", "Policy Gradient (Actor) dan Value Function (Critic)", "Q-Learning dan Monte Carlo", "DQN dan SARSA"], ans: 1 },
+  { q: "Apa tantangan utama Multi-Agent RL?", opts: ["Lebih sedikit data", "Environment non-stationary karena semua agent belajar bersamaan", "Lebih mudah diimplementasikan", "Tidak memerlukan reward function"], ans: 1 },
+  { q: "Model-Based RL berbeda dari Model-Free karena...", opts: ["Model-Based lebih lambat", "Model-Based membangun model internal environment untuk perencanaan", "Model-Free lebih akurat", "Model-Based tidak perlu interaksi dengan environment"], ans: 1 },
+  { q: "Dalam RLHF, Reward Model dilatih dari...", opts: ["Data berlabel otomatis", "Perbandingan output yang dibuat oleh manusia", "Hasil Q-Learning", "Data dari environment simulator"], ans: 1 },
+  { q: "Monte Carlo Methods belajar dari...", opts: ["Setiap langkah (step)", "Episode lengkap — menunggu sampai episode selesai", "Model environment", "Data offline saja"], ans: 1 },
+  { q: "Apa yang dimaksud dengan Value Function V(s)?", opts: ["Probabilitas memilih action di state s", "Expected total reward dari state s mengikuti policy π", "Reward langsung dari state s", "Jumlah action yang tersedia di state s"], ans: 1 },
+  { q: "AlphaGo menggunakan teknik RL apa?", opts: ["Q-Learning tabular", "Monte Carlo Tree Search dikombinasikan dengan Deep RL", "SARSA", "Policy Gradient saja"], ans: 1 },
+  { q: "Apa yang dimaksud dengan 'reward shaping'?", opts: ["Mengubah arsitektur model", "Memodifikasi reward function untuk memandu agent belajar lebih cepat", "Mengurangi action space", "Meningkatkan exploration rate"], ans: 1 },
+  { q: "Apa keunggulan PPO dibanding REINFORCE?", opts: ["PPO lebih sederhana", "PPO lebih stabil dan efisien dengan clipping objective yang mencegah update terlalu besar", "REINFORCE lebih akurat", "Tidak ada perbedaan signifikan"], ans: 1 }
+];
