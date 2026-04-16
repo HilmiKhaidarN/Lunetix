@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belajar - Lunetix</title>
+  <link rel="stylesheet" href="/frontend/css/style.css" />
+  <link rel="stylesheet" href="/frontend/css/base.css" />
+  <link rel="stylesheet" href="/frontend/css/course-detail.css" />
+  <link rel="stylesheet" href="/frontend/css/course-page.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="cp-layout">
+
+  <!-- SIDEBAR KIRI: Daftar Modul & Lesson -->
+  <aside class="cp-sidebar" id="cp-sidebar">
+    <div class="cp-sidebar-header">
+      <a href="/dashboard" class="cp-back-btn">
+        <i data-lucide="arrow-left" style="width:16px;height:16px"></i>
+        <span>Kembali</span>
+      </a>
+      <div class="cp-course-title" id="cp-course-title">Memuat...</div>
+      <div class="cp-overall-progress">
+        <div class="cp-progress-bar-wrap">
+          <div class="cp-progress-bar-fill" id="cp-overall-bar" style="width:0%"></div>
+        </div>
+        <span id="cp-overall-pct">0%</span>
+      </div>
+    </div>
+
+    <nav class="cp-curriculum-nav" id="cp-curriculum-nav">
+      <!-- Diisi oleh JS -->
+    </nav>
+  </aside>
+
+  <!-- TOGGLE SIDEBAR MOBILE -->
+  <button class="cp-sidebar-toggle" id="cp-sidebar-toggle" onclick="toggleCpSidebar()">
+    <i data-lucide="panel-left" style="width:18px;height:18px"></i>
+  </button>
+
+  <!-- MAIN CONTENT -->
+  <main class="cp-main" id="cp-main">
+
+    <!-- TOPBAR -->
+    <header class="cp-topbar">
+      <div class="cp-topbar-left">
+        <button class="cp-menu-btn" onclick="toggleCpSidebar()">
+          <i data-lucide="menu" style="width:18px;height:18px"></i>
+        </button>
+        <div class="cp-breadcrumb">
+          <span id="cp-mod-label">Modul 1</span>
+          <i data-lucide="chevron-right" style="width:12px;height:12px;color:var(--text-muted)"></i>
+          <span id="cp-lesson-label">Lesson</span>
+        </div>
+      </div>
+      <div class="cp-topbar-right">
+        <div class="cp-progress-chip">
+          <i data-lucide="check-circle" style="width:13px;height:13px;color:#34d399"></i>
+          <span id="cp-done-count">0</span>/<span id="cp-total-count">0</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- LESSON CONTENT AREA -->
+    <div class="cp-content-area" id="cp-content-area">
+      <!-- Diisi oleh JS -->
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <footer class="cp-bottom-nav">
+      <button class="btn btn-outline" id="cp-prev-btn" onclick="cpNavigate('prev')" disabled>
+        <i data-lucide="arrow-left" style="width:14px;height:14px"></i> Sebelumnya
+      </button>
+      <div class="cp-bottom-center" id="cp-bottom-center"></div>
+      <button class="btn btn-primary" id="cp-next-btn" onclick="cpNavigate('next')">
+        Selanjutnya <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+      </button>
+    </footer>
+
+  </main>
+</div>
+
+<!-- SCRIPTS -->
+<script src="/frontend/js/store.js"></script>
+<script src="/frontend/js/auth.js"></script>
+<script src="/frontend/js/api.js"></script>
+<script src="/frontend/js/courseAccess.js"></script>
+<script src="/frontend/js/lessonProgress.js"></script>
+<script src="/frontend/js/content/course-ml.js"></script>
+<script src="/frontend/js/content/course-python-ai.js"></script>
+<script src="/frontend/js/content/course-deep-learning.js"></script>
+<script src="/frontend/js/content/course-nlp.js"></script>
+<script src="/frontend/js/content/course-computer-vision.js"></script>
+<script src="/frontend/js/content/course-data-science.js"></script>
+<script src="/frontend/js/content/course-rl.js"></script>
+<script src="/frontend/js/content/course-ai-ethics.js"></script>
+<script src="/frontend/js/course-page.js"></script>
+</body>
+</html>

@@ -18,15 +18,10 @@ let activeQuizAnswers = {};
 
 function openCourse(id) {
   const course = coursesData.find(c => c.id === id);
-  const content = courseRegistry[id];
 
   if (!course) return;
   if (course.status === 'coming') {
     showToast(`"${course.title}" akan segera hadir! 🚀`);
-    return;
-  }
-  if (!content) {
-    showToast('Konten kursus sedang disiapkan.');
     return;
   }
 
@@ -48,9 +43,8 @@ function openCourse(id) {
     }
   }
 
-  buildModal(course, content);
-  document.getElementById('course-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  // Redirect ke halaman kursus dedicated
+  window.location.href = `/course/${id}`;
 }
 
 function closeCourseModal() {

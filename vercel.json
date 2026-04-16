@@ -7,6 +7,9 @@
     { "source": "/register",        "destination": "/frontend/html/register.html" },
     { "source": "/register.html",   "destination": "/frontend/html/register.html" },
     { "source": "/dashboard",       "destination": "/frontend/html/dashboard.html" },
-    { "source": "/dashboard.html",  "destination": "/frontend/html/dashboard.html" }
+    { "source": "/dashboard.html",  "destination": "/frontend/html/dashboard.html" },
+    { "source": "/course/:id/module/:moduleId/quiz", "destination": "/frontend/html/course-quiz.html" },
+    { "source": "/course/:id/quiz", "destination": "/frontend/html/course-quiz.html" },
+    { "source": "/course/:id",      "destination": "/frontend/html/course.html" }
   ]
 }
