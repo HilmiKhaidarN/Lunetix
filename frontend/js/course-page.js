@@ -340,8 +340,16 @@ function openLesson(moduleIdx, lessonIdx) {
       </div>
 
       <div id="cp-module-quiz-cta"></div>
+
+      <!-- Discussion Panel -->
+      <div id="ld-panel"></div>
     </div>
   `;
+
+  // Init discussion panel
+  if (typeof initLessonDiscussion === 'function') {
+    initLessonDiscussion(cpCourseId, lessonId);
+  }
 
   // Cek apakah perlu tampilkan CTA quiz modul
   checkModuleQuizCTA(moduleIdx);

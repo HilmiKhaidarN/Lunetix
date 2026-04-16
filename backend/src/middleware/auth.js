@@ -17,4 +17,22 @@ async function requireAuth(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth };
+// Optional auth — tidak wajib login, tapi jika ada token akan di-attach
+async function optionalAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    req.user = null;
+    return next();
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const { data: { user } } = await supabase.auth.getUser(token);
+    req.user = user || null;
+  } catch {
+    req.user = null;
+  }
+  next();
+}
+
+module.exports = { requireAuth, optionalAuth };

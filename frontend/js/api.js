@@ -101,3 +101,20 @@ const ModuleQuizAPI = {
     { method: 'POST', body: JSON.stringify({ score }) }
   ),
 };
+
+// ── Lesson Discussion ──
+const DiscussionAPI = {
+  getAll:    (courseId, lessonId) => apiFetch(`/lesson-discussion/${courseId}/${lessonId}`),
+  create:    (courseId, lessonId, body, parentId) => apiFetch(
+    `/lesson-discussion/${courseId}/${lessonId}`,
+    { method: 'POST', body: JSON.stringify({ body, parentId: parentId || null }) }
+  ),
+  like:      (courseId, lessonId, postId) => apiFetch(
+    `/lesson-discussion/${courseId}/${lessonId}/${postId}/like`,
+    { method: 'POST' }
+  ),
+  delete:    (courseId, lessonId, postId) => apiFetch(
+    `/lesson-discussion/${courseId}/${lessonId}/${postId}`,
+    { method: 'DELETE' }
+  ),
+};
