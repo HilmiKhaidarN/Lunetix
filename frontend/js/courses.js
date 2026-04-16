@@ -76,6 +76,53 @@ function renderCourses() {
     return;
   }
 
+  // Render cards — progress akan di-update async
+  renderCoursesCards(filtered, claimedMap);
+  
+  // Update progress async
+  updateCoursesProgress(filtered, claimedMap);
+}
+
+async function updateCoursesProgress(filtered, claimedMap) {
+  for (const c of filtered) {
+    const claimed = claimedMap[c.id];
+    if (!claimed || claimed.status === 'expired') continue;
+
+    // Hitung progress real
+    const allLessons = getCourseAllLessons(c.id);
+    if (!allLessons.length) continue;
+
+    let completed = [];
+    try {
+      completed = await getCompletedLessonsAsync(c.id);
+    } catch (e) {}
+
+    const progress = Math.round((completed.length / allLessons.length) * 100);
+    c.progress = progress;
+
+    // Update DOM
+    const card = document.querySelector(`.course-card[onclick*="openCourse(${c.id})"]`);
+    if (!card) continue;
+
+    const progressLabel = card.querySelector('.course-progress-label span:last-child');
+    if (progressLabel) progressLabel.textContent = progress + '%';
+
+    const progressFill = card.querySelector('.progress-fill');
+    if (progressFill) {
+      progressFill.style.width = progress + '%';
+      progressFill.dataset.width = progress;
+    }
+
+    // Update button label
+    const btn = card.querySelector('.btn');
+    if (btn && progress > 0) {
+      btn.textContent = 'Continue';
+    }
+  }
+}
+
+function renderCoursesCards(filtered, claimedMap) {
+  const container = document.getElementById('courses-grid');
   container.innerHTML = filtered.map(c => {
     const claimed = claimedMap[c.id];
     const isExpired = claimed && claimed.status === 'expired';
