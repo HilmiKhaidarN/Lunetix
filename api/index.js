@@ -50,6 +50,7 @@ app.use('/api/quiz',          require('../backend/src/routes/quiz'));
 app.use('/api/lessons',       require('../backend/src/routes/lessons'));
 app.use('/api/certificates',  require('../backend/src/routes/certificates'));
 app.use('/api/notifications', require('../backend/src/routes/notifications'));
+app.use('/api/community',     require('../backend/src/routes/community'));
 
 // ── 404 handler ──
 app.use((req, res) => {

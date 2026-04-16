@@ -81,3 +81,12 @@ const NotificationsAPI = {
   markAllRead: () => apiFetch('/notifications/read-all', { method: 'PUT' }),
   markRead:    (id) => apiFetch(`/notifications/${id}/read`, { method: 'PUT' }),
 };
+
+// ── Community ──
+const CommunityAPI = {
+  getStats:   () => apiFetch('/community/stats'),
+  getPosts:   (tag) => apiFetch(`/community/posts${tag && tag !== 'all' ? '?tag=' + encodeURIComponent(tag) : ''}`),
+  createPost: (body) => apiFetch('/community/posts', { method: 'POST', body: JSON.stringify(body) }),
+  toggleLike: (id) => apiFetch(`/community/posts/${id}/like`, { method: 'POST' }),
+  deletePost: (id) => apiFetch(`/community/posts/${id}`, { method: 'DELETE' }),
+};
