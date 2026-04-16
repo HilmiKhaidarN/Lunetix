@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hour >= 12 && hour < 17) greeting = 'Good afternoon';
   else if (hour >= 17) greeting = 'Good evening';
   const greetEl = document.getElementById('greeting');
-  if (greetEl) greetEl.textContent = `${greeting}, ${session.name}! ðŸ‘‹`;
+  if (greetEl) { greetEl.innerHTML = `${greeting}, ${session.name}!`; lucide.createIcons(); }
 
   // Navigation â€” pages already in DOM, just show/hide
   const navItems = document.querySelectorAll('.nav-item[data-page]');
