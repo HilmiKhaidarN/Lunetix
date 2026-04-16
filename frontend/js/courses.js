@@ -14,8 +14,7 @@ function mapCourse(c) {
     thumbBg:    c.thumb_bg,
     thumbColor: c.thumb_color,
     duration:   c.duration,
-    students:   c.students,
-    rating:     c.rating,
+    students:   c.students || 0,
     status:     c.status,
     progress:   0,
   };
@@ -23,14 +22,14 @@ function mapCourse(c) {
 
 // Fallback data statis jika API tidak bisa diakses
 const coursesDataFallback = [
-  { id: 1, title: 'Machine Learning Fundamentals', level: 'Beginner',     category: 'Machine Learning', thumbIcon: 'brain-circuit',       thumbBg: 'linear-gradient(135deg,#1e1b4b,#312e81)', thumbColor: '#a78bfa', duration: '8h 30m',  students: '2.1k', rating: 4.8, progress: 0, status: 'start' },
-  { id: 2, title: 'Python for AI',                 level: 'Beginner',     category: 'Machine Learning', thumbIcon: 'code-2',              thumbBg: 'linear-gradient(135deg,#14532d,#166534)', thumbColor: '#4ade80', duration: '6h 15m',  students: '3.4k', rating: 4.9, progress: 0, status: 'start' },
-  { id: 3, title: 'Deep Learning Essentials',      level: 'Intermediate', category: 'Deep Learning',    thumbIcon: 'network',             thumbBg: 'linear-gradient(135deg,#1e3a5f,#1e40af)', thumbColor: '#60a5fa', duration: '12h 45m', students: '1.8k', rating: 4.7, progress: 0, status: 'start' },
-  { id: 4, title: 'Natural Language Processing',   level: 'Intermediate', category: 'NLP',              thumbIcon: 'message-square-text', thumbBg: 'linear-gradient(135deg,#3b1f5e,#6d28d9)', thumbColor: '#c084fc', duration: '10h 20m', students: '1.2k', rating: 4.6, progress: 0, status: 'start' },
-  { id: 5, title: 'Computer Vision with Python',   level: 'Beginner',     category: 'Computer Vision',  thumbIcon: 'scan-eye',            thumbBg: 'linear-gradient(135deg,#1c3a2e,#065f46)', thumbColor: '#34d399', duration: '9h 10m',  students: '2.5k', rating: 4.8, progress: 0, status: 'start' },
-  { id: 6, title: 'Data Science with AI',          level: 'Beginner',     category: 'Data Science',     thumbIcon: 'database',            thumbBg: 'linear-gradient(135deg,#1c2a4a,#1e3a8a)', thumbColor: '#818cf8', duration: '11h 50m', students: '4.1k', rating: 4.9, progress: 0, status: 'start' },
-  { id: 7, title: 'Reinforcement Learning',        level: 'Advanced',     category: 'Deep Learning',    thumbIcon: 'gamepad-2',           thumbBg: 'linear-gradient(135deg,#3b1a1a,#7f1d1d)', thumbColor: '#f87171', duration: '15h 30m', students: '890',  rating: 4.7, progress: 0, status: 'coming' },
-  { id: 8, title: 'AI Ethics & Safety',            level: 'Beginner',     category: 'Data Science',     thumbIcon: 'shield-check',        thumbBg: 'linear-gradient(135deg,#1a2e1a,#14532d)', thumbColor: '#86efac', duration: '5h 20m',  students: '1.5k', rating: 4.5, progress: 0, status: 'coming' },
+  { id: 1, title: 'Machine Learning Fundamentals', level: 'Beginner',     category: 'Machine Learning', thumbIcon: 'brain-circuit',       thumbBg: 'linear-gradient(135deg,#1e1b4b,#312e81)', thumbColor: '#a78bfa', duration: '8h 30m',  students: 0, progress: 0, status: 'start' },
+  { id: 2, title: 'Python for AI',                 level: 'Beginner',     category: 'Machine Learning', thumbIcon: 'code-2',              thumbBg: 'linear-gradient(135deg,#14532d,#166534)', thumbColor: '#4ade80', duration: '6h 15m',  students: 0, progress: 0, status: 'start' },
+  { id: 3, title: 'Deep Learning Essentials',      level: 'Intermediate', category: 'Deep Learning',    thumbIcon: 'network',             thumbBg: 'linear-gradient(135deg,#1e3a5f,#1e40af)', thumbColor: '#60a5fa', duration: '12h 45m', students: 0, progress: 0, status: 'start' },
+  { id: 4, title: 'Natural Language Processing',   level: 'Intermediate', category: 'NLP',              thumbIcon: 'message-square-text', thumbBg: 'linear-gradient(135deg,#3b1f5e,#6d28d9)', thumbColor: '#c084fc', duration: '10h 20m', students: 0, progress: 0, status: 'start' },
+  { id: 5, title: 'Computer Vision with Python',   level: 'Beginner',     category: 'Computer Vision',  thumbIcon: 'scan-eye',            thumbBg: 'linear-gradient(135deg,#1c3a2e,#065f46)', thumbColor: '#34d399', duration: '9h 10m',  students: 0, progress: 0, status: 'start' },
+  { id: 6, title: 'Data Science with AI',          level: 'Beginner',     category: 'Data Science',     thumbIcon: 'database',            thumbBg: 'linear-gradient(135deg,#1c2a4a,#1e3a8a)', thumbColor: '#818cf8', duration: '11h 50m', students: 0, progress: 0, status: 'start' },
+  { id: 7, title: 'Reinforcement Learning',        level: 'Advanced',     category: 'Deep Learning',    thumbIcon: 'gamepad-2',           thumbBg: 'linear-gradient(135deg,#3b1a1a,#7f1d1d)', thumbColor: '#f87171', duration: '15h 30m', students: 0, progress: 0, status: 'coming' },
+  { id: 8, title: 'AI Ethics & Safety',            level: 'Beginner',     category: 'Data Science',     thumbIcon: 'shield-check',        thumbBg: 'linear-gradient(135deg,#1a2e1a,#14532d)', thumbColor: '#86efac', duration: '5h 20m',  students: 0, progress: 0, status: 'coming' },
 ];
 
 /**
@@ -111,7 +110,7 @@ function renderCourses() {
           ${statusBadge}
         </div>
         <h4>${c.title}</h4>
-        <div class="course-level">⭐ ${c.rating} · ${c.students} students</div>
+        <div class="course-level"><i data-lucide="users" style="width:11px;height:11px"></i> ${c.students} students</div>
         ${c.progress > 0 && isClaimed ? `
           <div class="course-progress-label">
             <span>Progress</span><span>${c.progress}%</span>

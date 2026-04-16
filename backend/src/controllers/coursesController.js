@@ -5,13 +5,33 @@ const MAX_CLAIMS  = { free: 1,  pro: 2  };
 
 // GET /api/courses
 async function getAllCourses(req, res) {
-  const { data, error } = await supabase
+  // Ambil semua kursus
+  const { data: courses, error } = await supabase
     .from('courses')
     .select('*')
     .order('id');
 
   if (error) return res.status(500).json({ error: error.message });
-  return res.json({ courses: data });
+
+  // Hitung jumlah students real dari course_access per kursus
+  const { data: accessCounts } = await supabase
+    .from('course_access')
+    .select('course_id');
+
+  // Buat map: course_id → jumlah unique students
+  const studentMap = {};
+  (accessCounts || []).forEach(row => {
+    studentMap[row.course_id] = (studentMap[row.course_id] || 0) + 1;
+  });
+
+  // Inject students real ke setiap kursus, hapus rating dummy
+  const result = courses.map(c => ({
+    ...c,
+    students: studentMap[c.id] || 0,
+    rating:   undefined, // hapus rating dummy
+  }));
+
+  return res.json({ courses: result });
 }
 
 // GET /api/courses/:id
@@ -24,7 +44,14 @@ async function getCourseById(req, res) {
     .single();
 
   if (error || !data) return res.status(404).json({ error: 'Kursus tidak ditemukan.' });
-  return res.json({ course: data });
+
+  // Hitung students real
+  const { count } = await supabase
+    .from('course_access')
+    .select('*', { count: 'exact', head: true })
+    .eq('course_id', id);
+
+  return res.json({ course: { ...data, students: count || 0, rating: undefined } });
 }
 
 // POST /api/courses/:id/claim
