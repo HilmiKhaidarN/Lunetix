@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadCpProgress();
 
   // Load module quiz status
-  loadModuleQuizStatus();
+  await loadModuleQuizStatus();
 
   // Render sidebar
   renderCpSidebar();
@@ -87,9 +87,28 @@ async function loadCpProgress() {
   }
 }
 
-// ── Load Module Quiz Status ──
-function loadModuleQuizStatus() {
+// ── Load Module Quiz Status (API-first, fallback localStorage) ──
+async function loadModuleQuizStatus() {
   const key = `cp_mq_passed_${cpCourseId}`;
+  const session = getSession();
+
+  if (session?.token) {
+    try {
+      const data = await ModuleQuizAPI.getStatus(cpCourseId);
+      // data.passedMap: { moduleIndex: { passed, bestScore, passedAt } }
+      cpModuleQuizPassed = {};
+      Object.entries(data.passedMap || {}).forEach(([idx, val]) => {
+        cpModuleQuizPassed[parseInt(idx)] = val.passed;
+      });
+      // Sync ke localStorage
+      store.set(key, cpModuleQuizPassed);
+      return;
+    } catch (e) {
+      console.warn('[ModuleQuiz] API tidak tersedia, pakai localStorage.', e);
+    }
+  }
+
+  // Fallback localStorage
   const raw = store.get(key, {});
   cpModuleQuizPassed = (typeof raw === 'object' && raw !== null) ? raw : {};
 }

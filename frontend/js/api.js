@@ -90,3 +90,14 @@ const CommunityAPI = {
   toggleLike: (id) => apiFetch(`/community/posts/${id}/like`, { method: 'POST' }),
   deletePost: (id) => apiFetch(`/community/posts/${id}`, { method: 'DELETE' }),
 };
+
+// ── Module Quiz ──
+const ModuleQuizAPI = {
+  // Ambil semua modul yang sudah lulus untuk satu kursus
+  getStatus: (courseId) => apiFetch(`/module-quiz/${courseId}/status`),
+  // Tandai modul sebagai lulus
+  markPassed: (courseId, moduleIndex, score) => apiFetch(
+    `/module-quiz/${courseId}/${moduleIndex}/pass`,
+    { method: 'POST', body: JSON.stringify({ score }) }
+  ),
+};

@@ -47,6 +47,7 @@ app.use('/api/auth/register', authLimiter);
 app.use('/api/auth',          require('../backend/src/routes/auth'));
 app.use('/api/courses',       require('../backend/src/routes/courses'));
 app.use('/api/quiz',          require('../backend/src/routes/quiz'));
+app.use('/api/module-quiz',   require('../backend/src/routes/moduleQuiz'));
 app.use('/api/lessons',       require('../backend/src/routes/lessons'));
 app.use('/api/certificates',  require('../backend/src/routes/certificates'));
 app.use('/api/notifications', require('../backend/src/routes/notifications'));

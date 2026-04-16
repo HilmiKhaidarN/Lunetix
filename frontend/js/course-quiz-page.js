@@ -101,10 +101,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // Cek apakah sudah pernah lulus (untuk module quiz)
-  if (!cqIsFinal && attemptStatus.passed) {
-    renderCqAlreadyPassed(attemptStatus);
-    return;
+  // Cek apakah sudah pernah lulus (untuk module quiz) — cek API dulu
+  if (!cqIsFinal) {
+    const session = getSession();
+    if (session?.token) {
+      try {
+        const statusData = await ModuleQuizAPI.getStatus(cqCourseId);
+        const modStatus = statusData.passedMap?.[cqModuleIdx];
+        if (modStatus?.passed) {
+          // Sync ke localStorage
+          const key = `cp_mq_passed_${cqCourseId}`;
+          const existing = store.get(key, {});
+          existing[cqModuleIdx] = true;
+          store.set(key, existing);
+          // Tampilkan already passed screen dengan data dari API
+          renderCqAlreadyPassed({ passed: true, bestScore: modStatus.bestScore, attemptsToday: attemptStatus.attemptsToday });
+          return;
+        }
+      } catch (e) {
+        // Fallback ke localStorage
+        const key = `cp_mq_passed_${cqCourseId}`;
+        const local = store.get(key, {});
+        if (local[cqModuleIdx] === true) {
+          renderCqAlreadyPassed({ passed: true, bestScore: attemptStatus.bestScore, attemptsToday: attemptStatus.attemptsToday });
+          return;
+        }
+      }
+    } else if (attemptStatus.passed) {
+      renderCqAlreadyPassed(attemptStatus);
+      return;
+    }
   }
 
   // Render intro
@@ -272,12 +298,22 @@ async function finishCqQuiz() {
     console.warn('Gagal record attempt:', e);
   }
 
-  // Jika module quiz dan lulus, simpan status
+  // Jika module quiz dan lulus, simpan status ke API + localStorage
   if (!cqIsFinal && passed) {
     const key = `cp_mq_passed_${cqCourseId}`;
     const existing = store.get(key, {});
     existing[cqModuleIdx] = true;
     store.set(key, existing);
+
+    // Simpan ke API juga
+    const session = getSession();
+    if (session?.token) {
+      try {
+        await ModuleQuizAPI.markPassed(cqCourseId, cqModuleIdx, score);
+      } catch (e) {
+        console.warn('[ModuleQuiz] Gagal simpan ke API, tersimpan di localStorage.', e);
+      }
+    }
   }
 
   renderCqResult(score, correct, total, passed);
