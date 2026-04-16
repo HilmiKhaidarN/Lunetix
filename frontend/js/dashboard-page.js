@@ -9,20 +9,32 @@ const dbStudyTips = [
 ];
 
 async function initDashboard() {
-  await renderDbDynamicStats();
-  await renderDbCourses();
-  renderDbProgressBars();
-  renderDbUpcoming();
-  renderDbMiniCalendar();
-  renderDbAchievements();
-  await renderDbRecentActivity();
-  renderDbStreak();
-  renderDbStudyTip();
-  setTimeout(() => {
-    document.querySelectorAll('.db-progress-bar-fill[data-w]').forEach(el => el.style.width = el.dataset.w + '%');
-    document.querySelectorAll('.progress-fill[data-width]').forEach(el => el.style.width = el.dataset.width + '%');
-  }, 200);
-  lucide.createIcons();
+  try {
+    await renderDbDynamicStats();
+    await renderDbCourses();
+    renderDbProgressBars();
+    renderDbUpcoming();
+    renderDbMiniCalendar();
+    renderDbAchievements();
+    await renderDbRecentActivity();
+    renderDbStreak();
+    renderDbStudyTip();
+    setTimeout(() => {
+      document.querySelectorAll('.db-progress-bar-fill[data-w]').forEach(el => el.style.width = el.dataset.w + '%');
+      document.querySelectorAll('.progress-fill[data-width]').forEach(el => el.style.width = el.dataset.width + '%');
+    }, 200);
+    lucide.createIcons();
+  } catch(err) {
+    console.error('[Dashboard] Error:', err);
+    // Render minimal fallback supaya tidak blank
+    const statsEl = document.getElementById('db-stats-bar-dynamic');
+    if (statsEl) statsEl.innerHTML = '';
+    const coursesEl = document.getElementById('db-courses-row');
+    if (coursesEl) coursesEl.innerHTML = `<div style="padding:20px;color:var(--text-muted);font-size:13px">Gagal memuat data. Coba refresh halaman.</div>`;
+    renderDbMiniCalendar();
+    renderDbStudyTip();
+    lucide.createIcons();
+  }
 }
 
 // ── Stats dari data real ──
