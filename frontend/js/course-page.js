@@ -418,6 +418,19 @@ async function completeLesson(moduleIdx, lessonIdx) {
       if (!cpCompletedLessons.includes(lessonId)) {
         cpCompletedLessons.push(lessonId);
       }
+
+      // Update streak di session jika ada
+      if (result.streak !== undefined) {
+        const session = getSession();
+        if (session) {
+          session.streak = result.streak;
+          setSession(session);
+          // Update topbar streak jika ada
+          const streakEl = document.querySelector('.user-streak');
+          if (streakEl) streakEl.textContent = result.streak;
+        }
+      }
+
       // Update button
       if (btn) {
         btn.classList.add('done');
