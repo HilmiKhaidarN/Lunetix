@@ -22,15 +22,15 @@ function renderBookmarks() {
 function renderBmStats() {
   const el = document.getElementById('bm-stats-bar'); if (!el) return;
   const items = getBmItems();
-  const courses  = items.filter(b=>b.type==='course').length;
-  const lessons  = items.filter(b=>b.type==='lesson').length;
+  const courses  = items.filter(b => b.type === 'course').length;
+  const lessons  = items.filter(b => b.type === 'lesson').length;
   const totalMin = items.length * 22;
   const h = Math.floor(totalMin/60), m = totalMin%60;
   const stats = [
-    { val:items.length, label:'Total Bookmark',    trend:'+3 dari minggu lalu', icon:'bookmark',     bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
-    { val:courses,      label:'Kursus Disimpan',   trend:'+2 dari minggu lalu', icon:'book-open',    bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
-    { val:lessons,      label:'Pelajaran Disimpan',trend:'+4 dari minggu lalu', icon:'play-circle',  bg:'rgba(16,185,129,0.15)', color:'#34d399' },
-    { val:`${h}h ${m}m`,label:'Waktu yang Dihemat',trend:'+1h dari minggu lalu',icon:'clock',        bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+    { val: items.length,      label:'Total Bookmark',    trend: items.length ? items.length + ' item tersimpan' : 'Belum ada bookmark', icon:'bookmark',  bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+    { val: courses,           label:'Kursus Disimpan',   trend: courses ? courses + ' kursus' : 'Belum ada',                            icon:'book-open', bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+    { val: lessons,           label:'Pelajaran Disimpan',trend: lessons ? lessons + ' pelajaran' : 'Belum ada',                         icon:'play-circle',bg:'rgba(16,185,129,0.15)',color:'#34d399' },
+    { val: `${h}h ${m}m`,    label:'Estimasi Waktu',    trend: items.length ? 'Total konten tersimpan' : '0 menit',                    icon:'clock',     bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
   ];
   el.innerHTML = stats.map(s => `
     <div class="bm-stat-card">
@@ -42,9 +42,6 @@ function renderBmStats() {
         <div class="bm-stat-label">${s.label}</div>
         <div class="bm-stat-trend">${s.trend}</div>
       </div>
-      <svg width="50" height="28" viewBox="0 0 50 28" style="opacity:0.6">
-        <polyline points="0,22 10,18 20,20 30,10 40,14 50,6" fill="none" stroke="${s.color}" stroke-width="1.5"/>
-      </svg>
     </div>`).join('');
   lucide.createIcons();
 }

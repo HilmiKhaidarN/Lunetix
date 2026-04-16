@@ -3,13 +3,6 @@
 // certData akan diisi dari API + kursus yang diklaim
 let certData = [];
 
-const certJourney = [
-  { title: 'First Step',       desc: 'Complete your first lesson',  date: 'May 10, 2024', done: true  },
-  { title: 'Quick Learner',    desc: 'Finish 5 lessons',            date: 'May 12, 2024', done: true  },
-  { title: 'Course Completed', desc: 'Earn your first certificate', date: 'May 15, 2024', done: true  },
-  { title: 'Keep Going!',      desc: 'Earn 5 more certificates',    date: '3/5',           done: false },
-];
-
 let certActiveFilter = 'all';
 
 // ── SVG helpers (no emoji, no lucide dependency inside card visuals) ──
@@ -89,12 +82,15 @@ async function renderCertificates() {
 function renderCertStats() {
   const el = document.getElementById('cert-stats-bar');
   if (!el) return;
-  const earned = certData.filter(c => c.status === 'earned').length;
+  const session = getSession();
+  const earned   = certData.filter(c => c.status === 'earned').length;
+  const inProgress = certData.filter(c => c.status === 'progress').length;
+  const points   = session?.points || 0;
   const stats = [
-    { val: earned,    label: 'Certificates Earned', sub: '+1 this month',      icon: 'award',  bg: 'rgba(124,58,237,0.15)', color: '#a78bfa' },
-    { val: '450',     label: 'Total XP Earned',     sub: '+120 this month',    icon: 'star',   bg: 'rgba(245,158,11,0.15)', color: '#fbbf24' },
-    { val: '2',       label: 'In Progress',          sub: 'Keep learning!',     icon: 'clock',  bg: 'rgba(59,130,246,0.15)', color: '#60a5fa' },
-    { val: 'Top 15%', label: 'Rank',                 sub: 'Among all learners', icon: 'trophy', bg: 'rgba(16,185,129,0.15)', color: '#34d399' },
+    { val: earned,          label: 'Certificates Earned', sub: earned ? 'Luar biasa!' : 'Selesaikan kursus pertamamu!', icon: 'award',  bg: 'rgba(124,58,237,0.15)', color: '#a78bfa' },
+    { val: points.toLocaleString(), label: 'Total Points', sub: points ? 'Keep it up!' : 'Mulai kumpulkan poin!',       icon: 'star',   bg: 'rgba(245,158,11,0.15)', color: '#fbbf24' },
+    { val: inProgress,      label: 'In Progress',          sub: inProgress ? 'Terus belajar!' : 'Klaim kursus dulu!',   icon: 'clock',  bg: 'rgba(59,130,246,0.15)', color: '#60a5fa' },
+    { val: earned ? 'Active' : '-', label: 'Status',       sub: earned ? 'Certified Learner' : 'Belum ada sertifikat',  icon: 'trophy', bg: 'rgba(16,185,129,0.15)', color: '#34d399' },
   ];
   el.innerHTML = stats.map(s => `
     <div class="cert-stat-card">
@@ -121,8 +117,18 @@ function renderCertGrid() {
   const grid = document.getElementById('cert-grid');
   if (!grid) return;
   const session = getSession();
-  const name = session ? session.name : 'Arman';
+  const name = session ? session.name : 'Learner';
   let list = certActiveFilter === 'all' ? certData : certData.filter(c => c.status === certActiveFilter);
+  if (!list.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">
+      <i data-lucide="award" style="width:40px;height:40px;margin-bottom:12px;opacity:0.4"></i>
+      <div style="font-size:14px;margin-bottom:8px">Belum ada sertifikat.</div>
+      <div style="font-size:12px">Selesaikan kursus dan lulus quiz untuk mendapatkan sertifikat.</div>
+      <button class="btn btn-primary" style="margin-top:16px;padding:8px 20px;font-size:12px" onclick="navigateTo('courses')">Lihat Kursus</button>
+    </div>`;
+    lucide.createIcons();
+    return;
+  }
   grid.innerHTML = list.map(c => {
     if (c.status === 'earned')    return renderEarnedCert(c, name);
     if (c.status === 'progress')  return renderProgressCert(c);
@@ -251,7 +257,7 @@ function previewCert(id) {
   const c = certData.find(x => x.id === id);
   if (!c || c.status !== 'earned') return;
   const session = getSession();
-  downloadCert(c.title, session ? session.name : 'Arman', c.issued, c.credId, true);
+  downloadCert(c.title, session ? session.name : 'Learner', c.issued, c.credId, true);
 }
 
 function downloadCert(title, name, date, credId, previewOnly) {
@@ -346,7 +352,7 @@ function downloadAllCerts() {
   if (!earned.length) { showToast('Belum ada sertifikat yang diperoleh.'); return; }
   earned.forEach(function(c, i) {
     setTimeout(function() {
-      downloadCert(c.title, session ? session.name : 'Arman', c.issued, c.credId);
+      downloadCert(c.title, session ? session.name : 'Learner', c.issued, c.credId);
     }, i * 600);
   });
   showToast('Membuka ' + earned.length + ' sertifikat...');
@@ -365,20 +371,51 @@ function copyCertLink() {
 }
 
 function renderCertJourney() {
-  var el = document.getElementById('cert-journey');
+  const el = document.getElementById('cert-journey');
   if (!el) return;
-  var lockIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
-  var checkIcon = '<i data-lucide="check" style="width:16px;height:16px;color:#fff"></i>';
-  el.innerHTML = '<div class="cert-journey-row">'
-    + certJourney.map(function(j) {
-        return '<div class="cert-journey-step">'
-          + '<div class="cert-journey-dot ' + (j.done ? 'done' : 'pending') + '">'
-          + (j.done ? checkIcon : lockIcon)
-          + '</div>'
-          + '<div class="cert-journey-title">' + j.title + '</div>'
-          + '<div class="cert-journey-date">' + j.date + '</div>'
-          + '</div>';
-      }).join('')
-    + '</div>';
+
+  const session = getSession();
+  const earned = certData.filter(c => c.status === 'earned').length;
+  const scores = store.get('quiz_scores', {});
+  const hasQuiz = Object.keys(scores).length > 0;
+
+  // Journey berdasarkan data real user
+  const journey = [
+    {
+      title: 'First Step',
+      desc:  'Klaim kursus pertamamu',
+      done:  certData.length > 0,
+      date:  certData.length > 0 ? 'Selesai' : 'Belum',
+    },
+    {
+      title: 'Quiz Taker',
+      desc:  'Kerjakan quiz pertama',
+      done:  hasQuiz,
+      date:  hasQuiz ? 'Selesai' : 'Belum',
+    },
+    {
+      title: 'Certified',
+      desc:  'Dapatkan sertifikat pertama',
+      done:  earned >= 1,
+      date:  earned >= 1 ? 'Selesai' : 'Belum',
+    },
+    {
+      title: 'Multi Certified',
+      desc:  'Dapatkan 3 sertifikat',
+      done:  earned >= 3,
+      date:  earned >= 3 ? 'Selesai' : `${earned}/3`,
+    },
+  ];
+
+  const lockIcon = SVG.lockSm;
+  const checkIcon = '<i data-lucide="check" style="width:16px;height:16px;color:#fff"></i>';
+  el.innerHTML = `<div class="cert-journey-row">${journey.map(j => `
+    <div class="cert-journey-step">
+      <div class="cert-journey-dot ${j.done ? 'done' : 'pending'}">
+        ${j.done ? checkIcon : lockIcon}
+      </div>
+      <div class="cert-journey-title">${j.title}</div>
+      <div class="cert-journey-date">${j.date}</div>
+    </div>`).join('')}</div>`;
   lucide.createIcons();
 }

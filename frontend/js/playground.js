@@ -1,4 +1,4 @@
-// -- AI PLAYGROUND --
+ï»¿// -- AI PLAYGROUND --
 // ----------------------------------------------
 // AI PLAYGROUND
 // ----------------------------------------------
@@ -14,17 +14,8 @@ const pgTools = [
   { id:'web',   name:'Web Search',       desc:'Search real-time data',  icon:'globe',    color:'#34d399', bg:'rgba(16,185,129,0.15)' },
   { id:'image', name:'Image Generation', desc:'Generate images',        icon:'image',    color:'#fbbf24', bg:'rgba(245,158,11,0.15)' },
 ];
-const pgSessions = [
-  { id:1, title:'Neural Networks Explained', model:'GPT-4o',     time:'Today, 10:30 AM',    tokens:'512 tokens',   icon:'cpu',      color:'#a78bfa', bg:'rgba(124,58,237,0.15)' },
-  { id:2, title:'Python Code Help',          model:'Claude 3.5', time:'Today, 9:15 AM',     tokens:'235 tokens',   icon:'code-2',   color:'#f97316', bg:'rgba(249,115,22,0.15)' },
-  { id:3, title:'Data Analysis Request',     model:'GPT-4o',     time:'Yesterday, 4:45 PM', tokens:'1,024 tokens', icon:'bar-chart',color:'#60a5fa', bg:'rgba(59,130,246,0.15)' },
-];
-const pgRecentActivity = [
-  { text:'Neural Networks Explained', time:'2 min ago',   icon:'cpu',      color:'#a78bfa', bg:'rgba(124,58,237,0.15)' },
-  { text:'Python Code Help',          time:'15 min ago',  icon:'code-2',   color:'#60a5fa', bg:'rgba(59,130,246,0.15)' },
-  { text:'Data Analysis Request',     time:'1 hour ago',  icon:'bar-chart',color:'#34d399', bg:'rgba(16,185,129,0.15)' },
-  { text:'Image Generation',          time:'3 hours ago', icon:'image',    color:'#fbbf24', bg:'rgba(245,158,11,0.15)' },
-];
+const pgSessions = [];  // Sessions disimpan di localStorage
+const pgRecentActivity = [];  // Activity dari localStorage
 const pgExamplePrompts = [
   { text:'Explain quantum computing in simple terms',              icon:'star',     color:'#a78bfa', bg:'rgba(124,58,237,0.15)' },
   { text:'Write a Python function to sort a list using quicksort', icon:'code-2',   color:'#60a5fa', bg:'rgba(59,130,246,0.15)' },
@@ -41,7 +32,7 @@ const pgResponseBank = {
     "Deep Learning menggunakan neural network berlapis banyak untuk mempelajari representasi data secara hierarkis. Ini adalah teknologi di balik ChatGPT, DALL-E, dan sistem pengenalan gambar modern.",
     "Untuk memulai belajar AI:\n\n1. Python fundamentals\n2. NumPy & Pandas\n3. Matplotlib & Seaborn\n4. Scikit-learn untuk classical ML\n5. TensorFlow atau PyTorch untuk Deep Learning",
     "Overfitting terjadi ketika model terlalu hafal data training. Solusinya:\n\n- Regularisasi (L1/L2)\n- Dropout layers\n- Data augmentation\n- Early stopping\n- Cross-validation",
-    "Transformer architecture menggunakan Self-Attention mechanism yang memungkinkan model memperhatikan semua bagian input secara paralel — jauh lebih efisien dari RNN.",
+    "Transformer architecture menggunakan Self-Attention mechanism yang memungkinkan model memperhatikan semua bagian input secara paralel ï¿½ jauh lebih efisien dari RNN.",
     "Gradient Descent adalah algoritma optimasi untuk meminimalkan loss function dengan mengupdate weights ke arah negatif gradient. Varian: Batch GD, Stochastic GD, Mini-batch GD.",
   ],
 };
@@ -79,22 +70,32 @@ function renderPgTools() {
 }
 function renderPgSessions() {
   const el = document.getElementById('pg-sessions-list'); if (!el) return;
-  el.innerHTML = pgSessions.map(s => `
-    <div class="pg-session-item" onclick="pgLoadSession(${s.id})">
-      <div class="pg-session-icon" style="background:${s.bg}"><i data-lucide="${s.icon}" style="width:14px;height:14px;color:${s.color}"></i></div>
-      <div style="flex:1;min-width:0"><div class="pg-session-title">${s.title}</div><div class="pg-session-meta">${s.model} · ${s.time}</div></div>
-      <div class="pg-session-tokens">${s.tokens}</div>
-    </div>`).join('');
+  const sessions = store.get('pg_sessions', []);
+  if (!sessions.length) {
+    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:12px">Belum ada sesi. Mulai chat!</div>';
+    return;
+  }
+  el.innerHTML = sessions.slice(0, 5).map(s => {
+    return '<div class="pg-session-item" onclick="pgLoadSession(\\'' + s.id + '\\')">'+
+      '<div class="pg-session-icon" style="background:rgba(124,58,237,0.15)"><i data-lucide="cpu" style="width:14px;height:14px;color:#a78bfa"></i></div>'+
+      '<div style="flex:1;min-width:0"><div class="pg-session-title">' + s.title + '</div>'+
+      '<div class="pg-session-meta">' + s.model + ' Â· ' + timeAgo(s.time) + '</div></div></div>';
+  }).join('');
   lucide.createIcons();
 }
 function renderPgRecentActivity() {
   const el = document.getElementById('pg-recent-list'); if (!el) return;
-  el.innerHTML = pgRecentActivity.map(a => `
-    <div class="pg-recent-item">
-      <div class="pg-recent-dot" style="background:${a.bg}"><i data-lucide="${a.icon}" style="width:12px;height:12px;color:${a.color}"></i></div>
-      <div class="pg-recent-text">${a.text}</div>
-      <div class="pg-recent-time">${a.time}</div>
-    </div>`).join('');
+  const sessions = store.get('pg_sessions', []);
+  if (!sessions.length) {
+    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:12px">Belum ada aktivitas.</div>';
+    return;
+  }
+  el.innerHTML = sessions.slice(0, 4).map(s => {
+    return '<div class="pg-recent-item">'+
+      '<div class="pg-recent-dot" style="background:rgba(124,58,237,0.15)"><i data-lucide="message-circle" style="width:12px;height:12px;color:#a78bfa"></i></div>'+
+      '<div class="pg-recent-text">' + s.title + '</div>'+
+      '<div class="pg-recent-time">' + timeAgo(s.time) + '</div></div>';
+  }).join('');
   lucide.createIcons();
 }
 function renderPgPrompts() {
@@ -131,7 +132,7 @@ function pgSend() {
   const output = document.getElementById('pg-output-area');
   const footer = document.getElementById('pg-output-footer');
   if (!output) return;
-  output.innerHTML = `<div class="pg-typing"><span></span><span></span><span></span></div>`;
+  output.innerHTML = '<div class="pg-typing"><span></span><span></span><span></span></div>';
   if (footer) footer.style.display = 'none';
   const delay = 1200 + Math.random() * 800;
   setTimeout(() => {
@@ -141,8 +142,14 @@ function pgSend() {
     if (footer) {
       footer.style.display = 'flex';
       const timeEl = document.getElementById('pg-gen-time');
-      if (timeEl) timeEl.textContent = `Generated in ${(delay/1000).toFixed(1)}s · ${Math.floor(response.plain.length/4)} tokens`;
+      if (timeEl) timeEl.textContent = 'Generated in ' + (delay/1000).toFixed(1) + 's Â· ' + Math.floor(response.plain.length/4) + ' tokens';
     }
+    // Simpan session ke localStorage
+    const sessions = store.get('pg_sessions', []);
+    sessions.unshift({ id: Date.now(), title: msg.slice(0, 60), model: (pgModels.find(m => m.id === pgActiveModel) || {}).name || 'AI', time: new Date().toISOString() });
+    store.set('pg_sessions', sessions.slice(0, 20));
+    renderPgSessions();
+    renderPgRecentActivity();
     lucide.createIcons();
   }, delay);
 }

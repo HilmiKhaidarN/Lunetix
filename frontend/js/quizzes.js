@@ -60,13 +60,17 @@ const quizBank = [
     ]},
 ];
 
+// Category counts dihitung dari quizBank yang ada
 const quizCategories = [
-  { name:'Machine Learning', count:12, icon:'cpu',          bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
-  { name:'Deep Learning',    count:8,  icon:'network',      bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
-  { name:'NLP',              count:6,  icon:'message-square',bg:'rgba(168,85,247,0.15)',color:'#c084fc' },
-  { name:'Computer Vision',  count:7,  icon:'eye',          bg:'rgba(16,185,129,0.15)', color:'#34d399' },
-  { name:'AI Ethics',        count:4,  icon:'shield',       bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
-];
+  { name:'Machine Learning', icon:'cpu',           bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+  { name:'Deep Learning',    icon:'network',       bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+  { name:'NLP',              icon:'message-square',bg:'rgba(168,85,247,0.15)', color:'#c084fc' },
+  { name:'Computer Vision',  icon:'eye',           bg:'rgba(16,185,129,0.15)', color:'#34d399' },
+  { name:'AI Ethics',        icon:'shield',        bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+].map(cat => ({
+  ...cat,
+  count: quizBank.filter(q => q.category === cat.name).length,
+}));
 
 let activeQuiz = null, quizCurrentQ = 0, quizScore = 0, quizAnswered = {}, activeQzCat = 'all';
 
@@ -77,13 +81,13 @@ function renderQzStats() {
   const el = document.getElementById('qz-stats-bar'); if (!el) return;
   const scores = store.get('quiz_scores', {});
   const completed = Object.keys(scores).length;
-  const avgScore = completed ? Math.round(Object.values(scores).reduce((a,b)=>a+b,0)/completed) : 85;
+  const avgScore = completed ? Math.round(Object.values(scores).reduce((a,b)=>a+b,0)/completed) : 0;
   const session = getSession();
   const stats = [
-    { val:avgScore+'%', label:'Avg. Score',        badge:'+12%', icon:'target',       bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
-    { val:completed||12,label:'Quizzes Completed', badge:null,   icon:'check-circle', bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
-    { val:session?.streak||5, label:'Day Streak',  badge:null,   icon:'flame',        bg:'rgba(239,68,68,0.15)',  color:'#f87171' },
-    { val:(session?.points||1200).toLocaleString(), label:'Total Points', badge:null, icon:'star', bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+    { val: avgScore ? avgScore + '%' : '-', label:'Avg. Score',        badge: null, icon:'target',       bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+    { val: completed || 0,                  label:'Quizzes Completed',  badge: null, icon:'check-circle', bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+    { val: session?.streak || 0,            label:'Day Streak',         badge: null, icon:'flame',        bg:'rgba(239,68,68,0.15)',  color:'#f87171' },
+    { val: (session?.points || 0).toLocaleString(), label:'Total Points', badge: null, icon:'star',       bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
   ];
   el.innerHTML = stats.map(s=>`<div class="qz-stat-card"><div class="qz-stat-icon" style="background:${s.bg}"><i data-lucide="${s.icon}" style="width:22px;height:22px;color:${s.color}"></i></div><div><div style="display:flex;align-items:baseline;gap:8px"><div class="qz-stat-val">${s.val}</div>${s.badge?`<div class="qz-stat-badge">${s.badge}</div>`:''}</div><div class="qz-stat-label">${s.label}</div></div></div>`).join('');
   lucide.createIcons();
