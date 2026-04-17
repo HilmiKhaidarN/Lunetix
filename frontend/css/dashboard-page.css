@@ -21,9 +21,10 @@
 .db-stat-card {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 14px 16px;
-  display: flex; align-items: center; gap: 12px; transition: border-color 0.2s;
+  display: flex; align-items: center; gap: 12px; transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
-.db-stat-card:hover { border-color: var(--border-accent); }
+.db-stat-card:hover { border-color: rgba(0,0,0,0.12); box-shadow: var(--shadow); }
 .db-stat-icon { width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
 .db-stat-val { font-size:20px;font-weight:700;line-height:1; }
 .db-stat-label { font-size:11px;color:var(--text-secondary);margin-top:2px; }
@@ -39,9 +40,9 @@
 .db-course-card {
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden; cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s; box-shadow: var(--shadow-sm);
 }
-.db-course-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+.db-course-card:hover { border-color: rgba(0,0,0,0.12); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 .db-course-thumb {
   height: 110px; display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
@@ -84,7 +85,7 @@
 /* Progress card */
 .db-progress-bar-row { display:flex;align-items:center;gap:8px;margin-bottom:8px; }
 .db-progress-bar-label { font-size:11px;color:var(--text-secondary);width:100px;flex-shrink:0; }
-.db-progress-bar-track { flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden; }
+.db-progress-bar-track { flex:1;height:5px;background:rgba(0,0,0,0.07);border-radius:3px;overflow:hidden; }
 .db-progress-bar-fill { height:100%;border-radius:3px;transition:width 0.6s ease; }
 .db-progress-bar-pct { font-size:10px;color:var(--text-muted);width:28px;text-align:right; }
 
@@ -141,8 +142,11 @@
 /* Right sidebar - removed, content moved to db-bottom-row */
 
 .db-study-tip-card {
-  background: linear-gradient(135deg, #1a1a3e, #2d1b69);
-  border: 1px solid var(--border-accent); border-radius: var(--radius); padding: 18px;
+  background: #f5f5f7;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
 }
 
 .db-recent-item {
@@ -161,7 +165,7 @@
   width: 28px; height: 28px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 9px; font-weight: 600; color: var(--text-muted);
-  background: var(--input-bg); border: 1px solid var(--border);
+  background: rgba(0,0,0,0.05); border: 1px solid var(--border);
 }
-.db-streak-dot.active { background: linear-gradient(135deg,#7c3aed,#9d5cf6); color: #fff; border-color: var(--accent); }
+.db-streak-dot.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
