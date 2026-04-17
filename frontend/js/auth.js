@@ -70,6 +70,8 @@ async function handleLogin(e) {
     setSession({
       ...data.user,
       token: data.token,
+      refreshToken: data.refreshToken || null,
+      expiresAt: data.expiresAt || null,
       avatar: data.user.avatar || data.user.name?.charAt(0).toUpperCase(),
     });
 
@@ -148,6 +150,8 @@ async function handleRegister(e) {
     setSession({
       ...data.user,
       token: data.token,
+      refreshToken: data.refreshToken || null,
+      expiresAt: data.expiresAt || null,
       avatar: data.user.avatar || name.charAt(0).toUpperCase(),
     });
 
@@ -206,3 +210,63 @@ function togglePassword(inputId, btn) {
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
+
+// ── Auto Token Refresh ──
+// Cek dan refresh token sebelum expired
+// Dipanggil saat halaman load dan setiap 10 menit
+
+const TOKEN_REFRESH_INTERVAL = 10 * 60 * 1000; // 10 menit
+const TOKEN_REFRESH_THRESHOLD = 5 * 60;         // Refresh jika sisa < 5 menit (dalam detik)
+
+async function refreshTokenIfNeeded() {
+  const session = getSession();
+  if (!session?.token || !session?.refreshToken) return;
+
+  // Cek apakah token akan expired dalam 5 menit
+  if (session.expiresAt) {
+    const now = Math.floor(Date.now() / 1000);
+    const timeLeft = session.expiresAt - now;
+    if (timeLeft > TOKEN_REFRESH_THRESHOLD) return; // Masih aman
+  }
+
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken: session.refreshToken }),
+    });
+
+    if (!res.ok) {
+      // Refresh token expired — paksa logout
+      console.warn('[Auth] Refresh token expired, logging out.');
+      clearSession();
+      window.location.href = '/login';
+      return;
+    }
+
+    const data = await res.json();
+
+    // Update session dengan token baru
+    setSession({
+      ...session,
+      ...data.user,
+      token: data.token,
+      refreshToken: data.refreshToken,
+      expiresAt: data.expiresAt,
+    });
+
+    console.log('[Auth] Token refreshed successfully.');
+  } catch (err) {
+    console.warn('[Auth] Gagal refresh token:', err);
+  }
+}
+
+// Jalankan auto-refresh saat halaman load
+if (typeof window !== 'undefined') {
+  // Refresh segera saat load
+  document.addEventListener('DOMContentLoaded', () => {
+    refreshTokenIfNeeded();
+    // Refresh setiap 10 menit
+    setInterval(refreshTokenIfNeeded, TOKEN_REFRESH_INTERVAL);
+  });
+}
