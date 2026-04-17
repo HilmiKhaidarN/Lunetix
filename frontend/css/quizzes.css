@@ -79,8 +79,11 @@
   background: var(--bg-card); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 16px 18px;
   margin-bottom: 10px; cursor: pointer; transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
 }
-.qz-item:hover { border-color: var(--border-accent); transform: translateX(3px); }
+.qz-item:hover { border-color: rgba(0,0,0,0.12); transform: translateX(2px); box-shadow: var(--shadow); }
+.qz-item-locked { cursor: default; }
+.qz-item-locked:hover { transform: none; border-color: var(--border); box-shadow: var(--shadow-sm); }
 .qz-item-thumb {
   width: 56px; height: 56px; border-radius: 12px;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;

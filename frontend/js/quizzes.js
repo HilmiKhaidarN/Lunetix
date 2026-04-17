@@ -72,6 +72,34 @@ const quizCategories = [
   count: quizBank.filter(q => q.category === cat.name).length,
 }));
 
+// Mapping quiz → courseId yang dibutuhkan
+const QUIZ_COURSE_REQUIRED = {
+  'ml-basics':  1,
+  'python-ai':  2,
+  'dl-basics':  3,
+  'nlp-basics': 4,
+  'cv-basics':  5,
+};
+
+// Mapping quiz → courseId yang dibutuhkan
+const QUIZ_COURSE_REQUIRED = {
+  'ml-basics':  1,
+  'python-ai':  2,
+  'dl-basics':  3,
+  'nlp-basics': 4,
+  'cv-basics':  5,
+};
+
+// Cek apakah user punya akses ke quiz ini
+function hasQuizAccess(quizId) {
+  const requiredCourseId = QUIZ_COURSE_REQUIRED[quizId];
+  if (!requiredCourseId) return true;
+  const session = getSession();
+  if (!session) return false;
+  const access = checkCourseAccess(String(session.id), requiredCourseId);
+  return access.hasAccess;
+}
+
 let activeQuiz = null, quizCurrentQ = 0, quizScore = 0, quizAnswered = {}, activeQzCat = 'all';
 
 function renderQuizCards() { renderQuizPage(); }
@@ -103,27 +131,64 @@ function renderQzList() {
   const el = document.getElementById('qz-list'); if (!el) return;
   const scores = store.get('quiz_scores', {});
   const list = activeQzCat==='all' ? quizBank : quizBank.filter(q=>q.category===activeQzCat);
+
   el.innerHTML = list.map(q => {
-    const score = scores[q.id]; const done = score !== undefined;
-    return `<div class="qz-item" onclick="startQuiz('${q.id}')">
-      <div class="qz-item-thumb" style="background:${q.iconBg}"><i data-lucide="${q.icon}" style="width:26px;height:26px;color:${q.iconColor}"></i></div>
-      <div style="flex:1;min-width:0">
+    const score = scores[q.id];
+    const done = score !== undefined;
+    const locked = !hasQuizAccess(q.id);
+    const requiredCourseId = QUIZ_COURSE_REQUIRED[q.id];
+
+    const actionBtn = locked
+      ? `<button class="btn btn-outline" style="padding:8px 18px;font-size:12px;opacity:0.7"
+           onclick="event.stopPropagation();navigateToClaimCourse(${requiredCourseId})">
+           <i data-lucide="lock" style="width:12px;height:12px"></i> Klaim Kursus
+         </button>`
+      : `<button class="btn btn-primary" style="padding:8px 18px;font-size:12px"
+           onclick="event.stopPropagation();startQuiz('${q.id}')">
+           ${done ? 'Retry' : 'Start Quiz'}
+         </button>`;
+
+    return `<div class="qz-item ${locked ? 'qz-item-locked' : ''}"
+      onclick="${locked ? `navigateToClaimCourse(${requiredCourseId})` : `startQuiz('${q.id}')`}">
+      <div class="qz-item-thumb" style="background:${q.iconBg};${locked ? 'opacity:0.5' : ''}">
+        ${locked
+          ? `<i data-lucide="lock" style="width:22px;height:22px;color:rgba(255,255,255,0.6)"></i>`
+          : `<i data-lucide="${q.icon}" style="width:26px;height:26px;color:${q.iconColor}"></i>`
+        }
+      </div>
+      <div style="flex:1;min-width:0;${locked ? 'opacity:0.6' : ''}">
         <div class="qz-item-title">${q.title}</div>
-        <div class="qz-item-desc">${q.desc}</div>
+        <div class="qz-item-desc">${locked ? `🔒 Klaim kursus terkait untuk mengakses quiz ini` : q.desc}</div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px">
           <span class="badge ${q.difficulty==='Beginner'?'badge-green':'badge-purple'}" style="font-size:10px">${q.difficulty}</span>
-          ${done?`<div style="display:flex;align-items:center;gap:6px;flex:1;max-width:140px"><div class="progress-bar" style="height:4px;flex:1"><div class="progress-fill" style="width:${score}%"></div></div><span style="font-size:10px;color:var(--text-muted)">${score}%</span></div>`:''}
+          ${done && !locked ? `<div style="display:flex;align-items:center;gap:6px;flex:1;max-width:140px">
+            <div class="progress-bar" style="height:4px;flex:1">
+              <div class="progress-fill" style="width:${score}%"></div>
+            </div>
+            <span style="font-size:10px;color:var(--text-muted)">${score}%</span>
+          </div>` : ''}
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:16px;flex-shrink:0">
-        <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px"><i data-lucide="help-circle" style="width:11px;height:11px"></i> ${q.questions} Questions</span>
-        <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px"><i data-lucide="clock" style="width:11px;height:11px"></i> ${q.time}</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:16px;flex-shrink:0;${locked ? 'opacity:0.5' : ''}">
+        <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px">
+          <i data-lucide="help-circle" style="width:11px;height:11px"></i> ${q.questions} Questions
+        </span>
+        <span style="font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:4px">
+          <i data-lucide="clock" style="width:11px;height:11px"></i> ${q.time}
+        </span>
         <span class="qz-pts">+ ${q.pts} pts</span>
       </div>
-      <div style="margin-left:14px;flex-shrink:0"><button class="btn btn-primary" style="padding:8px 18px;font-size:12px" onclick="event.stopPropagation();startQuiz('${q.id}')">${done?'Retry':'Start Quiz'}</button></div>
+      <div style="margin-left:14px;flex-shrink:0">${actionBtn}</div>
     </div>`;
   }).join('');
   lucide.createIcons();
+}
+
+function navigateToClaimCourse(courseId) {
+  if (window.navigateTo) {
+    navigateTo('courses');
+    showToast('🔒 Klaim kursus ini terlebih dahulu untuk mengakses quiz-nya.');
+  }
 }
 function renderQzRecentActivity() {
   const el = document.getElementById('qz-recent-activity'); if (!el) return;
@@ -145,6 +210,14 @@ function renderQzRecentActivity() {
   lucide.createIcons();
 }
 function startQuiz(id) {
+  // Cek akses kursus dulu
+  if (!hasQuizAccess(id)) {
+    const courseId = QUIZ_COURSE_REQUIRED[id];
+    showToast('🔒 Klaim kursus terkait terlebih dahulu untuk mengakses quiz ini.');
+    if (window.navigateTo) navigateTo('courses');
+    return;
+  }
+
   activeQuiz = quizBank.find(q=>q.id===id); if (!activeQuiz) return;
 
   // Cek batas percobaan harian via API
