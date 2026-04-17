@@ -200,3 +200,11 @@ const DiscussionAPI = {
 const AnalyticsAPI = {
   getSummary: () => apiFetch('/analytics/summary'),
 };
+
+// ── Playground ──
+const PlaygroundAPI = {
+  chat: (message, model, history) => apiFetch('/playground/chat', {
+    method: 'POST',
+    body: JSON.stringify({ message, model, history }),
+  }),
+};

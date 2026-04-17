@@ -38,6 +38,7 @@ const pgResponseBank = {
 };
 let pgActiveModel = 'gpt4o';
 let pgCurrentOutput = '';
+let pgChatHistory = []; // Simpan history percakapan untuk context
 
 function initPlayground() {
   renderPgModels(); renderPgTools(); renderPgSessions(); renderPgRecentActivity(); renderPgPrompts();
@@ -123,28 +124,89 @@ function pgNewSession() {
   if (output) output.innerHTML = `<div class="pg-output-placeholder"><i data-lucide="sparkles" style="width:32px;height:32px;color:var(--accent-light);margin-bottom:10px"></i><p style="font-size:13px;color:var(--text-muted)">Run a prompt to see the AI response here.</p></div>`;
   if (footer) footer.style.display = 'none';
   pgCurrentOutput = '';
+  pgChatHistory = []; // Reset history
   lucide.createIcons();
   showToast('New session started!');
 }
-function pgSend() {
+
+async function pgSend() {
   const input = document.getElementById('pg-input');
-  const msg = input?.value.trim(); if (!msg) return;
+  const msg = input?.value.trim();
+  if (!msg) return;
+
   const output = document.getElementById('pg-output-area');
   const footer = document.getElementById('pg-output-footer');
   if (!output) return;
+
+  // Clear input
+  if (input) { input.value = ''; input.style.height = 'auto'; }
+
+  // Show typing indicator
   output.innerHTML = '<div class="pg-typing"><span></span><span></span><span></span></div>';
   if (footer) footer.style.display = 'none';
+
+  const startTime = Date.now();
+
+  try {
+    const session = getSession();
+    if (!session?.token) {
+      // Fallback ke response bank jika tidak login
+      _pgSendLocal(msg, output, footer, startTime);
+      return;
+    }
+
+    const result = await PlaygroundAPI.chat(msg, pgActiveModel, pgChatHistory);
+    const reply = result.reply || '';
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    const tokens = result.usage?.totalTokens || Math.floor(reply.length / 4);
+
+    // Simpan ke history
+    pgChatHistory.push({ role: 'user', content: msg });
+    pgChatHistory.push({ role: 'assistant', content: reply });
+    // Batasi history 20 pesan
+    if (pgChatHistory.length > 20) pgChatHistory = pgChatHistory.slice(-20);
+
+    pgCurrentOutput = reply;
+    output.innerHTML = pgFormatResponse(reply);
+
+    if (footer) {
+      footer.style.display = 'flex';
+      const timeEl = document.getElementById('pg-gen-time');
+      if (timeEl) timeEl.textContent = `Generated in ${elapsed}s · ${tokens} tokens`;
+    }
+
+    // Simpan session ke localStorage
+    const sessions = store.get('pg_sessions', []);
+    sessions.unshift({
+      id: Date.now(),
+      title: msg.slice(0, 60),
+      model: (pgModels.find(m => m.id === pgActiveModel) || {}).name || 'AI',
+      time: new Date().toISOString(),
+    });
+    store.set('pg_sessions', sessions.slice(0, 20));
+    renderPgSessions();
+    renderPgRecentActivity();
+    lucide.createIcons();
+
+  } catch (err) {
+    console.error('[Playground] Error:', err);
+    // Fallback ke response bank
+    _pgSendLocal(msg, output, footer, startTime);
+  }
+}
+
+function _pgSendLocal(msg, output, footer, startTime) {
   const delay = 1200 + Math.random() * 800;
   setTimeout(() => {
     const response = pgGetSmartResponse(msg);
     pgCurrentOutput = response.plain;
     output.innerHTML = response.html;
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     if (footer) {
       footer.style.display = 'flex';
       const timeEl = document.getElementById('pg-gen-time');
-      if (timeEl) timeEl.textContent = 'Generated in ' + (delay/1000).toFixed(1) + 's · ' + Math.floor(response.plain.length/4) + ' tokens';
+      if (timeEl) timeEl.textContent = `Generated in ${elapsed}s · ${Math.floor(response.plain.length/4)} tokens`;
     }
-    // Simpan session ke localStorage
     const sessions = store.get('pg_sessions', []);
     sessions.unshift({ id: Date.now(), title: msg.slice(0, 60), model: (pgModels.find(m => m.id === pgActiveModel) || {}).name || 'AI', time: new Date().toISOString() });
     store.set('pg_sessions', sessions.slice(0, 20));
@@ -152,6 +214,41 @@ function pgSend() {
     renderPgRecentActivity();
     lucide.createIcons();
   }, delay);
+}
+
+// Format markdown-like response dari Groq
+function pgFormatResponse(text) {
+  // Code blocks
+  let html = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (_, lang, code) => {
+    const language = lang || 'code';
+    const lines = code.trim().split('\n').map((l, i) =>
+      `<div><span style="color:#4b5563;user-select:none;margin-right:12px">${i+1}</span>${escHtml(l)}</div>`
+    ).join('');
+    return `<div class="pg-code-block"><div class="pg-code-header"><span>${language}</span><button class="pg-icon-btn" onclick="navigator.clipboard.writeText(${JSON.stringify(code.trim())}).then(()=>showToast('Copied!'))"><i data-lucide="copy" style="width:12px;height:12px"></i></button></div><div class="pg-code-body">${lines}</div></div>`;
+  });
+
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px">$1</code>');
+
+  // Bold
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // Headers
+  html = html.replace(/^### (.+)$/gm, '<h4 style="font-size:14px;font-weight:700;margin:14px 0 6px">$1</h4>');
+  html = html.replace(/^## (.+)$/gm, '<h3 style="font-size:15px;font-weight:700;margin:16px 0 8px">$1</h3>');
+  html = html.replace(/^# (.+)$/gm, '<h2 style="font-size:17px;font-weight:700;margin:18px 0 10px">$1</h2>');
+
+  // Numbered lists
+  html = html.replace(/^\d+\. (.+)$/gm, '<div style="display:flex;gap:8px;margin:4px 0"><span style="color:var(--accent);font-weight:600;min-width:20px">•</span><span>$1</span></div>');
+
+  // Bullet lists
+  html = html.replace(/^[-*] (.+)$/gm, '<div style="display:flex;gap:8px;margin:4px 0"><span style="color:var(--accent);min-width:16px">•</span><span>$1</span></div>');
+
+  // Line breaks
+  html = html.replace(/\n\n/g, '<br><br>');
+  html = html.replace(/\n/g, '<br>');
+
+  return `<div style="font-size:14px;line-height:1.8;color:var(--text-primary)">${html}</div>`;
 }
 function pgGetSmartResponse(msg) {
   const lower = msg.toLowerCase();
