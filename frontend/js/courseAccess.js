@@ -189,35 +189,48 @@ function _renderClaimPopup(session) {
 
   overlay = document.createElement('div');
   overlay.id = 'claim-popup-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px';
 
   const availableCourses = coursesData.filter(c => c.status !== 'coming');
 
   overlay.innerHTML = `
-    <div style="background:var(--bg-card,#1a1a3e);border:1px solid var(--border-accent,rgba(124,58,237,0.4));border-radius:16px;padding:32px;max-width:560px;width:100%;max-height:80vh;overflow-y:auto">
+    <div style="background:#ffffff;border-radius:24px;padding:32px 28px 24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,0.2)">
+      
+      <!-- Header -->
       <div style="text-align:center;margin-bottom:24px">
-        <div style="font-size:36px;margin-bottom:8px">🎓</div>
-        <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Selamat Datang, ${escHtml(session.name)}!</h2>
-        <p style="font-size:13px;color:rgba(255,255,255,0.6)">Pilih <strong>1 kursus gratis</strong> untuk mulai belajar sekarang.</p>
+        <div style="font-size:48px;margin-bottom:12px">🎓</div>
+        <h2 style="font-size:20px;font-weight:700;color:#1d1d1f;margin-bottom:6px;letter-spacing:-0.03em">Choose a Course to Continue Learning</h2>
+        <p style="font-size:13px;color:#6e6e73">Select the course you want to continue working on:</p>
       </div>
-      <div id="claim-course-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
-        ${availableCourses.map(c => `
+
+      <!-- Course List -->
+      <div id="claim-course-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">
+        ${availableCourses.map(c => {
+          const lessonCount = (() => {
+            const courseObjects = {1:typeof courseML!=='undefined'?courseML:null,2:typeof coursePythonAI!=='undefined'?coursePythonAI:null,3:typeof courseDeepLearning!=='undefined'?courseDeepLearning:null,4:typeof courseNLP!=='undefined'?courseNLP:null,5:typeof courseComputerVision!=='undefined'?courseComputerVision:null,6:typeof courseDataScience!=='undefined'?courseDataScience:null,7:typeof courseRL!=='undefined'?courseRL:null,8:typeof courseAIEthics!=='undefined'?courseAIEthics:null};
+            const content = courseObjects[c.id];
+            if (!content?.curriculum) return 0;
+            return content.curriculum.reduce((sum, mod) => sum + mod.lessons.length, 0);
+          })();
+          return `
           <div class="claim-course-item" data-id="${c.id}" onclick="selectClaimCourse(${c.id})"
-            style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s">
-            <div style="width:40px;height:40px;border-radius:8px;background:${c.thumbBg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <i data-lucide="${c.thumbIcon}" style="width:20px;height:20px;color:${c.thumbColor}"></i>
+            style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;border:1.5px solid #e5e5ea;cursor:pointer;transition:all 0.15s;background:#fff">
+            <div style="width:44px;height:44px;border-radius:12px;background:${c.thumbBg};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i data-lucide="${c.thumbIcon}" style="width:22px;height:22px;color:${c.thumbColor}"></i>
             </div>
             <div style="flex:1;min-width:0">
-              <div style="font-size:13px;font-weight:600;color:#fff">${escHtml(c.title)}</div>
-              <div style="font-size:11px;color:rgba(255,255,255,0.5)">${c.level} · ${c.duration}</div>
+              <div style="font-size:14px;font-weight:600;color:#1d1d1f;letter-spacing:-0.01em">${escHtml(c.title)}</div>
+              <div style="font-size:12px;color:#6e6e73;margin-top:2px">${c.level} · ${lessonCount || '?'} lessons</div>
             </div>
-            <div class="claim-check" style="width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);flex-shrink:0"></div>
-          </div>
-        `).join('')}
+            <div class="claim-check" style="width:24px;height:24px;border-radius:50%;border:2px solid #d1d1d6;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s"></div>
+          </div>`;
+        }).join('')}
       </div>
+
+      <!-- Button -->
       <button id="claim-confirm-btn" onclick="confirmClaimCourse()" disabled
-        style="width:100%;padding:12px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#9d5cf6);color:#fff;font-size:14px;font-weight:600;border:none;cursor:not-allowed;opacity:0.5;transition:all 0.2s">
-        Mulai Belajar
+        style="width:100%;padding:14px;border-radius:980px;background:#e5e5ea;color:#aeaeb2;font-size:15px;font-weight:600;border:none;cursor:not-allowed;transition:all 0.2s;letter-spacing:-0.01em">
+        Continue Learning
       </button>
     </div>
   `;
@@ -230,19 +243,24 @@ function selectClaimCourse(courseId) {
   _selectedClaimCourseId = courseId;
   document.querySelectorAll('.claim-course-item').forEach(el => {
     const isSelected = parseInt(el.dataset.id) === courseId;
-    el.style.borderColor = isSelected ? 'rgba(124,58,237,0.8)' : 'rgba(255,255,255,0.1)';
-    el.style.background   = isSelected ? 'rgba(124,58,237,0.15)' : 'transparent';
+    el.style.borderColor = isSelected ? '#0071e3' : '#e5e5ea';
+    el.style.background  = isSelected ? '#f0f7ff' : '#fff';
     const check = el.querySelector('.claim-check');
     if (check) {
-      check.style.background  = isSelected ? '#7c3aed' : 'transparent';
-      check.style.borderColor = isSelected ? '#7c3aed' : 'rgba(255,255,255,0.2)';
+      check.style.background  = isSelected ? '#0071e3' : 'transparent';
+      check.style.borderColor = isSelected ? '#0071e3' : '#d1d1d6';
       check.innerHTML = isSelected
-        ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
+        ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>'
         : '';
     }
   });
   const btn = document.getElementById('claim-confirm-btn');
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+  if (btn) {
+    btn.disabled = false;
+    btn.style.background = '#1d1d1f';
+    btn.style.color = '#fff';
+    btn.style.cursor = 'pointer';
+  }
 }
 
 function confirmClaimCourse() {
