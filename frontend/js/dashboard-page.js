@@ -12,7 +12,7 @@ async function initDashboard() {
   try {
     await renderDbDynamicStats();
     await renderDbCourses();
-    renderDbProgressBars();
+    await renderDbProgressBars();
     renderDbUpcoming();
     renderDbMiniCalendar();
     renderDbAchievements();

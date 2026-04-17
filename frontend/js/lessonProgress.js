@@ -15,19 +15,50 @@ function _saveLessonData(data) {
 }
 
 /**
- * Mengambil daftar semua lessonId dari sebuah kursus (dari courseRegistry).
+ * Mengambil daftar semua lessonId dari sebuah kursus.
+ * Mendukung courseRegistry (course-detail.js) dan coursesData (courses.js).
  */
 function getCourseAllLessons(courseId) {
-  const content = courseRegistry[courseId];
-  if (!content || !content.curriculum) return [];
-  const lessons = [];
-  content.curriculum.forEach(mod => {
-    mod.lessons.forEach(l => {
-      const lessonId = l.id || (courseId + '-' + l.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
-      lessons.push(lessonId);
+  // Coba dari courseRegistry dulu (tersedia di halaman course-detail)
+  if (typeof courseRegistry !== 'undefined' && courseRegistry[courseId]) {
+    const content = courseRegistry[courseId];
+    if (content?.curriculum) {
+      const lessons = [];
+      content.curriculum.forEach(mod => {
+        mod.lessons.forEach(l => {
+          const lessonId = l.id || (courseId + '-' + l.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+          lessons.push(lessonId);
+        });
+      });
+      return lessons;
+    }
+  }
+
+  // Fallback: coba dari objek kursus langsung (course-ml, course-python-ai, dll)
+  const courseObjects = {
+    1: typeof courseML !== 'undefined' ? courseML : null,
+    2: typeof coursePythonAI !== 'undefined' ? coursePythonAI : null,
+    3: typeof courseDeepLearning !== 'undefined' ? courseDeepLearning : null,
+    4: typeof courseNLP !== 'undefined' ? courseNLP : null,
+    5: typeof courseComputerVision !== 'undefined' ? courseComputerVision : null,
+    6: typeof courseDataScience !== 'undefined' ? courseDataScience : null,
+    7: typeof courseRL !== 'undefined' ? courseRL : null,
+    8: typeof courseAIEthics !== 'undefined' ? courseAIEthics : null,
+  };
+
+  const content = courseObjects[courseId];
+  if (content?.curriculum) {
+    const lessons = [];
+    content.curriculum.forEach(mod => {
+      mod.lessons.forEach(l => {
+        const lessonId = l.id || (courseId + '-' + l.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+        lessons.push(lessonId);
+      });
     });
-  });
-  return lessons;
+    return lessons;
+  }
+
+  return [];
 }
 
 // ── API-first functions ──
