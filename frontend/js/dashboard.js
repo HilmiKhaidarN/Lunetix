@@ -262,27 +262,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show brief page transition
     if (typeof showPageTransition === 'function') showPageTransition();
 
+    // Fallback: selalu hide transition setelah 1.5 detik
+    const transitionTimeout = setTimeout(() => {
+      if (typeof hidePageTransition === 'function') hidePageTransition();
+    }, 1500);
+
     // Small delay for transition effect
     setTimeout(() => {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      navItems.forEach(n => n.classList.remove('active'));
+      try {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        navItems.forEach(n => n.classList.remove('active'));
 
-      const targetPage = document.getElementById('page-' + pageId);
-      const targetNav  = document.querySelector(`.nav-item[data-page="${pageId}"]`);
-      if (targetPage) targetPage.classList.add('active');
-      if (targetNav)  targetNav.classList.add('active');
+        const targetPage = document.getElementById('page-' + pageId);
+        const targetNav  = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+        if (targetPage) targetPage.classList.add('active');
+        if (targetNav)  targetNav.classList.add('active');
 
-      const titleEl = document.getElementById('page-title');
-      if (titleEl) titleEl.textContent = pageTitles[pageId] || pageId;
+        const titleEl = document.getElementById('page-title');
+        if (titleEl) titleEl.textContent = pageTitles[pageId] || pageId;
 
-      if (typeof initPage === 'function') initPage(pageId);
-      lucide.createIcons();
-      closeSidebar();
-
-      // Hide transition after content is ready
-      setTimeout(() => {
-        if (typeof hidePageTransition === 'function') hidePageTransition();
-      }, 200);
+        if (typeof initPage === 'function') initPage(pageId);
+        lucide.createIcons();
+        closeSidebar();
+      } catch (e) {
+        console.error('[navigateTo] Error:', e);
+      } finally {
+        clearTimeout(transitionTimeout);
+        setTimeout(() => {
+          if (typeof hidePageTransition === 'function') hidePageTransition();
+        }, 200);
+      }
     }, 150);
   }
 

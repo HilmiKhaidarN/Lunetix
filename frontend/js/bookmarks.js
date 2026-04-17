@@ -2,6 +2,7 @@
 
 const bmTypeLabels = { course:'Kursus', lesson:'Pelajaran', article:'Artikel', project:'Proyek', quiz:'Quiz', discussion:'Diskusi' };
 const bmWeekLabels = ['Sen','Sel','Rab','Kam','Jum','Sab','Min'];
+const bmWeekActivity = [0, 0, 0, 0, 0, 0, 0]; // data real dari localStorage nanti
 
 let bmActiveFilter = 'all';
 let bmSearchQuery  = '';
