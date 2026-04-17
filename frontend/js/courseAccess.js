@@ -286,20 +286,28 @@ function confirmClaimCourse() {
       const course = coursesData.find(c => c.id === _selectedClaimCourseId);
       document.getElementById('claim-popup-overlay')?.remove();
       _selectedClaimCourseId = null;
-      // Tandai bahwa user sudah pernah klaim — cegah popup muncul lagi
       store.set('has_claimed_course', true);
       showToast(`🎉 Kursus "${course?.title}" berhasil diklaim! Selamat belajar.`);
       refreshAccessStatuses(String(session.id));
       checkExpiryNotifications(String(session.id));
       if (typeof renderCourses === 'function') renderCourses();
       if (typeof initDashboard === 'function') initDashboard();
+    } else if (result.error === 'already_claimed' || result.error === 'limit_reached') {
+      // Kursus sudah diklaim atau limit tercapai — tutup popup dan lanjutkan
+      document.getElementById('claim-popup-overlay')?.remove();
+      _selectedClaimCourseId = null;
+      store.set('has_claimed_course', true);
+      if (result.error === 'limit_reached') showToast('Kamu sudah memiliki kursus aktif.');
+      if (typeof initDashboard === 'function') initDashboard();
     } else {
-      const msg = result.error === 'limit_reached' ? 'Batas klaim kursus tercapai.'
-        : result.error === 'already_claimed' ? 'Kursus sudah diklaim.'
-        : 'Gagal mengklaim kursus. Coba lagi.';
-      showToast(msg);
+      showToast('Gagal mengklaim kursus. Coba lagi.');
       if (btn) { btn.disabled = false; btn.textContent = 'Continue Learning'; btn.style.background = '#1d1d1f'; btn.style.color = '#fff'; btn.style.cursor = 'pointer'; }
     }
+  }).catch(() => {
+    // Jika API error, tetap tutup popup
+    document.getElementById('claim-popup-overlay')?.remove();
+    _selectedClaimCourseId = null;
+    store.set('has_claimed_course', true);
   });
 }
 
