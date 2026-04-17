@@ -298,7 +298,7 @@ async function finishCqQuiz() {
     console.warn('Gagal record attempt:', e);
   }
 
-  // Jika module quiz dan lulus, simpan status ke API + localStorage
+  // Jika module quiz dan lulus, simpan status
   if (!cqIsFinal && passed) {
     const key = `cp_mq_passed_${cqCourseId}`;
     const existing = store.get(key, {});
@@ -314,6 +314,20 @@ async function finishCqQuiz() {
         console.warn('[ModuleQuiz] Gagal simpan ke API, tersimpan di localStorage.', e);
       }
     }
+  }
+
+  // Refresh points dari API setelah lulus quiz
+  if (passed) {
+    try {
+      const userData = await AuthAPI.getMe();
+      if (userData?.user) {
+        const session = getSession();
+        if (session) {
+          session.points = userData.user.points || session.points;
+          setSession(session);
+        }
+      }
+    } catch (e) {}
   }
 
   renderCqResult(score, correct, total, passed);

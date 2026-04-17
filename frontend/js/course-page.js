@@ -1,4 +1,4 @@
-// ══════════════════════════════════════════════
+﻿// ══════════════════════════════════════════════
 // COURSE PAGE — Halaman Belajar Kursus
 // ══════════════════════════════════════════════
 
@@ -419,18 +419,19 @@ async function completeLesson(moduleIdx, lessonIdx) {
         cpCompletedLessons.push(lessonId);
       }
 
-      // Update streak di session jika ada
-      if (result.streak !== undefined) {
+      // Update streak & points di session jika ada
+      if (result.streak !== undefined || result.points !== undefined) {
         const session = getSession();
         if (session) {
-          session.streak = result.streak;
+          if (result.streak !== undefined) session.streak = result.streak;
+          if (result.points !== undefined) session.points = result.points;
           setSession(session);
-          // Update topbar streak jika ada
           const streakEl = document.querySelector('.user-streak');
-          if (streakEl) streakEl.textContent = result.streak;
+          const pointsEl = document.querySelector('.user-points');
+          if (streakEl) streakEl.textContent = session.streak;
+          if (pointsEl) pointsEl.textContent = (session.points || 0).toLocaleString();
         }
       }
-
       // Update button
       if (btn) {
         btn.classList.add('done');
@@ -453,7 +454,7 @@ async function completeLesson(moduleIdx, lessonIdx) {
       renderCpSidebar();
       lucide.createIcons();
 
-      showCpToast('✅ Lesson selesai!');
+      showCpToast(result.pointsEarned > 0 ? `✅ Lesson selesai! +\ poin ⭐` : '✅ Lesson selesai!');
     }
   } catch (e) {
     if (btn) { btn.disabled = false; btn.innerHTML = `<i data-lucide="check" style="width:16px;height:16px"></i> Tandai Selesai`; }
@@ -599,3 +600,4 @@ function showCpError(msg) {
     </div>
   `;
 }
+

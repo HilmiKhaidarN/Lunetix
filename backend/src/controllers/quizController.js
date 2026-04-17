@@ -96,6 +96,38 @@ async function recordAttempt(req, res) {
       iconColor: '#34d399',
       text: `Quiz <strong>${quizId}</strong> lulus! Skor kamu ${Math.round(score)}%.`,
     }).catch(() => {});
+
+    // Tambah poin berdasarkan jenis quiz
+    const isFinalQuiz = quizId.startsWith('final-');
+    const isModuleQuiz = quizId.startsWith('module-');
+    const pointsToAdd = isFinalQuiz ? 100 : isModuleQuiz ? 50 : 50;
+    const reason = isFinalQuiz
+      ? `Lulus quiz akhir kursus (skor ${Math.round(score)}%)`
+      : `Lulus quiz modul (skor ${Math.round(score)}%)`;
+
+    // Cek apakah sudah pernah dapat poin untuk quiz ini (hanya sekali)
+    const { data: prevPassed } = await supabase
+      .from('quiz_attempts')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('quiz_id', quizId)
+      .eq('passed', true)
+      .limit(2);
+
+    // Hanya beri poin jika ini pertama kali lulus
+    if (prevPassed && prevPassed.length <= 1) {
+      const { data: userRow } = await supabase
+        .from('users').select('points').eq('id', userId).single();
+      const newPoints = (userRow?.points || 0) + pointsToAdd;
+      await supabase.from('users').update({ points: newPoints }).eq('id', userId);
+
+      createNotification(userId, {
+        icon: 'star',
+        iconBg: 'rgba(245,158,11,0.15)',
+        iconColor: '#fbbf24',
+        text: `⭐ <strong>+${pointsToAdd} poin</strong> — ${reason}`,
+      }).catch(() => {});
+    }
   }
 
   return res.status(201).json({

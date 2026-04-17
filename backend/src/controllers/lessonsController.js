@@ -1,5 +1,37 @@
 const supabase = require('../config/supabase');
 
+const POINTS_PER_LESSON    = 10;
+const POINTS_PER_MODULE_QUIZ = 50;
+const POINTS_PER_FINAL_QUIZ  = 100;
+
+// ── Helper: tambah poin ke user ──
+async function addPoints(userId, points, reason) {
+  // Increment points
+  const { data: user } = await supabase
+    .from('users')
+    .select('points')
+    .eq('id', userId)
+    .single();
+
+  const newPoints = (user?.points || 0) + points;
+
+  await supabase
+    .from('users')
+    .update({ points: newPoints })
+    .eq('id', userId);
+
+  // Kirim notifikasi
+  const { createNotification } = require('./notificationsController');
+  createNotification(userId, {
+    icon: 'star',
+    iconBg: 'rgba(245,158,11,0.15)',
+    iconColor: '#fbbf24',
+    text: `⭐ <strong>+${points} poin</strong> — ${reason}`,
+  }).catch(() => {});
+
+  return newPoints;
+}
+
 // GET /api/lessons/:courseId/progress
 async function getProgress(req, res) {
   const userId = req.user.id;
@@ -42,18 +74,36 @@ async function completeLesson(req, res) {
   }
 
   // Insert (idempoten — ON CONFLICT DO NOTHING)
-  const { error } = await supabase
+  const { error, data: upsertData } = await supabase
     .from('lesson_progress')
     .upsert({
       user_id: userId,
       course_id: courseId,
       lesson_id: lessonId,
-    }, { onConflict: 'user_id,course_id,lesson_id' });
+    }, { onConflict: 'user_id,course_id,lesson_id', ignoreDuplicates: true });
 
   if (error) return res.status(500).json({ error: error.message });
 
+  // Cek apakah ini lesson baru (bukan duplicate)
+  const { data: existing } = await supabase
+    .from('lesson_progress')
+    .select('id, completed_at')
+    .eq('user_id', userId)
+    .eq('course_id', courseId)
+    .eq('lesson_id', lessonId)
+    .single();
+
+  const isNewLesson = existing && 
+    (Date.now() - new Date(existing.completed_at).getTime()) < 5000; // dalam 5 detik = baru
+
   // Update streak jika belum ada aktivitas hari ini
   await updateUserStreak(userId);
+
+  // Tambah poin jika lesson baru
+  let newPoints = null;
+  if (isNewLesson) {
+    newPoints = await addPoints(userId, POINTS_PER_LESSON, `Menyelesaikan lesson di kursus #${courseId}`);
+  }
 
   // Ambil semua lesson yang sudah selesai
   const { data: progress } = await supabase
@@ -62,10 +112,10 @@ async function completeLesson(req, res) {
     .eq('user_id', userId)
     .eq('course_id', courseId);
 
-  // Ambil streak terbaru
+  // Ambil data user terbaru
   const { data: user } = await supabase
     .from('users')
-    .select('streak')
+    .select('streak, points')
     .eq('id', userId)
     .single();
 
@@ -73,6 +123,8 @@ async function completeLesson(req, res) {
     success: true,
     completedLessons: progress.map(p => p.lesson_id),
     streak: user?.streak || 0,
+    points: user?.points || 0,
+    pointsEarned: isNewLesson ? POINTS_PER_LESSON : 0,
   });
 }
 
