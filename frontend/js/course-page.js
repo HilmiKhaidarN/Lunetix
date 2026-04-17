@@ -161,7 +161,21 @@ function isModuleAllLessonsDone(moduleIdx) {
 
 // ── Open first available lesson ──
 function openFirstAvailableLesson() {
-  // Cari lesson pertama yang belum selesai
+  // Cek apakah ada posisi terakhir yang tersimpan
+  const lastKey = `cp_last_lesson_${cpCourseId}`;
+  const last = store.get(lastKey, null);
+
+  if (last && typeof last.mi === 'number' && typeof last.li === 'number') {
+    const mi = last.mi;
+    const li = last.li;
+    // Pastikan masih accessible
+    if (isModuleUnlocked(mi) && isLessonAccessible(mi, li)) {
+      openLesson(mi, li);
+      return;
+    }
+  }
+
+  // Fallback: cari lesson pertama yang belum selesai
   for (let mi = 0; mi < cpContent.curriculum.length; mi++) {
     if (!isModuleUnlocked(mi)) continue;
     const mod = cpContent.curriculum[mi];
@@ -288,6 +302,10 @@ function openLesson(moduleIdx, lessonIdx) {
   cpCurrentModuleIdx = moduleIdx;
   cpCurrentLessonIdx = lessonIdx;
   cpCurrentType = 'lesson';
+
+  // Auto-save posisi terakhir
+  const lastKey = `cp_last_lesson_${cpCourseId}`;
+  store.set(lastKey, { mi: moduleIdx, li: lessonIdx });
 
   const mod = cpContent.curriculum[moduleIdx];
   const lesson = mod.lessons[lessonIdx];

@@ -113,7 +113,7 @@ async function renderDbCourses() {
   }
 
   el.innerHTML = rows.map(({ course: c, progress, completed, total }) => `
-    <div class="db-course-card" onclick="openCourse(${c.id})">
+    <div class="db-course-card" onclick="window.location.href='/course/${c.id}'">
       <div class="db-course-thumb" style="background:${c.thumbBg}">
         <i data-lucide="${c.thumbIcon}" style="width:44px;height:44px;color:${c.thumbColor}"></i>
         <div class="db-course-level-badge">${c.level}</div>
