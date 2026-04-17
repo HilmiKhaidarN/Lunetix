@@ -172,13 +172,23 @@ function showClaimPopup() {
   const session = getSession();
   if (!session) return;
 
+  // Jika sudah pernah klaim sebelumnya (flag di localStorage), skip
+  if (store.get('has_claimed_course', false)) return;
+
   // Cek via API dulu, lalu tampilkan popup jika belum klaim
   getClaimedCoursesAsync(String(session.id)).then(claimed => {
-    if (claimed.length > 0) return;
+    if (claimed.length > 0) {
+      // Sudah punya kursus, set flag dan skip
+      store.set('has_claimed_course', true);
+      return;
+    }
     _renderClaimPopup(session);
   }).catch(() => {
     const claimed = getClaimedCourses(String(session.id));
-    if (claimed.length > 0) return;
+    if (claimed.length > 0) {
+      store.set('has_claimed_course', true);
+      return;
+    }
     _renderClaimPopup(session);
   });
 }
@@ -276,16 +286,19 @@ function confirmClaimCourse() {
       const course = coursesData.find(c => c.id === _selectedClaimCourseId);
       document.getElementById('claim-popup-overlay')?.remove();
       _selectedClaimCourseId = null;
+      // Tandai bahwa user sudah pernah klaim — cegah popup muncul lagi
+      store.set('has_claimed_course', true);
       showToast(`🎉 Kursus "${course?.title}" berhasil diklaim! Selamat belajar.`);
       refreshAccessStatuses(String(session.id));
       checkExpiryNotifications(String(session.id));
       if (typeof renderCourses === 'function') renderCourses();
+      if (typeof initDashboard === 'function') initDashboard();
     } else {
       const msg = result.error === 'limit_reached' ? 'Batas klaim kursus tercapai.'
         : result.error === 'already_claimed' ? 'Kursus sudah diklaim.'
         : 'Gagal mengklaim kursus. Coba lagi.';
       showToast(msg);
-      if (btn) { btn.disabled = false; btn.textContent = 'Mulai Belajar'; btn.style.opacity = '1'; }
+      if (btn) { btn.disabled = false; btn.textContent = 'Continue Learning'; btn.style.background = '#1d1d1f'; btn.style.color = '#fff'; btn.style.cursor = 'pointer'; }
     }
   });
 }
