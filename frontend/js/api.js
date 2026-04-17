@@ -208,3 +208,25 @@ const PlaygroundAPI = {
     body: JSON.stringify({ message, model, history }),
   }),
 };
+
+// ── Bookmarks ──
+const BookmarksAPI = {
+  getAll:  () => apiFetch('/bookmarks'),
+  add:     (data) => apiFetch('/bookmarks', { method: 'POST', body: JSON.stringify(data) }),
+  remove:  (id) => apiFetch(`/bookmarks/${id}`, { method: 'DELETE' }),
+};
+
+// ── User Preferences ──
+const PreferencesAPI = {
+  getAll: () => apiFetch('/preferences'),
+  get:    (key) => apiFetch(`/preferences/${key}`),
+  set:    (key, value) => apiFetch(`/preferences/${key}`, { method: 'PUT', body: JSON.stringify({ value }) }),
+};
+
+// ── Playground Sessions ──
+const PlaygroundSessionsAPI = {
+  getAll:  () => apiFetch('/playground/sessions'),
+  create:  (data) => apiFetch('/playground/sessions', { method: 'POST', body: JSON.stringify(data) }),
+  update:  (id, data) => apiFetch(`/playground/sessions/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  delete:  (id) => apiFetch(`/playground/sessions/${id}`, { method: 'DELETE' }),
+};

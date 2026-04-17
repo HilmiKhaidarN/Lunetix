@@ -175,15 +175,27 @@ async function pgSend() {
       if (timeEl) timeEl.textContent = `Generated in ${elapsed}s · ${tokens} tokens`;
     }
 
-    // Simpan session ke localStorage
+    // Simpan session ke localStorage + API
     const sessions = store.get('pg_sessions', []);
-    sessions.unshift({
+    const newSession = {
       id: Date.now(),
       title: msg.slice(0, 60),
       model: (pgModels.find(m => m.id === pgActiveModel) || {}).name || 'AI',
       time: new Date().toISOString(),
-    });
+    };
+    sessions.unshift(newSession);
     store.set('pg_sessions', sessions.slice(0, 20));
+
+    // Sync ke API async
+    const sessionObj = getSession();
+    if (sessionObj?.token) {
+      PlaygroundSessionsAPI.create({
+        title: msg.slice(0, 100),
+        model: pgActiveModel,
+        messages: pgChatHistory.slice(-4), // simpan 4 pesan terakhir
+      }).catch(() => {});
+    }
+
     renderPgSessions();
     renderPgRecentActivity();
     lucide.createIcons();

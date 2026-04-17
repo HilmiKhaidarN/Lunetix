@@ -85,6 +85,18 @@ async function loadCpProgress() {
   } catch (e) {
     cpCompletedLessons = [];
   }
+
+  // Load last lesson position dari API (sync ke localStorage)
+  const session = getSession();
+  if (session?.token) {
+    try {
+      const lastKey = `cp_last_lesson_${cpCourseId}`;
+      const data = await PreferencesAPI.get(lastKey);
+      if (data?.value) {
+        store.set(lastKey, data.value);
+      }
+    } catch (e) {}
+  }
 }
 
 // ── Load Module Quiz Status (API-first, fallback localStorage) ──
@@ -303,9 +315,15 @@ function openLesson(moduleIdx, lessonIdx) {
   cpCurrentLessonIdx = lessonIdx;
   cpCurrentType = 'lesson';
 
-  // Auto-save posisi terakhir
+  // Auto-save posisi terakhir (localStorage + API)
   const lastKey = `cp_last_lesson_${cpCourseId}`;
-  store.set(lastKey, { mi: moduleIdx, li: lessonIdx });
+  const lastVal = { mi: moduleIdx, li: lessonIdx };
+  store.set(lastKey, lastVal);
+  // Sync ke API async (non-blocking)
+  const session = getSession();
+  if (session?.token) {
+    PreferencesAPI.set(lastKey, lastVal).catch(() => {});
+  }
 
   const mod = cpContent.curriculum[moduleIdx];
   const lesson = mod.lessons[lessonIdx];

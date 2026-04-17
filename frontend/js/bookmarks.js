@@ -11,7 +11,29 @@ let bmListTab      = 'all';
 function getBmItems() { return store.get('bookmarks_v2', []); }
 function saveBmItems(b) { store.set('bookmarks_v2', b); }
 
-function renderBookmarks() {
+async function _loadBmFromAPI() {
+  const session = getSession();
+  if (!session?.token) return;
+  try {
+    const data = await BookmarksAPI.getAll();
+    const items = (data.bookmarks || []).map(b => ({
+      id: b.id, title: b.title, sub: b.sub, type: b.item_type,
+      category: b.category, icon: b.icon, iconColor: b.icon_color,
+      iconBg: b.icon_bg, bg: b.thumb_bg, typeColor: b.type_color,
+      typeBg: b.type_bg, progress: b.progress || 0,
+      time: timeAgo(b.created_at),
+    }));
+    saveBmItems(items);
+    return items;
+  } catch (e) {
+    console.warn('[Bookmarks] API tidak tersedia, pakai localStorage.', e);
+    return getBmItems();
+  }
+}
+
+async function renderBookmarks() {
+  // Load dari API dulu
+  await _loadBmFromAPI();
   renderBmStats();
   renderBmCards();
   renderBmList();
@@ -192,7 +214,11 @@ function searchBookmarks(q) {
   renderBmList();
 }
 
-function removeBookmark(id) {
+async function removeBookmark(id) {
+  const session = getSession();
+  if (session?.token) {
+    try { await BookmarksAPI.remove(id); } catch (e) {}
+  }
   const items = getBmItems().filter(b => b.id !== id);
   saveBmItems(items);
   renderBookmarks();
@@ -208,7 +234,7 @@ function closeAddBookmarkModal() {
   if (m) m.style.display = 'none';
 }
 
-function addBookmarkItem() {
+async function addBookmarkItem() {
   const title    = document.getElementById('bm-title')?.value.trim();
   const type     = document.getElementById('bm-type')?.value;
   const category = document.getElementById('bm-category')?.value;
@@ -225,11 +251,25 @@ function addBookmarkItem() {
   };
   const cfg = typeConfig[type] || typeConfig.course;
 
+  // Simpan ke API
+  const session = getSession();
+  const itemId = `${type}-${Date.now()}`;
+  if (session?.token) {
+    try {
+      await BookmarksAPI.add({
+        item_id: itemId, item_type: type, title, sub: desc || category,
+        category, icon: cfg.icon, icon_color: cfg.iconColor,
+        icon_bg: cfg.iconBg || cfg.typeBg, thumb_bg: cfg.bg,
+        type_color: cfg.typeColor, type_bg: cfg.typeBg, progress: 0,
+      });
+    } catch (e) { console.warn('[Bookmarks] Gagal simpan ke API.', e); }
+  }
+
+  // Update localStorage
   const items = getBmItems();
   items.unshift({
-    id: Date.now(), title, sub: desc || category, type, category,
-    time: 'Baru saja', progress: 0,
-    ...cfg
+    id: itemId, title, sub: desc || category, type, category,
+    time: 'Baru saja', progress: 0, ...cfg
   });
   saveBmItems(items);
   closeAddBookmarkModal();

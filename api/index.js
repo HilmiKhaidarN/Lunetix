@@ -55,6 +55,8 @@ app.use('/api/notifications', require('../backend/src/routes/notifications'));
 app.use('/api/community',     require('../backend/src/routes/community'));
 app.use('/api/analytics',     require('../backend/src/routes/analytics'));
 app.use('/api/playground',    require('../backend/src/routes/playground'));
+app.use('/api/bookmarks',     require('../backend/src/routes/bookmarks'));
+app.use('/api/preferences',   require('../backend/src/routes/preferences'));
 
 // ── 404 handler ──
 app.use((req, res) => {
