@@ -9,8 +9,11 @@ const API_BASE = window.location.hostname === 'localhost' || window.location.hos
   : '/api';
 
 /**
- * Helper fetch dengan auth token otomatis
+ * Helper fetch dengan auth token otomatis + auto refresh token
  */
+let _isRefreshing = false;
+let _refreshQueue = [];
+
 async function apiFetch(endpoint, options = {}) {
   const session = getSession();
   const token = session?.token || null;
@@ -28,11 +31,84 @@ async function apiFetch(endpoint, options = {}) {
 
   const data = await res.json();
 
+  // Auto-refresh token jika 401 dan ada refresh token
+  if (res.status === 401 && session?.refreshToken) {
+    const newToken = await _tryRefreshToken(session.refreshToken);
+    if (newToken) {
+      // Retry dengan token baru
+      const retryHeaders = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${newToken}`,
+        ...(options.headers || {}),
+      };
+      const retryRes = await fetch(`${API_BASE}${endpoint}`, {
+        ...options,
+        headers: retryHeaders,
+      });
+      const retryData = await retryRes.json();
+      if (!retryRes.ok) {
+        throw { status: retryRes.status, error: retryData.error || 'Request failed' };
+      }
+      return retryData;
+    } else {
+      // Refresh gagal, redirect ke login
+      clearSession();
+      window.location.href = '/login';
+      throw { status: 401, error: 'Session expired. Silakan login ulang.' };
+    }
+  }
+
   if (!res.ok) {
     throw { status: res.status, error: data.error || 'Request failed' };
   }
 
   return data;
+}
+
+// Refresh token — hanya satu request sekaligus (prevent race condition)
+async function _tryRefreshToken(refreshToken) {
+  if (_isRefreshing) {
+    // Tunggu request refresh yang sedang berjalan
+    return new Promise(resolve => { _refreshQueue.push(resolve); });
+  }
+
+  _isRefreshing = true;
+  try {
+    const res = await fetch(`${API_BASE}/auth/refresh`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!res.ok) {
+      _refreshQueue.forEach(fn => fn(null));
+      _refreshQueue = [];
+      return null;
+    }
+
+    const data = await res.json();
+    const session = getSession();
+    if (session) {
+      session.token = data.token;
+      session.refreshToken = data.refreshToken;
+      session.expiresAt = data.expiresAt;
+      // Sync user data terbaru
+      if (data.user) {
+        Object.assign(session, data.user);
+      }
+      setSession(session);
+    }
+
+    _refreshQueue.forEach(fn => fn(data.token));
+    _refreshQueue = [];
+    return data.token;
+  } catch {
+    _refreshQueue.forEach(fn => fn(null));
+    _refreshQueue = [];
+    return null;
+  } finally {
+    _isRefreshing = false;
+  }
 }
 
 // ── Courses ──
@@ -47,6 +123,7 @@ const CoursesAPI = {
 const AuthAPI = {
   register: (body) => apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
   login: (body) => apiFetch('/auth/login', { method: 'POST', body: JSON.stringify(body) }),
+  refresh: (refreshToken) => apiFetch('/auth/refresh', { method: 'POST', body: JSON.stringify({ refreshToken }) }),
   getMe: () => apiFetch('/auth/me'),
   updateProfile: (body) => apiFetch('/auth/profile', { method: 'PUT', body: JSON.stringify(body) }),
   changePassword: (body) => apiFetch('/auth/password', { method: 'PUT', body: JSON.stringify(body) }),
@@ -117,4 +194,9 @@ const DiscussionAPI = {
     `/lesson-discussion/${courseId}/${lessonId}/${postId}`,
     { method: 'DELETE' }
   ),
+};
+
+// ── Analytics ──
+const AnalyticsAPI = {
+  getSummary: () => apiFetch('/analytics/summary'),
 };
