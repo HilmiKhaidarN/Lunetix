@@ -8,7 +8,11 @@
     const loader = document.createElement('div');
     loader.id = 'lunetix-loader';
     loader.innerHTML = `
-      <div class="loader-icon"><span>L</span></div>
+      <div class="loader-icon">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </div>
       <div class="loader-name">Lunetix</div>
       <div class="loader-spinner"></div>
     `;
@@ -21,7 +25,11 @@
     const t = document.createElement('div');
     t.id = 'page-transition';
     t.innerHTML = `
-      <div class="loader-icon"><span>L</span></div>
+      <div class="loader-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </div>
       <div class="loader-spinner"></div>
     `;
     document.body.appendChild(t);
