@@ -258,20 +258,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function navigateTo(pageId) {
     closeAllDropdowns();
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    navItems.forEach(n => n.classList.remove('active'));
 
-    const targetPage = document.getElementById('page-' + pageId);
-    const targetNav  = document.querySelector(`.nav-item[data-page="${pageId}"]`);
-    if (targetPage) targetPage.classList.add('active');
-    if (targetNav)  targetNav.classList.add('active');
+    // Show brief page transition
+    if (typeof showPageTransition === 'function') showPageTransition();
 
-    const titleEl = document.getElementById('page-title');
-    if (titleEl) titleEl.textContent = pageTitles[pageId] || pageId;
+    // Small delay for transition effect
+    setTimeout(() => {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      navItems.forEach(n => n.classList.remove('active'));
 
-    if (typeof initPage === 'function') initPage(pageId);
-    lucide.createIcons();
-    closeSidebar();
+      const targetPage = document.getElementById('page-' + pageId);
+      const targetNav  = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+      if (targetPage) targetPage.classList.add('active');
+      if (targetNav)  targetNav.classList.add('active');
+
+      const titleEl = document.getElementById('page-title');
+      if (titleEl) titleEl.textContent = pageTitles[pageId] || pageId;
+
+      if (typeof initPage === 'function') initPage(pageId);
+      lucide.createIcons();
+      closeSidebar();
+
+      // Hide transition after content is ready
+      setTimeout(() => {
+        if (typeof hidePageTransition === 'function') hidePageTransition();
+      }, 200);
+    }, 150);
   }
 
   // Expose globally
