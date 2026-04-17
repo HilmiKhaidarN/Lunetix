@@ -81,15 +81,6 @@ const QUIZ_COURSE_REQUIRED = {
   'cv-basics':  5,
 };
 
-// Mapping quiz → courseId yang dibutuhkan
-const QUIZ_COURSE_REQUIRED = {
-  'ml-basics':  1,
-  'python-ai':  2,
-  'dl-basics':  3,
-  'nlp-basics': 4,
-  'cv-basics':  5,
-};
-
 // Cek apakah user punya akses ke quiz ini
 function hasQuizAccess(quizId) {
   const requiredCourseId = QUIZ_COURSE_REQUIRED[quizId];
