@@ -218,14 +218,20 @@ function _pgSendLocal(msg, output, footer, startTime) {
 
 // Format markdown-like response dari Groq
 function pgFormatResponse(text) {
-  // Code blocks
+  // Code blocks — simpan code di array terpisah untuk menghindari HTML injection
+  const codeBlocks = [];
   let html = text.replace(/```(\w+)?\n?([\s\S]*?)```/g, (_, lang, code) => {
     const language = lang || 'code';
+    const idx = codeBlocks.length;
+    codeBlocks.push(code.trim());
     const lines = code.trim().split('\n').map((l, i) =>
       `<div><span style="color:#4b5563;user-select:none;margin-right:12px">${i+1}</span>${escHtml(l)}</div>`
     ).join('');
-    return `<div class="pg-code-block"><div class="pg-code-header"><span>${language}</span><button class="pg-icon-btn" onclick="navigator.clipboard.writeText(${JSON.stringify(code.trim())}).then(()=>showToast('Copied!'))"><i data-lucide="copy" style="width:12px;height:12px"></i></button></div><div class="pg-code-body">${lines}</div></div>`;
+    return `<div class="pg-code-block"><div class="pg-code-header"><span>${escHtml(language)}</span><button class="pg-icon-btn" onclick="pgCopyCode(${idx})"><i data-lucide="copy" style="width:12px;height:12px"></i></button></div><div class="pg-code-body">${lines}</div></div>`;
   });
+
+  // Simpan code blocks ke window untuk akses dari onclick
+  window._pgCodeBlocks = codeBlocks;
 
   // Inline code
   html = html.replace(/`([^`]+)`/g, '<code style="background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px">$1</code>');
@@ -250,14 +256,21 @@ function pgFormatResponse(text) {
 
   return `<div style="font-size:14px;line-height:1.8;color:var(--text-primary)">${html}</div>`;
 }
+
+function pgCopyCode(idx) {
+  const code = (window._pgCodeBlocks || [])[idx];
+  if (code) navigator.clipboard.writeText(code).then(() => showToast('Copied!'));
+}
 function pgGetSmartResponse(msg) {
   const lower = msg.toLowerCase();
   let raw = lower.includes('neural')||lower.includes('network') ? pgResponseBank.neural
            : lower.includes('quicksort')||lower.includes('sort') ? pgResponseBank.python
            : pgResponseBank.default[Math.floor(Math.random()*pgResponseBank.default.length)];
   const html = raw.replace(/<code>([\s\S]*?)<\/code>/g, (_, code) => {
+    const idx = (window._pgCodeBlocks = window._pgCodeBlocks || []).length;
+    window._pgCodeBlocks.push(code.trim());
     const lines = code.trim().split('\n').map((l,i)=>`<div><span style="color:#4b5563;user-select:none;margin-right:12px">${i+1}</span>${escHtml(l)}</div>`).join('');
-    return `<div class="pg-code-block"><div class="pg-code-header"><span>Python</span><button class="pg-icon-btn" onclick="navigator.clipboard.writeText(${JSON.stringify(code)})"><i data-lucide="copy" style="width:12px;height:12px"></i></button></div><div class="pg-code-body">${lines}</div></div>`;
+    return `<div class="pg-code-block"><div class="pg-code-header"><span>Python</span><button class="pg-icon-btn" onclick="pgCopyCode(${idx})"><i data-lucide="copy" style="width:12px;height:12px"></i></button></div><div class="pg-code-body">${lines}</div></div>`;
   });
   return { html: html.replace(/\n/g,'<br>').replace(/<br><div/g,'<div').replace(/<\/div><br>/g,'</div>'), plain: raw.replace(/<code>[\s\S]*?<\/code>/g,'[code block]') };
 }
