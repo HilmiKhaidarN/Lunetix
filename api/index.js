@@ -1,6 +1,7 @@
 // ══════════════════════════════════════════════
 // api/index.js — Vercel Serverless Entry Point
 // Express app di-wrap sebagai serverless function
+// Force rebuild: 2026-04-20
 // ══════════════════════════════════════════════
 
 require('dotenv').config();
@@ -217,3 +218,6 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
+// Also export as default for Vercel
+module.exports.default = app;
