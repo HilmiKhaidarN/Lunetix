@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
   email         TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   avatar        TEXT DEFAULT '',
-  account_type  TEXT DEFAULT 'free' CHECK (account_type IN ('free', 'pro')),
+  account_type  TEXT DEFAULT 'free' CHECK (account_type IN ('free', 'pro', 'admin')),
   streak        INTEGER DEFAULT 0,
   points        INTEGER DEFAULT 0,
   joined_at     TIMESTAMPTZ DEFAULT NOW(),

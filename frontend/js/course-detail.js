@@ -83,6 +83,9 @@ function buildModal(course, content) {
     renderCertificateButton(String(session.id), course.id);
   }
 
+  // Store current course ID for video player
+  window.currentCourseId = course.id;
+  
   // Reset to first tab
   switchCDTab('curriculum');
   lucide.createIcons();
@@ -219,6 +222,11 @@ function switchCDTab(tab) {
   document.querySelectorAll('.cd-section').forEach(s => s.classList.remove('active'));
   document.querySelector(`.cd-tab[data-tab="${tab}"]`).classList.add('active');
   document.getElementById('cd-' + tab).classList.add('active');
+  
+  // Load content based on tab
+  if (tab === 'videos' && window.currentCourseId) {
+    initVideoPlayer(window.currentCourseId);
+  }
 }
 
 function getCourseDescription(id) {

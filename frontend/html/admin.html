@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/frontend/favicon.svg" />
+  <title>Admin Dashboard - Lunetix</title>
+  <link rel="stylesheet" href="/frontend/css/style.css" />
+  <link rel="stylesheet" href="/frontend/css/base.css" />
+  <link rel="stylesheet" href="/frontend/css/admin.css" />
+  <link rel="stylesheet" href="/frontend/css/loading.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<script src="/frontend/js/loading.js"></script>
+
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <div class="logo-icon">
+        <i data-lucide="moon" style="width:18px;height:18px;color:#fff"></i>
+      </div>
+      <span>Lunetix Admin</span>
+    </div>
+    
+    <nav class="admin-nav">
+      <ul>
+        <li><a class="admin-nav-item active" data-page="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+        <li><a class="admin-nav-item" data-page="users"><i data-lucide="users"></i> Users</a></li>
+        <li><a class="admin-nav-item" data-page="courses"><i data-lucide="book-open"></i> Courses</a></li>
+        <li><a class="admin-nav-item" data-page="payments"><i data-lucide="credit-card"></i> Payments</a></li>
+        <li><a class="admin-nav-item" data-page="analytics"><i data-lucide="bar-chart"></i> Analytics</a></li>
+        <li><a class="admin-nav-item" data-page="settings"><i data-lucide="settings"></i> Settings</a></li>
+      </ul>
+    </nav>
+    
+    <div class="admin-user">
+      <div class="admin-user-avatar">A</div>
+      <div class="admin-user-info">
+        <div class="admin-user-name" id="admin-user-name">Admin</div>
+        <div class="admin-user-role">Administrator</div>
+      </div>
+      <button class="admin-logout-btn" onclick="doLogout()">
+        <i data-lucide="log-out" style="width:16px;height:16px"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <h1 id="admin-page-title">Dashboard</h1>
+        <p id="admin-page-subtitle">Overview of your platform</p>
+      </div>
+      <div class="admin-header-right">
+        <button class="admin-btn admin-btn-outline" onclick="window.open('/dashboard', '_blank')">
+          <i data-lucide="external-link" style="width:16px;height:16px"></i>
+          View Site
+        </button>
+        <button class="admin-btn admin-btn-primary" onclick="refreshData()">
+          <i data-lucide="refresh-cw" style="width:16px;height:16px"></i>
+          Refresh
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="admin-content">
+      
+      <!-- Dashboard Page -->
+      <div class="admin-page active" id="admin-page-dashboard">
+        <!-- Stats Cards -->
+        <div class="admin-stats-grid" id="admin-stats-grid">
+          <!-- Stats will be loaded here -->
+        </div>
+        
+        <!-- Charts Row -->
+        <div class="admin-charts-row">
+          <!-- Revenue Chart -->
+          <div class="admin-chart-card">
+            <div class="admin-chart-header">
+              <h3>Revenue Trend</h3>
+              <p>Monthly revenue over time</p>
+            </div>
+            <div class="admin-chart-container">
+              <canvas id="revenue-chart"></canvas>
+            </div>
+          </div>
+          
+          <!-- User Growth Chart -->
+          <div class="admin-chart-card">
+            <div class="admin-chart-header">
+              <h3>User Growth</h3>
+              <p>New signups last 30 days</p>
+            </div>
+            <div class="admin-chart-container">
+              <canvas id="user-growth-chart"></canvas>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Tables Row -->
+        <div class="admin-tables-row">
+          <!-- Recent Users -->
+          <div class="admin-table-card">
+            <div class="admin-table-header">
+              <h3>Recent Users</h3>
+              <a href="#" onclick="navigateToPage('users')">View All</a>
+            </div>
+            <div class="admin-table-container" id="recent-users-table">
+              <!-- Table will be loaded here -->
+            </div>
+          </div>
+          
+          <!-- Top Courses -->
+          <div class="admin-table-card">
+            <div class="admin-table-header">
+              <h3>Popular Courses</h3>
+              <a href="#" onclick="navigateToPage('courses')">View All</a>
+            </div>
+            <div class="admin-table-container" id="top-courses-table">
+              <!-- Table will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Page -->
+      <div class="admin-page" id="admin-page-users">
+        <!-- Users Header -->
+        <div class="admin-page-header">
+          <div class="admin-search-bar">
+            <i data-lucide="search" style="width:16px;height:16px;color:var(--text-muted)"></i>
+            <input type="text" id="users-search" placeholder="Search users..." onkeyup="searchUsers(this.value)">
+          </div>
+          <div class="admin-page-actions">
+            <button class="admin-btn admin-btn-outline" onclick="exportUsers()">
+              <i data-lucide="download" style="width:16px;height:16px"></i>
+              Export
+            </button>
+          </div>
+        </div>
+        
+        <!-- Users Table -->
+        <div class="admin-table-card">
+          <div class="admin-table-container" id="users-table">
+            <!-- Users table will be loaded here -->
+          </div>
+          <div class="admin-pagination" id="users-pagination">
+            <!-- Pagination will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Courses Page -->
+      <div class="admin-page" id="admin-page-courses">
+        <div class="admin-page-header">
+          <h2>Course Management</h2>
+          <button class="admin-btn admin-btn-primary" onclick="showAddCourseModal()">
+            <i data-lucide="plus" style="width:16px;height:16px"></i>
+            Add Course
+          </button>
+        </div>
+        
+        <div class="admin-courses-grid" id="admin-courses-grid">
+          <!-- Courses will be loaded here -->
+        </div>
+      </div>
+
+      <!-- Payments Page -->
+      <div class="admin-page" id="admin-page-payments">
+        <div class="admin-page-header">
+          <h2>Payment Management</h2>
+          <div class="admin-page-actions">
+            <select class="admin-select" onchange="filterPayments(this.value)">
+              <option value="all">All Payments</option>
+              <option value="succeeded">Successful</option>
+              <option value="failed">Failed</option>
+              <option value="pending">Pending</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="admin-table-card">
+          <div class="admin-table-container" id="payments-table">
+            <!-- Payments table will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Analytics Page -->
+      <div class="admin-page" id="admin-page-analytics">
+        <div class="admin-analytics-grid">
+          <!-- Advanced analytics charts -->
+          <div class="admin-chart-card admin-chart-large">
+            <div class="admin-chart-header">
+              <h3>Platform Analytics</h3>
+              <p>Comprehensive platform insights</p>
+            </div>
+            <div class="admin-chart-container">
+              <canvas id="platform-analytics-chart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Page -->
+      <div class="admin-page" id="admin-page-settings">
+        <div class="admin-settings-grid">
+          <div class="admin-settings-card">
+            <h3>Platform Settings</h3>
+            <div class="admin-settings-form">
+              <div class="admin-form-group">
+                <label>Site Name</label>
+                <input type="text" value="Lunetix" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label>Admin Email</label>
+                <input type="email" value="admin@lunetix.ai" class="admin-input">
+              </div>
+              <div class="admin-form-group">
+                <label>Maintenance Mode</label>
+                <label class="admin-toggle">
+                  <input type="checkbox">
+                  <span class="admin-toggle-slider"></span>
+                </label>
+              </div>
+              <button class="admin-btn admin-btn-primary">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Scripts -->
+<script src="/frontend/js/ui-helpers.js"></script>
+<script src="/frontend/js/auth.js"></script>
+<script src="/frontend/js/store.js"></script>
+<script src="/frontend/js/api.js"></script>
+<script src="/frontend/js/admin.js"></script>
+
+<script>
+  // Initialize admin dashboard
+  document.addEventListener('DOMContentLoaded', () => {
+    requireAuth();
+    initAdminDashboard();
+    lucide.createIcons();
+  });
+</script>
+
+</body>
+</html>

@@ -199,6 +199,7 @@ const DiscussionAPI = {
 // ── Analytics ──
 const AnalyticsAPI = {
   getSummary: () => apiFetch('/analytics/summary'),
+  getAdvanced: () => apiFetch('/analytics/advanced'),
 };
 
 // ── Playground ──
@@ -229,4 +230,15 @@ const PlaygroundSessionsAPI = {
   create:  (data) => apiFetch('/playground/sessions', { method: 'POST', body: JSON.stringify(data) }),
   update:  (id, data) => apiFetch(`/playground/sessions/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   delete:  (id) => apiFetch(`/playground/sessions/${id}`, { method: 'DELETE' }),
+};
+
+// ── Payment ──
+const PaymentAPI = {
+  createCheckoutSession: (planId, successUrl, cancelUrl) => apiFetch('/payment/create-checkout-session', {
+    method: 'POST',
+    body: JSON.stringify({ planId, successUrl, cancelUrl })
+  }),
+  getSubscription: () => apiFetch('/payment/subscription'),
+  cancelSubscription: () => apiFetch('/payment/cancel-subscription', { method: 'POST' }),
+  reactivateSubscription: () => apiFetch('/payment/reactivate-subscription', { method: 'POST' }),
 };

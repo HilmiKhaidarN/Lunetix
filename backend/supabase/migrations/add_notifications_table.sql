@@ -6,6 +6,7 @@
 CREATE TABLE IF NOT EXISTS notifications (
   id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  type       TEXT DEFAULT 'general',
   icon       TEXT NOT NULL DEFAULT 'bell',
   icon_bg    TEXT NOT NULL DEFAULT 'rgba(124,58,237,0.15)',
   icon_color TEXT NOT NULL DEFAULT '#a78bfa',

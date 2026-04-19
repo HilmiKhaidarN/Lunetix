@@ -1,6 +1,7 @@
 // ══ ANALYTICS ══
 
 let anData = null; // Cache data dari API
+let advancedAnalyticsData = null; // Cache advanced analytics
 
 const anInsights = [
   { title:'Tips Belajar',   desc:'Belajar 30 menit setiap hari lebih efektif daripada sekali seminggu.', tag:'Konsisten', tagBg:'rgba(59,130,246,0.15)', tagColor:'#60a5fa', icon:'clock', iconBg:'rgba(59,130,246,0.15)', iconColor:'#60a5fa' },
@@ -12,9 +13,11 @@ async function renderAnalytics() {
   // Load data dari API
   try {
     anData = await AnalyticsAPI.getSummary();
+    advancedAnalyticsData = await AnalyticsAPI.getAdvanced();
   } catch (e) {
     console.warn('[Analytics] API tidak tersedia, pakai data lokal.', e);
     anData = null;
+    advancedAnalyticsData = generateFallbackAdvancedAnalytics();
   }
 
   renderAnStats();
@@ -26,6 +29,11 @@ async function renderAnalytics() {
   await renderAnRecent();
   renderAnInsights();
   renderAnRadar();
+  
+  // Render advanced analytics if available
+  if (advancedAnalyticsData) {
+    renderAdvancedAnalytics();
+  }
 
   setTimeout(() => {
     document.querySelectorAll('.an-course-fill[data-w]').forEach(el => el.style.width = el.dataset.w + '%');
@@ -432,4 +440,328 @@ function exportReport() {
     <button onclick="window.print()" style="background:#7c3aed;color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-size:14px">Print / Save PDF</button>
   </div></body></html>`);
   w.document.close();
+}
+
+// ── Advanced Analytics Functions ──
+function renderAdvancedAnalytics() {
+  if (!advancedAnalyticsData) return;
+  
+  // Add advanced analytics section to page if not exists
+  const analyticsPage = document.getElementById('page-analytics');
+  if (!analyticsPage) return;
+  
+  let advancedSection = document.getElementById('advanced-analytics-section');
+  if (!advancedSection) {
+    advancedSection = document.createElement('div');
+    advancedSection.id = 'advanced-analytics-section';
+    advancedSection.innerHTML = `
+      <div style="margin-top:32px">
+        <div class="section-header" style="margin-bottom:20px">
+          <h3 style="font-size:18px;font-weight:700">Advanced Analytics</h3>
+          <p style="font-size:13px;color:var(--text-muted)">Deep insights into your learning patterns</p>
+        </div>
+        
+        <div class="advanced-analytics-grid">
+          <!-- Learning Stats -->
+          <div class="card" style="grid-column:span 2">
+            <h4 style="font-size:14px;font-weight:600;margin-bottom:16px">Learning Overview</h4>
+            <div id="analytics-learning-stats"></div>
+          </div>
+          
+          <!-- Time Analytics -->
+          <div class="card" style="grid-column:span 2">
+            <div id="analytics-time-chart"></div>
+          </div>
+          
+          <!-- Performance Metrics -->
+          <div class="card">
+            <h4 style="font-size:14px;font-weight:600;margin-bottom:16px">Performance</h4>
+            <div id="analytics-performance"></div>
+          </div>
+          
+          <!-- Skills Progress -->
+          <div class="card" style="grid-column:span 3">
+            <div id="analytics-skills"></div>
+          </div>
+          
+          <!-- Recommendations -->
+          <div class="card" style="grid-column:span 2">
+            <div id="analytics-recommendations"></div>
+          </div>
+        </div>
+      </div>`;
+    analyticsPage.appendChild(advancedSection);
+  }
+  
+  renderLearningStats();
+  renderTimeAnalytics();
+  renderPerformanceMetrics();
+  renderSkillsProgress();
+  renderRecommendations();
+}
+
+function renderLearningStats() {
+  const container = document.getElementById('analytics-learning-stats');
+  if (!container || !advancedAnalyticsData) return;
+  
+  const stats = advancedAnalyticsData.learningStats;
+  container.innerHTML = `
+    <div class="analytics-stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <div class="analytics-stat-card" style="text-align:center;padding:16px;background:var(--input-bg);border-radius:12px">
+        <div class="analytics-stat-icon" style="width:40px;height:40px;margin:0 auto 8px;background:rgba(124,58,237,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center">
+          <i data-lucide="clock" style="width:20px;height:20px;color:#a78bfa"></i>
+        </div>
+        <div class="analytics-stat-value" style="font-size:20px;font-weight:700;color:var(--text-primary)">${stats.totalVideoTime}m</div>
+        <div class="analytics-stat-label" style="font-size:12px;color:var(--text-muted)">Video Time</div>
+      </div>
+      
+      <div class="analytics-stat-card" style="text-align:center;padding:16px;background:var(--input-bg);border-radius:12px">
+        <div class="analytics-stat-icon" style="width:40px;height:40px;margin:0 auto 8px;background:rgba(59,130,246,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center">
+          <i data-lucide="book-open" style="width:20px;height:20px;color:#60a5fa"></i>
+        </div>
+        <div class="analytics-stat-value" style="font-size:20px;font-weight:700;color:var(--text-primary)">${stats.totalLessons}</div>
+        <div class="analytics-stat-label" style="font-size:12px;color:var(--text-muted)">Lessons</div>
+      </div>
+      
+      <div class="analytics-stat-card" style="text-align:center;padding:16px;background:var(--input-bg);border-radius:12px">
+        <div class="analytics-stat-icon" style="width:40px;height:40px;margin:0 auto 8px;background:rgba(245,158,11,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center">
+          <i data-lucide="brain" style="width:20px;height:20px;color:#fbbf24"></i>
+        </div>
+        <div class="analytics-stat-value" style="font-size:20px;font-weight:700;color:var(--text-primary)">${stats.avgQuizScore}%</div>
+        <div class="analytics-stat-label" style="font-size:12px;color:var(--text-muted)">Quiz Score</div>
+      </div>
+      
+      <div class="analytics-stat-card" style="text-align:center;padding:16px;background:var(--input-bg);border-radius:12px">
+        <div class="analytics-stat-icon" style="width:40px;height:40px;margin:0 auto 8px;background:rgba(16,185,129,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center">
+          <i data-lucide="activity" style="width:20px;height:20px;color:#34d399"></i>
+        </div>
+        <div class="analytics-stat-value" style="font-size:20px;font-weight:700;color:var(--text-primary)">${stats.totalSessions}</div>
+        <div class="analytics-stat-label" style="font-size:12px;color:var(--text-muted)">Sessions</div>
+      </div>
+    </div>`;
+  
+  lucide.createIcons();
+}
+
+function renderTimeAnalytics() {
+  const container = document.getElementById('analytics-time-chart');
+  if (!container || !advancedAnalyticsData) return;
+  
+  const timeData = advancedAnalyticsData.timeAnalytics;
+  const maxActivity = Math.max(...timeData.dailyActivity.map(d => d.activity), 1);
+  
+  container.innerHTML = `
+    <div class="analytics-chart-header" style="margin-bottom:16px">
+      <h4 style="font-size:14px;font-weight:600">Daily Activity (Last 7 Days)</h4>
+      <div class="analytics-chart-meta" style="font-size:12px;color:var(--text-muted)">
+        <span>Weekly Total: ${timeData.weeklyTotal} activities</span>
+      </div>
+    </div>
+    <div class="analytics-time-chart" style="display:flex;align-items:end;gap:8px;height:120px;padding:0 8px">
+      ${timeData.dailyActivity.map(day => {
+        const height = Math.max((day.activity / maxActivity) * 80, 4);
+        const date = new Date(day.date);
+        const dayName = date.toLocaleDateString('en', { weekday: 'short' });
+        
+        return `
+          <div class="analytics-time-bar" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div class="analytics-bar-container" style="height:80px;display:flex;align-items:end;width:100%">
+              <div class="analytics-bar" style="width:100%;height:${height}px;background:linear-gradient(135deg,#7c3aed,#60a5fa);border-radius:4px 4px 0 0" title="${day.activity} activities"></div>
+            </div>
+            <div class="analytics-bar-label" style="font-size:10px;color:var(--text-muted)">${dayName}</div>
+            <div class="analytics-bar-value" style="font-size:11px;font-weight:600;color:var(--text-primary)">${day.activity}</div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderPerformanceMetrics() {
+  const container = document.getElementById('analytics-performance');
+  if (!container || !advancedAnalyticsData) return;
+  
+  const perf = advancedAnalyticsData.performanceMetrics;
+  const streak = advancedAnalyticsData.streakAnalytics;
+  
+  container.innerHTML = `
+    <div class="analytics-performance-grid" style="display:grid;gap:16px">
+      <div class="analytics-performance-card" style="padding:16px;background:var(--input-bg);border-radius:8px">
+        <h5 style="font-size:13px;font-weight:600;margin-bottom:8px">Quiz Performance</h5>
+        <div class="analytics-performance-stat" style="margin-bottom:8px">
+          <span class="analytics-perf-value" style="font-size:18px;font-weight:700;color:${perf.avgImprovement >= 0 ? 'var(--success)' : 'var(--danger)'}">${perf.avgImprovement > 0 ? '+' : ''}${perf.avgImprovement}%</span>
+          <span class="analytics-perf-label" style="font-size:11px;color:var(--text-muted);display:block">Average Improvement</span>
+        </div>
+        <div class="analytics-performance-details" style="font-size:11px;color:var(--text-muted)">
+          <div>Strong: ${perf.strongSubjects.length} subjects</div>
+          <div>Needs work: ${perf.needsImprovement.length} subjects</div>
+        </div>
+      </div>
+      
+      <div class="analytics-performance-card" style="padding:16px;background:var(--input-bg);border-radius:8px">
+        <h5 style="font-size:13px;font-weight:600;margin-bottom:8px">Learning Consistency</h5>
+        <div class="analytics-performance-stat" style="margin-bottom:8px">
+          <span class="analytics-perf-value" style="font-size:18px;font-weight:700;color:var(--accent-light)">${streak.currentStreak}</span>
+          <span class="analytics-perf-label" style="font-size:11px;color:var(--text-muted);display:block">Day Streak</span>
+        </div>
+        <div class="analytics-performance-details" style="font-size:11px;color:var(--text-muted)">
+          <div>Longest: ${streak.longestStreak} days</div>
+          <div>Active days: ${streak.totalActiveDays}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSkillsProgress() {
+  const container = document.getElementById('analytics-skills');
+  if (!container || !advancedAnalyticsData) return;
+  
+  const skills = advancedAnalyticsData.skillsProgress;
+  
+  container.innerHTML = `
+    <div class="analytics-skills-header" style="margin-bottom:16px">
+      <h4 style="font-size:14px;font-weight:600">Skills Assessment</h4>
+      <p style="font-size:12px;color:var(--text-muted)">Based on your quiz performance and completed content</p>
+    </div>
+    <div class="analytics-skills-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      ${Object.entries(skills).map(([skill, data]) => {
+        const levelColor = {
+          'Beginner': '#6b7280',
+          'Intermediate': '#fbbf24', 
+          'Advanced': '#60a5fa',
+          'Expert': '#34d399'
+        }[data.level];
+        
+        return `
+          <div class="analytics-skill-card" style="padding:12px;background:var(--input-bg);border-radius:8px">
+            <div class="analytics-skill-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span class="analytics-skill-name" style="font-size:12px;font-weight:600">${skill}</span>
+              <span class="analytics-skill-level" style="font-size:10px;color:${levelColor};background:${levelColor}20;padding:2px 6px;border-radius:4px">${data.level}</span>
+            </div>
+            <div class="analytics-skill-progress" style="margin-bottom:6px">
+              <div class="analytics-skill-bar" style="height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden">
+                <div class="analytics-skill-fill" style="width:${data.score}%;height:100%;background:${levelColor};transition:width 0.5s ease"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                <span class="analytics-skill-score" style="font-size:11px;font-weight:600">${data.score}%</span>
+                <span class="analytics-skill-meta" style="font-size:10px;color:var(--text-muted)">${data.quizzesTaken} quiz${data.quizzesTaken !== 1 ? 'es' : ''}</span>
+              </div>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderRecommendations() {
+  const container = document.getElementById('analytics-recommendations');
+  if (!container || !advancedAnalyticsData) return;
+  
+  const recommendations = advancedAnalyticsData.recommendations;
+  
+  if (!recommendations.length) {
+    container.innerHTML = `
+      <div class="analytics-no-recommendations" style="text-align:center;padding:24px">
+        <i data-lucide="check-circle" style="width:32px;height:32px;color:var(--success);margin-bottom:8px"></i>
+        <p style="font-size:14px;margin-bottom:4px">Great job! No specific recommendations at this time.</p>
+        <p style="font-size:12px;color:var(--text-muted)">Keep up the excellent work!</p>
+      </div>`;
+    lucide.createIcons();
+    return;
+  }
+  
+  container.innerHTML = `
+    <div class="analytics-recommendations-header" style="margin-bottom:16px">
+      <h4 style="font-size:14px;font-weight:600">AI Recommendations</h4>
+      <p style="font-size:12px;color:var(--text-muted)">Personalized suggestions to improve your learning</p>
+    </div>
+    <div class="analytics-recommendations-list" style="display:flex;flex-direction:column;gap:12px">
+      ${recommendations.map(rec => {
+        const priorityColor = {
+          'high': '#f87171',
+          'medium': '#fbbf24',
+          'low': '#60a5fa'
+        }[rec.priority];
+        
+        const iconMap = {
+          'improvement': 'trending-up',
+          'next_course': 'arrow-right',
+          'motivation': 'zap'
+        };
+        
+        return `
+          <div class="analytics-recommendation-card" style="display:flex;gap:12px;padding:12px;background:var(--input-bg);border-radius:8px;border-left:3px solid ${priorityColor}">
+            <div class="analytics-rec-icon" style="width:32px;height:32px;background:rgba(124,58,237,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i data-lucide="${iconMap[rec.type] || 'lightbulb'}" style="width:16px;height:16px;color:#a78bfa"></i>
+            </div>
+            <div class="analytics-rec-content" style="flex:1">
+              <div class="analytics-rec-header" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                <h5 style="font-size:13px;font-weight:600">${rec.title}</h5>
+                <span class="analytics-rec-priority" style="font-size:10px;color:${priorityColor};text-transform:uppercase;font-weight:600">${rec.priority}</span>
+              </div>
+              <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px">${rec.description}</p>
+              <button class="btn btn-outline" style="padding:4px 12px;font-size:11px">
+                ${rec.action}
+              </button>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+  
+  lucide.createIcons();
+}
+
+function generateFallbackAdvancedAnalytics() {
+  // Fallback data when API is not available
+  return {
+    learningStats: {
+      totalVideoTime: 120,
+      totalLessons: 15,
+      totalQuizzes: 8,
+      avgQuizScore: 75,
+      totalSessions: 23
+    },
+    timeAnalytics: {
+      dailyActivity: [
+        { date: '2024-01-01', activity: 2 },
+        { date: '2024-01-02', activity: 1 },
+        { date: '2024-01-03', activity: 3 },
+        { date: '2024-01-04', activity: 0 },
+        { date: '2024-01-05', activity: 2 },
+        { date: '2024-01-06', activity: 4 },
+        { date: '2024-01-07', activity: 1 }
+      ],
+      weeklyTotal: 13
+    },
+    performanceMetrics: {
+      avgImprovement: 15,
+      strongSubjects: ['ml-basics', 'python-ai'],
+      needsImprovement: ['dl-basics']
+    },
+    streakAnalytics: {
+      currentStreak: 5,
+      longestStreak: 12,
+      totalActiveDays: 28
+    },
+    skillsProgress: {
+      'Machine Learning': { score: 85, level: 'Advanced', quizzesTaken: 3 },
+      'Python Programming': { score: 92, level: 'Expert', quizzesTaken: 2 },
+      'Deep Learning': { score: 65, level: 'Intermediate', quizzesTaken: 1 },
+      'Natural Language Processing': { score: 45, level: 'Beginner', quizzesTaken: 1 },
+      'Computer Vision': { score: 0, level: 'Beginner', quizzesTaken: 0 }
+    },
+    recommendations: [
+      {
+        type: 'improvement',
+        title: 'Focus on NLP Fundamentals',
+        description: 'Your NLP quiz score is below average. Review the tokenization and preprocessing lessons.',
+        action: 'Review Content',
+        priority: 'high'
+      },
+      {
+        type: 'next_course',
+        title: 'Ready for Advanced ML',
+        description: 'You\'ve mastered the basics! Consider taking the Advanced Machine Learning course.',
+        action: 'Explore Course',
+        priority: 'medium'
+      }
+    ]
+  };
 }

@@ -77,19 +77,23 @@ app.get('/api/health', (req, res) => {
 // ── Routes ──
 app.use('/api/auth/login',    authLimiter);
 app.use('/api/auth/register', authLimiter);
-app.use('/api/auth',          require('../backend/src/routes/auth'));
-app.use('/api/courses',       require('../backend/src/routes/courses'));
-app.use('/api/quiz',          require('../backend/src/routes/quiz'));
-app.use('/api/module-quiz',   require('../backend/src/routes/moduleQuiz'));
-app.use('/api/lessons',       require('../backend/src/routes/lessons'));
+app.use('/api/auth',              require('../backend/src/routes/auth'));
+app.use('/api/courses',           require('../backend/src/routes/courses'));
+app.use('/api/quiz',              require('../backend/src/routes/quiz'));
+app.use('/api/module-quiz',       require('../backend/src/routes/moduleQuiz'));
+app.use('/api/lessons',           require('../backend/src/routes/lessons'));
 app.use('/api/lesson-discussion', require('../backend/src/routes/lessonDiscussion'));
-app.use('/api/certificates',  require('../backend/src/routes/certificates'));
-app.use('/api/notifications', require('../backend/src/routes/notifications'));
-app.use('/api/community',     require('../backend/src/routes/community'));
-app.use('/api/analytics',     require('../backend/src/routes/analytics'));
-app.use('/api/playground',    require('../backend/src/routes/playground'));
-app.use('/api/bookmarks',     require('../backend/src/routes/bookmarks'));
-app.use('/api/preferences',   require('../backend/src/routes/preferences'));
+app.use('/api/certificates',      require('../backend/src/routes/certificates'));
+app.use('/api/notifications',     require('../backend/src/routes/notifications'));
+app.use('/api/community',         require('../backend/src/routes/community'));
+app.use('/api/basic-analytics',   require('../backend/src/routes/analytics'));
+app.use('/api/analytics',         require('../backend/src/routes/advancedAnalytics'));
+app.use('/api/playground',        require('../backend/src/routes/playground'));
+app.use('/api/bookmarks',         require('../backend/src/routes/bookmarks'));
+app.use('/api/preferences',       require('../backend/src/routes/preferences'));
+app.use('/api/payment',           require('../backend/src/routes/payment'));
+app.use('/api/video-lessons',     require('../backend/src/routes/videoLessons'));
+app.use('/api/admin',             require('../backend/src/routes/admin'));
 
 // ── 404 handler ──
 app.use((req, res) => {
