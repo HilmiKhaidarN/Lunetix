@@ -80,7 +80,8 @@ app.use(globalLimiter);
 
 // ── Health check ──
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Lunetix API is running' });
+  console.log('[API] Health check called');
+  res.json({ status: 'ok', message: 'Lunetix API is running', timestamp: new Date().toISOString() });
 });
 
 // ── Routes ──
