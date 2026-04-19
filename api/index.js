@@ -219,6 +219,4 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
-
-// Also export as default for Vercel
 module.exports.default = app;
