@@ -81,11 +81,15 @@ async function login(req, res) {
   }
 
   // Ambil profil user
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('id, name, email, avatar, account_type, streak, points')
     .eq('id', data.user.id)
     .single();
+
+  if (profileError) {
+    return res.status(500).json({ error: 'Gagal mengambil profil user.' });
+  }
 
   return res.json({
     token: data.session.access_token,
@@ -108,11 +112,15 @@ async function refreshToken(req, res) {
   }
 
   // Ambil profil user (streak mungkin berubah)
-  const { data: profile } = await supabase
+  const { data: profile, error: profileError } = await supabase
     .from('users')
     .select('id, name, email, avatar, account_type, streak, points')
     .eq('id', data.user.id)
     .single();
+
+  if (profileError) {
+    return res.status(500).json({ error: 'Gagal mengambil profil user.' });
+  }
 
   return res.json({
     token: data.session.access_token,
