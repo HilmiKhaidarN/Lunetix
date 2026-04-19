@@ -124,19 +124,19 @@ function getCourseData(courseId) {
                     title: "Introduction to Machine Learning",
                     description: "Understand what ML is and why it's important",
                     lessons: [
-                        { icon: "play", title: "What is Machine Learning?", duration: "12 min" },
-                        { icon: "play", title: "History and Development of ML", duration: "10 min" },
+                        { icon: "file-text", title: "What is Machine Learning?", duration: "12 min" },
+                        { icon: "file-text", title: "History and Development of ML", duration: "10 min" },
                         { icon: "file-text", title: "AI vs ML vs Deep Learning", duration: "8 min" },
-                        { icon: "play", title: "Real-world ML Applications", duration: "15 min" }
+                        { icon: "file-text", title: "Real-world ML Applications", duration: "15 min" }
                     ]
                 },
                 {
                     title: "Types of Machine Learning",
                     description: "Learn about different ML approaches",
                     lessons: [
-                        { icon: "play", title: "Supervised Learning", duration: "20 min" },
-                        { icon: "play", title: "Unsupervised Learning", duration: "18 min" },
-                        { icon: "play", title: "Reinforcement Learning", duration: "14 min" },
+                        { icon: "file-text", title: "Supervised Learning", duration: "20 min" },
+                        { icon: "file-text", title: "Unsupervised Learning", duration: "18 min" },
+                        { icon: "file-text", title: "Reinforcement Learning", duration: "14 min" },
                         { icon: "code", title: "Lab: First Classification", duration: "30 min" }
                     ]
                 },
@@ -144,11 +144,11 @@ function getCourseData(courseId) {
                     title: "Basic ML Algorithms",
                     description: "Learn core ML algorithms and their implementation",
                     lessons: [
-                        { icon: "play", title: "Linear Regression", duration: "22 min" },
-                        { icon: "play", title: "Logistic Regression", duration: "20 min" },
-                        { icon: "play", title: "Decision Tree & Random Forest", duration: "25 min" },
-                        { icon: "play", title: "K-Nearest Neighbors", duration: "18 min" },
-                        { icon: "play", title: "Support Vector Machine", duration: "22 min" }
+                        { icon: "file-text", title: "Linear Regression", duration: "22 min" },
+                        { icon: "file-text", title: "Logistic Regression", duration: "20 min" },
+                        { icon: "file-text", title: "Decision Tree & Random Forest", duration: "25 min" },
+                        { icon: "file-text", title: "K-Nearest Neighbors", duration: "18 min" },
+                        { icon: "file-text", title: "Support Vector Machine", duration: "22 min" }
                     ]
                 }
             ]
@@ -168,7 +168,7 @@ function getCourseData(courseId) {
                     title: "Python Basics for AI",
                     description: "Setup Python environment and learn essential syntax",
                     lessons: [
-                        { icon: "play", title: "Python Setup and Basics", duration: "20 min" },
+                        { icon: "file-text", title: "Python Setup and Basics", duration: "20 min" },
                         { icon: "code", title: "Variables and Data Types", duration: "15 min" },
                         { icon: "code", title: "Control Structures", duration: "18 min" },
                         { icon: "code", title: "Functions and Modules", duration: "22 min" }
@@ -178,7 +178,7 @@ function getCourseData(courseId) {
                     title: "NumPy for Data Science",
                     description: "Master numerical computing with NumPy",
                     lessons: [
-                        { icon: "play", title: "NumPy Arrays and Operations", duration: "25 min" },
+                        { icon: "file-text", title: "NumPy Arrays and Operations", duration: "25 min" },
                         { icon: "code", title: "Array Indexing and Slicing", duration: "20 min" },
                         { icon: "code", title: "Mathematical Operations", duration: "22 min" },
                         { icon: "code", title: "Broadcasting and Vectorization", duration: "18 min" }
@@ -201,9 +201,9 @@ function getCourseData(courseId) {
                     title: "Neural Networks Fundamentals",
                     description: "Learn the basics of neural networks",
                     lessons: [
-                        { icon: "play", title: "What are Neural Networks?", duration: "20 min" },
-                        { icon: "play", title: "Activation Functions", duration: "18 min" },
-                        { icon: "play", title: "Forward Propagation", duration: "22 min" },
+                        { icon: "file-text", title: "What are Neural Networks?", duration: "20 min" },
+                        { icon: "file-text", title: "Activation Functions", duration: "18 min" },
+                        { icon: "file-text", title: "Forward Propagation", duration: "22 min" },
                         { icon: "code", title: "Building Your First NN", duration: "30 min" }
                     ]
                 }
@@ -224,8 +224,8 @@ function getCourseData(courseId) {
                     title: "NLP Introduction",
                     description: "Understand the basics of Natural Language Processing",
                     lessons: [
-                        { icon: "play", title: "What is NLP?", duration: "15 min" },
-                        { icon: "play", title: "Applications of NLP", duration: "18 min" },
+                        { icon: "file-text", title: "What is NLP?", duration: "15 min" },
+                        { icon: "file-text", title: "Applications of NLP", duration: "18 min" },
                         { icon: "code", title: "Text Preprocessing Pipeline", duration: "25 min" }
                     ]
                 }
@@ -246,8 +246,8 @@ function getCourseData(courseId) {
                     title: "Computer Vision Basics",
                     description: "Learn the fundamentals of computer vision",
                     lessons: [
-                        { icon: "play", title: "Introduction to Computer Vision", duration: "16 min" },
-                        { icon: "play", title: "Image Processing Fundamentals", duration: "22 min" },
+                        { icon: "file-text", title: "Introduction to Computer Vision", duration: "16 min" },
+                        { icon: "file-text", title: "Image Processing Fundamentals", duration: "22 min" },
                         { icon: "code", title: "Working with OpenCV", duration: "28 min" }
                     ]
                 }
@@ -268,8 +268,8 @@ function getCourseData(courseId) {
                     title: "Data Analysis Workflow",
                     description: "Learn the complete data analysis process",
                     lessons: [
-                        { icon: "play", title: "CRISP-DM Methodology", duration: "18 min" },
-                        { icon: "play", title: "Exploratory Data Analysis", duration: "22 min" },
+                        { icon: "file-text", title: "CRISP-DM Methodology", duration: "18 min" },
+                        { icon: "file-text", title: "Exploratory Data Analysis", duration: "22 min" },
                         { icon: "code", title: "Data Cleaning Techniques", duration: "25 min" }
                     ]
                 }
@@ -290,9 +290,9 @@ function getCourseData(courseId) {
                     title: "RL Fundamentals",
                     description: "Understand the basics of Reinforcement Learning",
                     lessons: [
-                        { icon: "play", title: "What is Reinforcement Learning?", duration: "20 min" },
-                        { icon: "play", title: "Markov Decision Process", duration: "25 min" },
-                        { icon: "play", title: "Reward and Policy", duration: "22 min" }
+                        { icon: "file-text", title: "What is Reinforcement Learning?", duration: "20 min" },
+                        { icon: "file-text", title: "Markov Decision Process", duration: "25 min" },
+                        { icon: "file-text", title: "Reward and Policy", duration: "22 min" }
                     ]
                 }
             ]
@@ -312,10 +312,10 @@ function getCourseData(courseId) {
                     title: "Ethical Principles in AI",
                     description: "Learn the fundamental ethical principles for AI",
                     lessons: [
-                        { icon: "play", title: "AI Ethics Framework", duration: "18 min" },
-                        { icon: "play", title: "Fairness and Bias", duration: "22 min" },
-                        { icon: "play", title: "Transparency and Explainability", duration: "20 min" },
-                        { icon: "play", title: "Privacy and Security", duration: "16 min" }
+                        { icon: "file-text", title: "AI Ethics Framework", duration: "18 min" },
+                        { icon: "file-text", title: "Fairness and Bias", duration: "22 min" },
+                        { icon: "file-text", title: "Transparency and Explainability", duration: "20 min" },
+                        { icon: "file-text", title: "Privacy and Security", duration: "16 min" }
                     ]
                 }
             ]
