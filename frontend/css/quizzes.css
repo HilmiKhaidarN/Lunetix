@@ -105,3 +105,14 @@
 .qz-recent-pts { font-size: 11px; color: var(--success); font-weight: 600; white-space: nowrap; }
 .qz-recent-time { font-size: 10px; color: var(--text-muted); }
 
+
+/* ══ QUIZZES — Apple Light Theme Overrides ══ */
+.qz-stat-card { box-shadow: var(--shadow-sm); }
+.qz-stat-card:hover { box-shadow: var(--shadow); border-color: rgba(0,0,0,0.1); }
+.qz-cat-card { box-shadow: var(--shadow-sm); }
+.qz-cat-card:hover, .qz-cat-card.active { border-color: var(--accent); background: rgba(0,113,227,0.06); }
+.qz-ftab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.quiz-play-option { background: #f5f5f7; border-color: #e5e5ea; color: var(--text-primary); }
+.quiz-play-option:hover { border-color: var(--accent); background: rgba(0,113,227,0.06); }
+.quiz-play-option.correct { border-color: #34c759; background: rgba(52,199,89,0.08); color: #1a7f37; }
+.quiz-play-option.wrong { border-color: #ff3b30; background: rgba(255,59,48,0.08); color: #dc2626; }

@@ -212,7 +212,7 @@
 
 .st-field { }
 .st-label { font-size:11px;color:var(--text-muted);display:block;margin-bottom:5px; }
-.st-input { width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:#fff;font-size:13px;outline:none;transition:border-color 0.2s;font-family:inherit; }
+.st-input { width:100%;background:#f5f5f7;border:1.5px solid #e5e5ea;border-radius:10px;padding:10px 14px;color:var(--text-primary);font-size:13px;outline:none;transition:border-color 0.2s;font-family:inherit; }
 .st-input:focus { border-color:var(--accent); }
 .st-select { background:var(--input-bg);border:1px solid var(--border);border-radius:6px;padding:6px 10px;color:var(--text-secondary);font-size:12px;outline:none;cursor:pointer;flex-shrink:0; }
 
@@ -251,7 +251,7 @@
 .st-font-btn.active { background:var(--accent);border-color:var(--accent);color:#fff; }
 
 /* Sidebar */
-.st-profile-card { background:linear-gradient(135deg,#1a1a3e,#2d1b69);border:1px solid var(--border-accent);border-radius:var(--radius);padding:20px;text-align:center;margin-bottom:14px; }
+.st-profile-card { background: #f5f5f7; border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; margin-bottom: 14px; }
 
 .st-quick-list { display:flex;flex-direction:column;gap:0; }
 .st-quick-item { display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:opacity 0.2s; }
@@ -331,3 +331,19 @@
 .bm-cat-icon { width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
 .bm-cat-name { font-size:12px;font-weight:500;flex:1; }
 .bm-cat-count { font-size:11px;font-weight:700;color:var(--accent-light); }
+
+/* ══ CERTIFICATES — Apple Light Theme Overrides ══ */
+.cert-stat-card { box-shadow: var(--shadow-sm); }
+.cert-stat-card:hover { box-shadow: var(--shadow); border-color: rgba(0,0,0,0.1); }
+.cert-ftab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cert-ftab:hover { border-color: var(--accent); color: var(--text-primary); }
+.cert-card-info { background: var(--bg-card); border-color: var(--border); }
+.cert-card-info:hover { box-shadow: var(--shadow-sm); }
+.cert-journey-dot.done { background: var(--accent); border-color: var(--accent); }
+.cert-journey-dot.pending { background: var(--bg-card); border-color: var(--border); }
+.cert-status-badge.earned { background: rgba(52,199,89,0.12); color: #1a7f37; }
+.cert-status-badge.progress { background: rgba(255,159,10,0.12); color: #b45309; }
+.cert-status-badge.locked { background: rgba(0,0,0,0.05); color: var(--text-muted); }
+.an-course-track { background: rgba(0,0,0,0.07); }
+.an-streak-dot.miss { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
+.an-insight-card:hover { border-color: rgba(0,0,0,0.12); }
