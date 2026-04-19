@@ -59,21 +59,34 @@ async function handleLogin(e) {
       body: JSON.stringify({ email, password }),
     });
 
+    console.log('[Auth] Response status:', res.status);
     const data = await res.json();
+    console.log('[Auth] Response data:', data);
 
     if (!res.ok) {
       showError(errorEl, data.error || 'Email atau password salah.');
       return;
     }
 
+    // Validasi response
+    if (!data.token || !data.user) {
+      console.error('[Auth] Invalid response structure:', data);
+      showError(errorEl, 'Response tidak valid. Silakan coba lagi.');
+      return;
+    }
+
     // Simpan session dengan token
-    setSession({
+    const sessionData = {
       ...data.user,
       token: data.token,
       refreshToken: data.refreshToken || null,
       expiresAt: data.expiresAt || null,
-      avatar: data.user.avatar || data.user.name?.charAt(0).toUpperCase(),
-    });
+      avatar: data.user.avatar || (data.user.name ? data.user.name.charAt(0).toUpperCase() : 'U'),
+    };
+    
+    console.log('[Auth] Saving session:', sessionData);
+    setSession(sessionData);
+    console.log('[Auth] Session saved, redirecting to dashboard');
 
     window.location.href = '/dashboard';
 
