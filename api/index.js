@@ -8,6 +8,14 @@ const express   = require('express');
 const cors      = require('cors');
 const rateLimit = require('express-rate-limit');
 
+// Debug environment
+console.log('[API] Initializing with environment:', {
+  NODE_ENV: process.env.NODE_ENV,
+  SUPABASE_URL: process.env.SUPABASE_URL ? '✓' : '✗ MISSING',
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ? '✓' : '✗ MISSING',
+  PORT: process.env.PORT,
+});
+
 const app = express();
 
 // ── HTTPS enforcement di production ──
@@ -77,23 +85,125 @@ app.get('/api/health', (req, res) => {
 // ── Routes ──
 app.use('/api/auth/login',    authLimiter);
 app.use('/api/auth/register', authLimiter);
-app.use('/api/auth',              require('../backend/src/routes/auth'));
-app.use('/api/courses',           require('../backend/src/routes/courses'));
-app.use('/api/quiz',              require('../backend/src/routes/quiz'));
-app.use('/api/module-quiz',       require('../backend/src/routes/moduleQuiz'));
-app.use('/api/lessons',           require('../backend/src/routes/lessons'));
-app.use('/api/lesson-discussion', require('../backend/src/routes/lessonDiscussion'));
-app.use('/api/certificates',      require('../backend/src/routes/certificates'));
-app.use('/api/notifications',     require('../backend/src/routes/notifications'));
-app.use('/api/community',         require('../backend/src/routes/community'));
-app.use('/api/basic-analytics',   require('../backend/src/routes/analytics'));
-app.use('/api/analytics',         require('../backend/src/routes/advancedAnalytics'));
-app.use('/api/playground',        require('../backend/src/routes/playground'));
-app.use('/api/bookmarks',         require('../backend/src/routes/bookmarks'));
-app.use('/api/preferences',       require('../backend/src/routes/preferences'));
-app.use('/api/payment',           require('../backend/src/routes/payment'));
-app.use('/api/video-lessons',     require('../backend/src/routes/videoLessons'));
-app.use('/api/admin',             require('../backend/src/routes/admin'));
+
+try {
+  app.use('/api/auth', require('../backend/src/routes/auth'));
+} catch (e) {
+  console.error('[API] Failed to load auth routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/courses', require('../backend/src/routes/courses'));
+} catch (e) {
+  console.error('[API] Failed to load courses routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/quiz', require('../backend/src/routes/quiz'));
+} catch (e) {
+  console.error('[API] Failed to load quiz routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/module-quiz', require('../backend/src/routes/moduleQuiz'));
+} catch (e) {
+  console.error('[API] Failed to load module-quiz routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/lessons', require('../backend/src/routes/lessons'));
+} catch (e) {
+  console.error('[API] Failed to load lessons routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/lesson-discussion', require('../backend/src/routes/lessonDiscussion'));
+} catch (e) {
+  console.error('[API] Failed to load lesson-discussion routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/certificates', require('../backend/src/routes/certificates'));
+} catch (e) {
+  console.error('[API] Failed to load certificates routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/notifications', require('../backend/src/routes/notifications'));
+} catch (e) {
+  console.error('[API] Failed to load notifications routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/community', require('../backend/src/routes/community'));
+} catch (e) {
+  console.error('[API] Failed to load community routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/basic-analytics', require('../backend/src/routes/analytics'));
+} catch (e) {
+  console.error('[API] Failed to load basic-analytics routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/analytics', require('../backend/src/routes/advancedAnalytics'));
+} catch (e) {
+  console.error('[API] Failed to load analytics routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/playground', require('../backend/src/routes/playground'));
+} catch (e) {
+  console.error('[API] Failed to load playground routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/bookmarks', require('../backend/src/routes/bookmarks'));
+} catch (e) {
+  console.error('[API] Failed to load bookmarks routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/preferences', require('../backend/src/routes/preferences'));
+} catch (e) {
+  console.error('[API] Failed to load preferences routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/payment', require('../backend/src/routes/payment'));
+} catch (e) {
+  console.error('[API] Failed to load payment routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/video-lessons', require('../backend/src/routes/videoLessons'));
+} catch (e) {
+  console.error('[API] Failed to load video-lessons routes:', e.message);
+  throw e;
+}
+
+try {
+  app.use('/api/admin', require('../backend/src/routes/admin'));
+} catch (e) {
+  console.error('[API] Failed to load admin routes:', e.message);
+  throw e;
+}
 
 // ── 404 handler ──
 app.use((req, res) => {

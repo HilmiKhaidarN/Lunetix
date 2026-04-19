@@ -9,8 +9,15 @@ if (!supabaseUrl || !supabaseKey) {
     url: supabaseUrl ? 'set' : 'MISSING',
     key: supabaseKey ? 'set' : 'MISSING'
   });
+  throw new Error('Supabase credentials not configured. Check environment variables.');
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+let supabase;
+try {
+  supabase = createClient(supabaseUrl, supabaseKey);
+} catch (err) {
+  console.error('Failed to initialize Supabase client:', err.message);
+  throw err;
+}
 
 module.exports = supabase;
