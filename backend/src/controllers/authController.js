@@ -1,16 +1,5 @@
 const supabase = require('../config/supabase');
-
-// Helper: sanitize HTML untuk prevent XSS
-function sanitizeHtml(str) {
-  if (!str) return str;
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;');
-}
+const { sanitizeHtml } = require('../utils/sanitize');
 
 // POST /api/auth/register
 async function register(req, res) {

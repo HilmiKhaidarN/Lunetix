@@ -45,26 +45,14 @@ const authLimiter = rateLimit({
 });
 
 // ── Middleware ──
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
-  : ['https://lunetix-rust.vercel.app'];
-
-// Helper: sanitize HTML untuk prevent XSS
-function sanitizeHtml(str) {
-  if (!str) return str;
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#x27;')
-    .replace(/\//g, '&#x2F;');
-}
 
 app.use(cors({
   origin: (origin, callback) => {
     // Izinkan request tanpa origin (curl, Postman, server-to-server)
     if (!origin) return callback(null, true);
+    const allowedOrigins = process.env.ALLOWED_ORIGINS
+      ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+      : ['https://lunetix-rust.vercel.app'];
     if (allowedOrigins.includes(origin)) return callback(null, true);
     // Izinkan localhost untuk development
     if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
