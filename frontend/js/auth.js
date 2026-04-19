@@ -78,6 +78,12 @@ async function handleLogin(e) {
     window.location.href = '/dashboard';
 
   } catch (err) {
+    // Log error detail untuk debugging
+    console.error('[Auth] Login error:', {
+      message: err.message,
+      stack: err.stack,
+      type: err.type,
+    });
     // Fallback: coba login lokal jika API tidak tersedia
     console.warn('[Auth] API tidak tersedia, coba login lokal.', err);
     _handleLoginLocal(email, password, errorEl);
