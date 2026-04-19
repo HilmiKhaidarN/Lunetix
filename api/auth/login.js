@@ -1,0 +1,28 @@
+const authController = require('../../backend/src/controllers/authController');
+
+// CORS middleware
+function setCorsHeaders(res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+}
+
+module.exports = async (req, res) => {
+  setCorsHeaders(res);
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+  
+  try {
+    await authController.login(req, res);
+  } catch (err) {
+    console.error('[API] Login error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
