@@ -85,15 +85,8 @@ app.get('/api/health', (req, res) => {
 });
 
 // ── Routes ──
-app.use('/api/auth/login',    authLimiter);
-app.use('/api/auth/register', authLimiter);
-
-try {
-  app.use('/api/auth', require('../backend/src/routes/auth'));
-} catch (e) {
-  console.error('[API] Failed to load auth routes:', e.message);
-  throw e;
-}
+// Auth endpoints are handled by serverless functions in /api/auth/
+// See vercel.json for routing configuration
 
 try {
   app.use('/api/quiz', require('../backend/src/routes/quiz'));
