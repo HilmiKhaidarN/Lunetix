@@ -10,6 +10,14 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+// ── HTTPS enforcement di production ──
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'production' && req.headers['x-forwarded-proto'] !== 'https') {
+    return res.status(403).json({ error: 'HTTPS required' });
+  }
+  next();
+});
+
 // ── Rate limiters ──
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 menit
@@ -28,8 +36,33 @@ const authLimiter = rateLimit({
 });
 
 // ── Middleware ──
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : ['https://lunetix-rust.vercel.app'];
+
+// Helper: sanitize HTML untuk prevent XSS
+function sanitizeHtml(str) {
+  if (!str) return str;
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
+
 app.use(cors({
-  origin: '*',
+  origin: (origin, callback) => {
+    // Izinkan request tanpa origin (curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    // Izinkan localhost untuk development
+    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+      return callback(null, true);
+    }
+    callback(new Error(`CORS: origin ${origin} tidak diizinkan.`));
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

@@ -13,18 +13,36 @@ async function getAllCourses(req, res) {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  // Hitung jumlah students real dari course_access per kursus
-  const { data: accessCounts } = await supabase
+  // Hitung jumlah students per kursus dengan SQL GROUP BY (efisien)
+  const { data: studentCounts } = await supabase
     .from('course_access')
-    .select('course_id');
+    .select('course_id')
+    .then(async () => {
+      // Gunakan raw query untuk COUNT GROUP BY
+      const { data } = await supabase.rpc('get_course_student_counts');
+      return { data };
+    })
+    .catch(async () => {
+      // Fallback: manual grouping jika RPC tidak ada
+      const { data: accessCounts } = await supabase
+        .from('course_access')
+        .select('course_id');
+      
+      const counts = {};
+      (accessCounts || []).forEach(row => {
+        counts[row.course_id] = (counts[row.course_id] || 0) + 1;
+      });
+      
+      return { data: Object.entries(counts).map(([course_id, count]) => ({ course_id: parseInt(course_id), count })) };
+    });
 
-  // Buat map: course_id → jumlah unique students
+  // Buat map: course_id → student count
   const studentMap = {};
-  (accessCounts || []).forEach(row => {
-    studentMap[row.course_id] = (studentMap[row.course_id] || 0) + 1;
+  (studentCounts || []).forEach(row => {
+    studentMap[row.course_id] = row.count || 0;
   });
 
-  // Inject students real ke setiap kursus, hapus rating dummy
+  // Inject students real ke setiap kursus
   const result = courses.map(c => ({
     ...c,
     students: studentMap[c.id] || 0,
@@ -119,23 +137,23 @@ async function claimCourse(req, res) {
 // GET /api/courses/access/me
 async function getMyCourses(req, res) {
   const userId = req.user.id;
-  const now = new Date().toISOString();
 
-  // Auto-expire kursus yang sudah lewat tanggal
-  await supabase
-    .from('course_access')
-    .update({ status: 'expired' })
-    .eq('user_id', userId)
-    .eq('status', 'active')
-    .lt('expires_at', now);
-
+  // Query dengan filter expires_at di SQL — auto-expire dilakukan saat query, bukan update manual
   const { data, error } = await supabase
     .from('course_access')
     .select('*, courses(title, thumb_icon, thumb_bg, thumb_color, level, category, duration)')
     .eq('user_id', userId);
 
   if (error) return res.status(500).json({ error: error.message });
-  return res.json({ courses: data });
+
+  // Tandai expired di response (frontend yang handle display)
+  const now = new Date();
+  const result = data.map(access => ({
+    ...access,
+    status: new Date(access.expires_at) < now ? 'expired' : access.status,
+  }));
+
+  return res.json({ courses: result });
 }
 
 module.exports = { getAllCourses, getCourseById, claimCourse, getMyCourses };

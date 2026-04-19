@@ -1,35 +1,64 @@
 # 🌙 Lunetix — AI Learning Platform
 
-> The next-generation platform to learn Artificial Intelligence through interactive courses, AI tools, and real-world projects.
-
-> ⚠️ **Warning:** This project is currently a **frontend-only demo**. All data is stored in `localStorage` — there is no backend, no real database, and no actual authentication. Passwords are stored in plain text in the browser. Do not use real personal information. This is built for portfolio/demonstration purposes only.
-
-## ✨ Features
-
-- **Dashboard** — Learning stats, progress tracking, streak, AI study tips
-- **Courses** — 8 AI/ML courses with full curriculum, materials, and quizzes
-- **AI Playground** — Chat with AI, code helper, summarizer, quiz generator
-- **Projects** — Build and showcase real AI projects
-- **Quizzes** — 5 quiz sets with scoring and leaderboard
-- **Community** — Discussion feed, leaderboard, weekly challenges
-- **Certificates** — Earn and download verified certificates (PDF)
-- **Analytics** — Learning activity charts, skill radar, performance trends
-- **Bookmarks** — Save courses and lessons for later
-- **Settings** — Profile, notifications, preferences, privacy, billing
+Platform pembelajaran AI dengan courses interaktif, AI playground, dan real-world projects.
 
 ## 🚀 Tech Stack
 
-- **Frontend:** HTML, Tailwind-inspired CSS, Vanilla JavaScript
-- **Icons:** Lucide Icons
-- **Fonts:** Inter (Google Fonts)
-- **Storage:** localStorage (frontend-only, no backend required)
+- **Frontend:** Vanilla JS, HTML, CSS
+- **Backend:** Node.js + Express
+- **Database:** Supabase (PostgreSQL)
+- **Deploy:** Vercel
+
+## 📦 Deploy ke Production
+
+### 1. Database Setup
+Jalankan migrations di Supabase SQL Editor:
+```sql
+backend/supabase/migrations/add_course_student_count_function.sql
+backend/supabase/migrations/add_quiz_points_tracking.sql
+backend/supabase/migrations/add_lesson_points_tracking.sql
+```
+
+### 2. Supabase Config
+- Authentication → Email Templates → Enable Email Confirmations
+
+### 3. Vercel Environment Variables
+```env
+NODE_ENV=production
+ALLOWED_ORIGINS=https://your-domain.vercel.app
+SITE_URL=https://your-domain.vercel.app
+GROQ_API_KEY=your_key
+SUPABASE_URL=your_url
+SUPABASE_KEY=your_key
+JWT_SECRET=your_secret
+```
+
+### 4. Deploy
+```bash
+git push origin main
+```
+
+## ✅ Production Ready
+
+- ✅ Password min 8 characters
+- ✅ Email verification
+- ✅ HTTPS enforcement
+- ✅ XSS protection
+- ✅ CORS whitelist
+- ✅ Rate limiting (serverless)
+- ✅ Race condition fixes
+- ✅ Global error handling
+- ✅ Offline detection
 
 ## 📁 Structure
 
 ```
-frontend/
-  html/          ← HTML pages
-  css/           ← CSS per page
-  js/            ← JS modules per feature
-    content/     ← Course content files
+frontend/        ← HTML, CSS, JS
+backend/         ← Express API
+  src/
+    controllers/ ← Business logic
+    routes/      ← API routes
+    middleware/  ← Auth, etc
+  supabase/
+    migrations/  ← Database migrations
 ```

@@ -89,15 +89,8 @@ async function handleLogin(e) {
 }
 
 function _handleLoginLocal(email, password, errorEl) {
-  const users = JSON.parse(localStorage.getItem('lunetix_users') || '[]');
-  const user  = users.find(u => u.email === email && u.password === password);
-  if (!user) {
-    showError(errorEl, 'Email atau password salah. Coba lagi.');
-    return;
-  }
-  const { password: _, ...safe } = user;
-  setSession(safe);
-  window.location.href = '/dashboard';
+  // Fallback lokal hanya tampilkan pesan error — tidak simpan/cek password plaintext
+  showError(errorEl, 'Server tidak tersedia. Silakan coba beberapa saat lagi.');
 }
 
 // ── Register ──
@@ -116,8 +109,8 @@ async function handleRegister(e) {
     showError(errorEl, 'Semua field wajib diisi.');
     return;
   }
-  if (password.length < 6) {
-    showError(errorEl, 'Password minimal 6 karakter.');
+  if (password.length < 8) {
+    showError(errorEl, 'Password minimal 8 karakter.');
     return;
   }
   if (password !== confirm) {
@@ -169,24 +162,8 @@ async function handleRegister(e) {
 }
 
 function _handleRegisterLocal(name, email, password, errorEl) {
-  const users = JSON.parse(localStorage.getItem('lunetix_users') || '[]');
-  if (users.find(u => u.email === email)) {
-    showError(errorEl, 'Email sudah terdaftar. Coba login.');
-    return;
-  }
-  const newUser = {
-    id: Date.now(),
-    name, email, password,
-    avatar: name.charAt(0).toUpperCase(),
-    account_type: 'free',
-    streak: 0, points: 0,
-    joinedAt: new Date().toISOString(),
-  };
-  users.push(newUser);
-  localStorage.setItem('lunetix_users', JSON.stringify(users));
-  const { password: _, ...safe } = newUser;
-  setSession(safe);
-  window.location.href = '/dashboard?new=1';
+  // Fallback lokal hanya tampilkan pesan error — tidak simpan password plaintext
+  showError(errorEl, 'Server tidak tersedia. Silakan coba beberapa saat lagi.');
 }
 
 // ── UI helpers ──

@@ -1,20 +1,32 @@
 const supabase = require('../config/supabase');
 
+// Helper: sanitize HTML untuk prevent XSS
+function sanitizeHtml(str) {
+  if (!str) return str;
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
+
 // POST /api/auth/register
 async function register(req, res) {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Semua field wajib diisi.' });
   }
-  if (password.length < 6) {
-    return res.status(400).json({ error: 'Password minimal 6 karakter.' });
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password minimal 8 karakter.' });
   }
 
-  // Daftarkan ke Supabase Auth
+  // Daftarkan ke Supabase Auth (email verification required)
   const { data: authData, error: authError } = await supabase.auth.admin.createUser({
     email,
     password,
-    email_confirm: true,
+    email_confirm: false, // User harus verifikasi email
   });
 
   if (authError) {
@@ -112,17 +124,10 @@ async function refreshToken(req, res) {
 
 // GET /api/auth/me
 async function getMe(req, res) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
-
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error } = await supabase.auth.getUser(token);
-  if (error || !user) return res.status(401).json({ error: 'Invalid token' });
-
   const { data: profile } = await supabase
     .from('users')
     .select('id, name, email, avatar, account_type, streak, points, joined_at')
-    .eq('id', user.id)
+    .eq('id', req.user.id)
     .single();
 
   return res.json({ user: profile });
@@ -130,32 +135,37 @@ async function getMe(req, res) {
 
 // PUT /api/auth/profile
 async function updateProfile(req, res) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
-
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  if (authError || !user) return res.status(401).json({ error: 'Invalid token' });
-
   const { name, bio, website, linkedin, github } = req.body;
   if (!name || !name.trim()) {
     return res.status(400).json({ error: 'Nama tidak boleh kosong.' });
   }
 
+  // Validasi format URL
+  const urlRegex = /^https?:\/\/.+/i;
+  if (website && website.trim() && !urlRegex.test(website.trim())) {
+    return res.status(400).json({ error: 'Format website tidak valid. Harus dimulai dengan http:// atau https://' });
+  }
+  if (linkedin && linkedin.trim() && !urlRegex.test(linkedin.trim())) {
+    return res.status(400).json({ error: 'Format LinkedIn URL tidak valid. Harus dimulai dengan http:// atau https://' });
+  }
+  if (github && github.trim() && !urlRegex.test(github.trim())) {
+    return res.status(400).json({ error: 'Format GitHub URL tidak valid. Harus dimulai dengan http:// atau https://' });
+  }
+
   const updates = {
-    name: name.trim(),
-    avatar: name.trim().charAt(0).toUpperCase(),
+    name:       name.trim(),
+    avatar:     name.trim().charAt(0).toUpperCase(),
     updated_at: new Date().toISOString(),
   };
-  if (bio      !== undefined) updates.bio      = bio;
-  if (website  !== undefined) updates.website  = website;
-  if (linkedin !== undefined) updates.linkedin = linkedin;
-  if (github   !== undefined) updates.github   = github;
+  if (bio      !== undefined) updates.bio      = sanitizeHtml(bio.trim());
+  if (website  !== undefined) updates.website  = website.trim();
+  if (linkedin !== undefined) updates.linkedin = linkedin.trim();
+  if (github   !== undefined) updates.github   = github.trim();
 
   const { data: profile, error: updateErr } = await supabase
     .from('users')
     .update(updates)
-    .eq('id', user.id)
+    .eq('id', req.user.id)
     .select('id, name, email, avatar, account_type, streak, points, joined_at')
     .single();
 
@@ -166,24 +176,17 @@ async function updateProfile(req, res) {
 
 // PUT /api/auth/password
 async function changePassword(req, res) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: 'Unauthorized' });
-
-  const token = authHeader.split(' ')[1];
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  if (authError || !user) return res.status(401).json({ error: 'Invalid token' });
-
   const { currentPassword, newPassword } = req.body;
   if (!currentPassword || !newPassword) {
     return res.status(400).json({ error: 'Semua field wajib diisi.' });
   }
-  if (newPassword.length < 6) {
-    return res.status(400).json({ error: 'Password baru minimal 6 karakter.' });
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: 'Password baru minimal 8 karakter.' });
   }
 
   // Verifikasi password lama dengan re-login
   const { error: verifyErr } = await supabase.auth.signInWithPassword({
-    email: user.email,
+    email: req.user.email,
     password: currentPassword,
   });
   if (verifyErr) {
@@ -191,7 +194,7 @@ async function changePassword(req, res) {
   }
 
   // Update password via Supabase Admin
-  const { error: updateErr } = await supabase.auth.admin.updateUserById(user.id, {
+  const { error: updateErr } = await supabase.auth.admin.updateUserById(req.user.id, {
     password: newPassword,
   });
   if (updateErr) return res.status(500).json({ error: updateErr.message });

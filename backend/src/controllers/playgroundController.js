@@ -2,22 +2,25 @@
 // PLAYGROUND CONTROLLER — Groq AI Integration
 // ══════════════════════════════════════════════
 
+const supabase = require('../config/supabase');
+
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-// Rate limit: max 20 request per user per jam
-const userRequestCounts = new Map();
 const MAX_REQUESTS_PER_HOUR = 20;
 
-function checkRateLimit(userId) {
-  const now = Date.now();
-  const hourAgo = now - 60 * 60 * 1000;
-  const userRequests = userRequestCounts.get(userId) || [];
-  const recentRequests = userRequests.filter(t => t > hourAgo);
-  if (recentRequests.length >= MAX_REQUESTS_PER_HOUR) return false;
-  recentRequests.push(now);
-  userRequestCounts.set(userId, recentRequests);
-  return true;
+// Rate limit berbasis Supabase — persistent di serverless/Vercel
+async function checkRateLimit(userId) {
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+
+  const { count, error } = await supabase
+    .from('playground_sessions')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .gte('updated_at', hourAgo);
+
+  if (error) return true; // Jika gagal cek, izinkan request
+  return (count || 0) < MAX_REQUESTS_PER_HOUR;
 }
 
 // Model mapping dari frontend ke Groq model ID
@@ -45,8 +48,9 @@ async function chat(req, res) {
     return res.status(500).json({ error: 'Groq API key tidak dikonfigurasi.' });
   }
 
-  // Cek rate limit
-  if (!checkRateLimit(req.user.id)) {
+  // Cek rate limit (persistent via Supabase)
+  const allowed = await checkRateLimit(req.user.id);
+  if (!allowed) {
     return res.status(429).json({ error: 'Batas 20 request per jam tercapai. Coba lagi nanti.' });
   }
 

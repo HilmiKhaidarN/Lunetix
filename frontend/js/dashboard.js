@@ -222,12 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Sync session dari API jika ada token (background, non-blocking)
   if (session?.token) {
-    fetch('http://localhost:3000/api/auth/me', {
+    const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3000/api'
+      : '/api';
+    fetch(`${apiBase}/auth/me`, {
       headers: { Authorization: `Bearer ${session.token}` }
     })
     .then(r => r.ok ? r.json() : null)
     .then(data => {
-      if (data?.user) setSession({ ...data.user, token: session.token });
+      if (data?.user) setSession({ ...session, ...data.user, token: session.token, refreshToken: session.refreshToken, expiresAt: session.expiresAt });
     })
     .catch(() => {});
   }

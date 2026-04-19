@@ -1,5 +1,17 @@
 const supabase = require('../config/supabase');
 
+// Helper: sanitize HTML untuk prevent XSS
+function sanitizeHtml(str) {
+  if (!str) return str;
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/\//g, '&#x2F;');
+}
+
 // GET /api/community/stats
 async function getStats(req, res) {
   try {
@@ -68,6 +80,17 @@ async function createPost(req, res) {
     return res.status(400).json({ error: 'Title dan body wajib diisi.' });
   }
 
+  // Sanitize input untuk prevent XSS
+  const sanitizedTitle = sanitizeHtml(title.trim());
+  const sanitizedBody = sanitizeHtml(body.trim());
+
+  if (sanitizedTitle.length > 120) {
+    return res.status(400).json({ error: 'Title maksimal 120 karakter.' });
+  }
+  if (sanitizedBody.length > 5000) {
+    return res.status(400).json({ error: 'Body maksimal 5000 karakter.' });
+  }
+
   const { data: profile } = await supabase
     .from('users')
     .select('name, avatar')
@@ -93,8 +116,8 @@ async function createPost(req, res) {
       tag:           tag || 'General',
       tag_color:     tc.color,
       tag_bg:        tc.bg,
-      title:         title.slice(0, 120),
-      body,
+      title:         sanitizedTitle,
+      body:          sanitizedBody,
     })
     .select()
     .single();
@@ -119,8 +142,7 @@ async function toggleLike(req, res) {
   if (existing) {
     // Unlike
     await supabase.from('community_likes').delete().eq('post_id', postId).eq('user_id', userId);
-    await supabase.from('community_posts').update({ likes: supabase.rpc('decrement', { x: 1 }) }).eq('id', postId);
-    // Hitung ulang likes
+    // Hitung ulang likes setelah unlike
     const { count } = await supabase.from('community_likes').select('*', { count: 'exact', head: true }).eq('post_id', postId);
     await supabase.from('community_posts').update({ likes: count || 0 }).eq('id', postId);
     return res.json({ liked: false });

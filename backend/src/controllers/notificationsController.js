@@ -3,13 +3,14 @@ const supabase = require('../config/supabase');
 // GET /api/notifications
 async function getNotifications(req, res) {
   const userId = req.user.id;
+  const { limit = 20, offset = 0 } = req.query;
 
   const { data, error } = await supabase
     .from('notifications')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false })
-    .limit(20);
+    .range(parseInt(offset), parseInt(offset) + parseInt(limit) - 1);
 
   if (error) return res.status(500).json({ error: error.message });
 

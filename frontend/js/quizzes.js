@@ -98,18 +98,32 @@ function renderQuizPage() { renderQzStats(); renderQzCategories(); renderQzList(
 
 function renderQzStats() {
   const el = document.getElementById('qz-stats-bar'); if (!el) return;
-  const scores = store.get('quiz_scores', {});
-  const completed = Object.keys(scores).length;
-  const avgScore = completed ? Math.round(Object.values(scores).reduce((a,b)=>a+b,0)/completed) : 0;
   const session = getSession();
-  const stats = [
-    { val: avgScore ? avgScore + '%' : '-', label:'Avg. Score',        badge: null, icon:'target',       bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
-    { val: completed || 0,                  label:'Quizzes Completed',  badge: null, icon:'check-circle', bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
-    { val: session?.streak || 0,            label:'Day Streak',         badge: null, icon:'flame',        bg:'rgba(239,68,68,0.15)',  color:'#f87171' },
-    { val: (session?.points || 0).toLocaleString(), label:'Total Points', badge: null, icon:'star',       bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
-  ];
-  el.innerHTML = stats.map(s=>`<div class="qz-stat-card"><div class="qz-stat-icon" style="background:${s.bg}"><i data-lucide="${s.icon}" style="width:22px;height:22px;color:${s.color}"></i></div><div><div style="display:flex;align-items:baseline;gap:8px"><div class="qz-stat-val">${s.val}</div>${s.badge?`<div class="qz-stat-badge">${s.badge}</div>`:''}</div><div class="qz-stat-label">${s.label}</div></div></div>`).join('');
-  lucide.createIcons();
+
+  // Ambil best scores dari API (async), fallback ke localStorage
+  const renderStats = (completed, avgScore) => {
+    const stats = [
+      { val: avgScore ? avgScore + '%' : '-', label:'Avg. Score',        badge: null, icon:'target',       bg:'rgba(124,58,237,0.15)', color:'#a78bfa' },
+      { val: completed || 0,                  label:'Quizzes Completed',  badge: null, icon:'check-circle', bg:'rgba(59,130,246,0.15)', color:'#60a5fa' },
+      { val: session?.streak || 0,            label:'Day Streak',         badge: null, icon:'flame',        bg:'rgba(239,68,68,0.15)',  color:'#f87171' },
+      { val: (session?.points || 0).toLocaleString(), label:'Total Points', badge: null, icon:'star',       bg:'rgba(245,158,11,0.15)', color:'#fbbf24' },
+    ];
+    el.innerHTML = stats.map(s=>`<div class="qz-stat-card"><div class="qz-stat-icon" style="background:${s.bg}"><i data-lucide="${s.icon}" style="width:22px;height:22px;color:${s.color}"></i></div><div><div style="display:flex;align-items:baseline;gap:8px"><div class="qz-stat-val">${s.val}</div>${s.badge?`<div class="qz-stat-badge">${s.badge}</div>`:''}</div><div class="qz-stat-label">${s.label}</div></div></div>`).join('');
+    lucide.createIcons();
+  };
+
+  // Render dulu dari localStorage sebagai fallback cepat
+  const localScores = store.get('quiz_scores', {});
+  const localCompleted = Object.keys(localScores).length;
+  const localAvg = localCompleted ? Math.round(Object.values(localScores).reduce((a,b)=>a+b,0)/localCompleted) : 0;
+  renderStats(localCompleted, localAvg);
+
+  // Lalu update dari API jika user login
+  if (session) {
+    getQuizStatsAsync().then(apiStats => {
+      if (apiStats) renderStats(apiStats.completed, apiStats.avgScore);
+    }).catch(() => {});
+  }
 }
 function renderQzCategories() {
   const el = document.getElementById('qz-cat-row'); if (!el) return;
@@ -272,12 +286,20 @@ function showQuizFinalResult() {
   const scores=store.get('quiz_scores',{}); const isNew=!scores[activeQuiz.id]||pct>scores[activeQuiz.id];
   if(isNew){scores[activeQuiz.id]=pct;store.set('quiz_scores',scores);}
 
-  // Catat percobaan ke API (async, non-blocking)
+  // Catat percobaan ke API (async, non-blocking) lalu sync best score
   const session = getSession();
   if (session) {
     recordQuizAttemptAsync(activeQuiz.id, pct).then(result => {
       if (result?.error === 'daily_limit_reached') {
         showToast('Batas percobaan hari ini tercapai.');
+      }
+      // Sync best score dari API ke localStorage
+      return apiFetch(`/quiz/${activeQuiz.id}/status`);
+    }).then(status => {
+      if (status?.bestScore !== undefined) {
+        const scores = store.get('quiz_scores', {});
+        scores[activeQuiz.id] = status.bestScore;
+        store.set('quiz_scores', scores);
       }
     }).catch(() => {});
   }
@@ -309,4 +331,35 @@ function loadMoreQuizzes(btn) {
   renderQzList();
   btn.style.display = 'none';
   showToast('Semua quiz ditampilkan!');
+}
+
+// ── Helper: ambil stats quiz dari API lalu sync ke localStorage ──
+async function getQuizStatsAsync() {
+  try {
+    // Ambil semua quiz attempts dari API untuk hitung stats
+    const promises = quizBank.map(q =>
+      apiFetch(`/quiz/${q.id}/status`).catch(() => null)
+    );
+    const results = await Promise.all(promises);
+
+    const scores = {};
+    let totalScore = 0;
+    let completed = 0;
+
+    results.forEach((result, i) => {
+      if (result && result.bestScore > 0) {
+        scores[quizBank[i].id] = result.bestScore;
+        totalScore += result.bestScore;
+        completed++;
+      }
+    });
+
+    // Sync ke localStorage agar konsisten
+    store.set('quiz_scores', scores);
+
+    const avgScore = completed ? Math.round(totalScore / completed) : 0;
+    return { completed, avgScore, scores };
+  } catch {
+    return null;
+  }
 }

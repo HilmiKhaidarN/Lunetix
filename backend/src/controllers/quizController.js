@@ -97,7 +97,7 @@ async function recordAttempt(req, res) {
       text: `Quiz <strong>${quizId}</strong> lulus! Skor kamu ${Math.round(score)}%.`,
     }).catch(() => {});
 
-    // Tambah poin berdasarkan jenis quiz
+    // Tambah poin berdasarkan jenis quiz (dengan race condition protection)
     const isFinalQuiz = quizId.startsWith('final-');
     const isModuleQuiz = quizId.startsWith('module-');
     const pointsToAdd = isFinalQuiz ? 100 : isModuleQuiz ? 50 : 50;
@@ -105,28 +105,35 @@ async function recordAttempt(req, res) {
       ? `Lulus quiz akhir kursus (skor ${Math.round(score)}%)`
       : `Lulus quiz modul (skor ${Math.round(score)}%)`;
 
-    // Cek apakah sudah pernah dapat poin untuk quiz ini (hanya sekali)
-    const { data: prevPassed } = await supabase
-      .from('quiz_attempts')
+    // Cek apakah sudah pernah dapat poin untuk quiz ini (atomic check via unique constraint)
+    const { data: alreadyAwarded, error: checkErr } = await supabase
+      .from('quiz_points_awarded')
       .select('id')
       .eq('user_id', userId)
       .eq('quiz_id', quizId)
-      .eq('passed', true)
-      .limit(2);
+      .single();
 
-    // Hanya beri poin jika ini pertama kali lulus
-    if (prevPassed && prevPassed.length <= 1) {
-      const { data: userRow } = await supabase
-        .from('users').select('points').eq('id', userId).single();
-      const newPoints = (userRow?.points || 0) + pointsToAdd;
-      await supabase.from('users').update({ points: newPoints }).eq('id', userId);
+    // Hanya beri poin jika belum pernah dapat (first-time pass)
+    if (!alreadyAwarded && !checkErr) {
+      // Insert ke tracking table (akan fail jika race condition karena UNIQUE constraint)
+      const { error: trackErr } = await supabase
+        .from('quiz_points_awarded')
+        .insert({ user_id: userId, quiz_id: quizId, points: pointsToAdd });
 
-      createNotification(userId, {
-        icon: 'star',
-        iconBg: 'rgba(245,158,11,0.15)',
-        iconColor: '#fbbf24',
-        text: `⭐ <strong>+${pointsToAdd} poin</strong> — ${reason}`,
-      }).catch(() => {});
+      // Jika insert berhasil (tidak ada race condition), tambah poin
+      if (!trackErr) {
+        const { data: userRow } = await supabase
+          .from('users').select('points').eq('id', userId).single();
+        const newPoints = (userRow?.points || 0) + pointsToAdd;
+        await supabase.from('users').update({ points: newPoints }).eq('id', userId);
+
+        createNotification(userId, {
+          icon: 'star',
+          iconBg: 'rgba(245,158,11,0.15)',
+          iconColor: '#fbbf24',
+          text: `⭐ <strong>+${pointsToAdd} poin</strong> — ${reason}`,
+        }).catch(() => {});
+      }
     }
   }
 

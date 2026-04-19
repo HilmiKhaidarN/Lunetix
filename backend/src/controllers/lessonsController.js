@@ -73,8 +73,8 @@ async function completeLesson(req, res) {
     return res.status(403).json({ error: 'Akses kursus telah berakhir.' });
   }
 
-  // Insert (idempoten — ON CONFLICT DO NOTHING)
-  const { error, data: upsertData } = await supabase
+  // Insert lesson progress (idempoten)
+  const { error: insertErr } = await supabase
     .from('lesson_progress')
     .upsert({
       user_id: userId,
@@ -82,27 +82,33 @@ async function completeLesson(req, res) {
       lesson_id: lessonId,
     }, { onConflict: 'user_id,course_id,lesson_id', ignoreDuplicates: true });
 
-  if (error) return res.status(500).json({ error: error.message });
+  if (insertErr) return res.status(500).json({ error: insertErr.message });
 
-  // Cek apakah ini lesson baru (bukan duplicate)
-  const { data: existing } = await supabase
-    .from('lesson_progress')
-    .select('id, completed_at')
+  // Update streak jika belum ada aktivitas hari ini
+  await updateUserStreak(userId);
+
+  // Cek apakah sudah pernah dapat poin untuk lesson ini (atomic check via unique constraint)
+  const { data: alreadyAwarded, error: checkErr } = await supabase
+    .from('lesson_points_awarded')
+    .select('id')
     .eq('user_id', userId)
     .eq('course_id', courseId)
     .eq('lesson_id', lessonId)
     .single();
 
-  const isNewLesson = existing && 
-    (Date.now() - new Date(existing.completed_at).getTime()) < 5000; // dalam 5 detik = baru
+  let pointsEarned = 0;
+  // Hanya beri poin jika belum pernah dapat (first-time completion)
+  if (!alreadyAwarded && !checkErr) {
+    // Insert ke tracking table (akan fail jika race condition karena UNIQUE constraint)
+    const { error: trackErr } = await supabase
+      .from('lesson_points_awarded')
+      .insert({ user_id: userId, course_id: courseId, lesson_id: lessonId, points: POINTS_PER_LESSON });
 
-  // Update streak jika belum ada aktivitas hari ini
-  await updateUserStreak(userId);
-
-  // Tambah poin jika lesson baru
-  let newPoints = null;
-  if (isNewLesson) {
-    newPoints = await addPoints(userId, POINTS_PER_LESSON, `Menyelesaikan lesson di kursus #${courseId}`);
+    // Jika insert berhasil (tidak ada race condition), tambah poin
+    if (!trackErr) {
+      await addPoints(userId, POINTS_PER_LESSON, `Menyelesaikan lesson di kursus #${courseId}`);
+      pointsEarned = POINTS_PER_LESSON;
+    }
   }
 
   // Ambil semua lesson yang sudah selesai
@@ -124,7 +130,7 @@ async function completeLesson(req, res) {
     completedLessons: progress.map(p => p.lesson_id),
     streak: user?.streak || 0,
     points: user?.points || 0,
-    pointsEarned: isNewLesson ? POINTS_PER_LESSON : 0,
+    pointsEarned,
   });
 }
 
