@@ -28,8 +28,8 @@ const coursesDataFallback = [
   { id: 4, title: 'Natural Language Processing',   level: 'Intermediate', category: 'NLP',              thumbIcon: 'message-square-text', thumbBg: 'linear-gradient(135deg,#3b1f5e,#6d28d9)', thumbColor: '#c084fc', duration: '10h 20m', students: 0, progress: 0, status: 'start' },
   { id: 5, title: 'Computer Vision with Python',   level: 'Beginner',     category: 'Computer Vision',  thumbIcon: 'scan-eye',            thumbBg: 'linear-gradient(135deg,#1c3a2e,#065f46)', thumbColor: '#34d399', duration: '9h 10m',  students: 0, progress: 0, status: 'start' },
   { id: 6, title: 'Data Science with AI',          level: 'Beginner',     category: 'Data Science',     thumbIcon: 'database',            thumbBg: 'linear-gradient(135deg,#1c2a4a,#1e3a8a)', thumbColor: '#818cf8', duration: '11h 50m', students: 0, progress: 0, status: 'start' },
-  { id: 7, title: 'Reinforcement Learning',        level: 'Advanced',     category: 'Deep Learning',    thumbIcon: 'gamepad-2',           thumbBg: 'linear-gradient(135deg,#3b1a1a,#7f1d1d)', thumbColor: '#f87171', duration: '15h 30m', students: 0, progress: 0, status: 'coming' },
-  { id: 8, title: 'AI Ethics & Safety',            level: 'Beginner',     category: 'Data Science',     thumbIcon: 'shield-check',        thumbBg: 'linear-gradient(135deg,#1a2e1a,#14532d)', thumbColor: '#86efac', duration: '5h 20m',  students: 0, progress: 0, status: 'coming' },
+  { id: 7, title: 'Reinforcement Learning',        level: 'Advanced',     category: 'Deep Learning',    thumbIcon: 'gamepad-2',           thumbBg: 'linear-gradient(135deg,#3b1a1a,#7f1d1d)', thumbColor: '#f87171', duration: '15h 30m', students: 0, progress: 0, status: 'start' },
+  { id: 8, title: 'AI Ethics & Safety',            level: 'Beginner',     category: 'Data Science',     thumbIcon: 'shield-check',        thumbBg: 'linear-gradient(135deg,#1a2e1a,#14532d)', thumbColor: '#86efac', duration: '5h 20m',  students: 0, progress: 0, status: 'start' },
 ];
 
 /**

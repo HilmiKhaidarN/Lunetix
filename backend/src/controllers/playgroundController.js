@@ -5,6 +5,21 @@
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
+// Rate limit: max 20 request per user per jam
+const userRequestCounts = new Map();
+const MAX_REQUESTS_PER_HOUR = 20;
+
+function checkRateLimit(userId) {
+  const now = Date.now();
+  const hourAgo = now - 60 * 60 * 1000;
+  const userRequests = userRequestCounts.get(userId) || [];
+  const recentRequests = userRequests.filter(t => t > hourAgo);
+  if (recentRequests.length >= MAX_REQUESTS_PER_HOUR) return false;
+  recentRequests.push(now);
+  userRequestCounts.set(userId, recentRequests);
+  return true;
+}
+
 // Model mapping dari frontend ke Groq model ID
 const MODEL_MAP = {
   'gpt4o':    'llama-3.3-70b-versatile',   // Best quality
@@ -28,6 +43,11 @@ async function chat(req, res) {
 
   if (!GROQ_API_KEY) {
     return res.status(500).json({ error: 'Groq API key tidak dikonfigurasi.' });
+  }
+
+  // Cek rate limit
+  if (!checkRateLimit(req.user.id)) {
+    return res.status(429).json({ error: 'Batas 20 request per jam tercapai. Coba lagi nanti.' });
   }
 
   const groqModel = MODEL_MAP[model] || MODEL_MAP['gpt4o'];

@@ -77,6 +77,35 @@ async function login(req, res) {
 
   return res.json({
     token: data.session.access_token,
+    refreshToken: data.session.refresh_token,
+    expiresAt: data.session.expires_at, // Unix timestamp
+    user: profile,
+  });
+}
+
+// POST /api/auth/refresh
+async function refreshToken(req, res) {
+  const { refreshToken } = req.body;
+  if (!refreshToken) {
+    return res.status(400).json({ error: 'Refresh token wajib diisi.' });
+  }
+
+  const { data, error } = await supabase.auth.refreshSession({ refresh_token: refreshToken });
+  if (error || !data.session) {
+    return res.status(401).json({ error: 'Refresh token tidak valid atau sudah expired. Silakan login ulang.' });
+  }
+
+  // Ambil profil user (streak mungkin berubah)
+  const { data: profile } = await supabase
+    .from('users')
+    .select('id, name, email, avatar, account_type, streak, points')
+    .eq('id', data.user.id)
+    .single();
+
+  return res.json({
+    token: data.session.access_token,
+    refreshToken: data.session.refresh_token,
+    expiresAt: data.session.expires_at,
     user: profile,
   });
 }
@@ -170,4 +199,18 @@ async function changePassword(req, res) {
   return res.json({ success: true, message: 'Password berhasil diubah.' });
 }
 
-module.exports = { register, login, getMe, updateProfile, changePassword };
+// POST /api/auth/forgot-password
+async function forgotPassword(req, res) {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email wajib diisi.' });
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${process.env.SITE_URL || 'https://lunetix-rust.vercel.app'}/reset-password`,
+  });
+
+  if (error) return res.status(400).json({ error: error.message });
+
+  return res.json({ success: true, message: 'Link reset password sudah dikirim ke email kamu.' });
+}
+
+module.exports = { register, login, refreshToken, getMe, updateProfile, changePassword, forgotPassword };

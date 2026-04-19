@@ -111,3 +111,11 @@
   border:1px solid var(--border-accent);border-radius:var(--radius);padding:18px;
 }
 
+
+/* ══ COMMUNITY — Apple Light Theme Overrides ══ */
+.cm-post-card { box-shadow: var(--shadow-sm); }
+.cm-post-card:hover { box-shadow: var(--shadow); border-color: rgba(0,0,0,0.1); }
+.cm-post-action:hover, .cm-post-action.liked { color: var(--accent); }
+.cm-ftab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cm-stat-card { box-shadow: var(--shadow-sm); }
+.cm-challenge-card { background: #f5f5f7; border-color: var(--border); }

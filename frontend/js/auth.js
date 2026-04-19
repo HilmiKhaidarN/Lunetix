@@ -270,3 +270,79 @@ if (typeof window !== 'undefined') {
     setInterval(refreshTokenIfNeeded, TOKEN_REFRESH_INTERVAL);
   });
 }
+
+// ── Forgot Password ──
+function showForgotPassword() {
+  // Buat modal forgot password
+  let modal = document.getElementById('forgot-modal');
+  if (modal) { modal.style.display = 'flex'; return; }
+
+  modal = document.createElement('div');
+  modal.id = 'forgot-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:32px;max-width:400px;width:100%;box-shadow:0 32px 80px rgba(0,0,0,0.2)">
+      <div style="text-align:center;margin-bottom:24px">
+        <div style="width:56px;height:56px;background:#f5f5f7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d1d1f" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h2 style="font-size:20px;font-weight:700;color:#1d1d1f;margin-bottom:6px;letter-spacing:-0.03em">Reset Password</h2>
+        <p style="font-size:13px;color:#6e6e73">Masukkan email kamu dan kami akan kirim link reset password.</p>
+      </div>
+      <div id="forgot-msg" style="display:none;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:14px"></div>
+      <input id="forgot-email" type="email" placeholder="Email kamu" autocomplete="email"
+        style="width:100%;background:#f5f5f7;border:1.5px solid #e5e5ea;border-radius:12px;padding:12px 16px;font-size:14px;color:#1d1d1f;outline:none;margin-bottom:12px;font-family:inherit;transition:border-color 0.2s"
+        onfocus="this.style.borderColor='#0071e3'" onblur="this.style.borderColor='#e5e5ea'"
+        onkeydown="if(event.key==='Enter')sendResetEmail()" />
+      <button onclick="sendResetEmail()" id="forgot-btn"
+        style="width:100%;padding:13px;border-radius:980px;background:#1d1d1f;color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;margin-bottom:10px;font-family:inherit">
+        Kirim Link Reset
+      </button>
+      <button onclick="document.getElementById('forgot-modal').style.display='none'"
+        style="width:100%;padding:11px;border-radius:980px;background:transparent;color:#6e6e73;font-size:14px;border:1.5px solid #e5e5ea;cursor:pointer;font-family:inherit">
+        Batal
+      </button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+async function sendResetEmail() {
+  const email = document.getElementById('forgot-email')?.value.trim();
+  const msgEl = document.getElementById('forgot-msg');
+  const btn   = document.getElementById('forgot-btn');
+
+  if (!email) {
+    if (msgEl) { msgEl.style.display='block'; msgEl.style.background='#fff0f0'; msgEl.style.color='#dc2626'; msgEl.textContent='Masukkan email dulu.'; }
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = 'Mengirim...'; }
+
+  try {
+    const res = await fetch(`${AUTH_API_BASE}/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+
+    if (msgEl) {
+      msgEl.style.display = 'block';
+      if (res.ok) {
+        msgEl.style.background = '#f0fdf4';
+        msgEl.style.color = '#16a34a';
+        msgEl.textContent = '✅ Link reset password sudah dikirim ke email kamu!';
+        if (btn) { btn.textContent = 'Terkirim!'; }
+      } else {
+        msgEl.style.background = '#fff0f0';
+        msgEl.style.color = '#dc2626';
+        msgEl.textContent = data.error || 'Gagal mengirim email. Coba lagi.';
+        if (btn) { btn.disabled = false; btn.textContent = 'Kirim Link Reset'; }
+      }
+    }
+  } catch (err) {
+    if (msgEl) { msgEl.style.display='block'; msgEl.style.background='#fff0f0'; msgEl.style.color='#dc2626'; msgEl.textContent='Gagal menghubungi server.'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Kirim Link Reset'; }
+  }
+}

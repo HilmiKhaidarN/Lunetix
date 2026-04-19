@@ -793,22 +793,33 @@
     height: 100vh;
     transform: translateX(-100%);
     z-index: 100;
+    width: 280px;
+    min-width: 280px;
   }
-  .cp-sidebar.open { transform: translateX(0); }
+  .cp-sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.15); }
   .cp-sidebar-toggle { display: flex; }
   .cp-menu-btn { display: flex; }
   .cp-content-area { padding: 20px 16px; }
   .cq-header { padding: 12px 16px; }
   .cq-main { padding: 20px 16px 60px; }
   .cq-question-card { padding: 20px 16px; }
+  .cp-bottom-nav { padding: 12px 16px; }
+  .cp-topbar { padding: 10px 16px; }
 }
 
 @media (max-width: 600px) {
   .cp-content-area { padding: 16px 12px; }
-  .cp-lesson-header h1 { font-size: 20px; }
-  .cq-intro-stats { gap: 12px; }
-  .cq-result-stats { gap: 12px; }
-  .cq-result .cq-score-big { font-size: 44px; }
+  .cp-lesson-header h1 { font-size: 18px; }
+  .cq-intro-stats { gap: 10px; }
+  .cq-intro-stat { min-width: 80px; padding: 10px 12px; }
+  .cq-intro-stat .val { font-size: 18px; }
+  .cq-result-stats { gap: 10px; }
+  .cq-result .cq-score-big { font-size: 40px; }
+  .cq-result h2 { font-size: 20px; }
+  .cq-result-actions { flex-direction: column; }
+  .cq-result-actions .btn { width: 100%; }
+  .cp-bottom-nav .btn { padding: 9px 14px; font-size: 12px; }
+  .cp-breadcrumb { display: none; }
 }
 
 /* ══════════════════════════════════════════════
