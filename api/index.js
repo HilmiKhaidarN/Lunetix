@@ -96,13 +96,6 @@ try {
 }
 
 try {
-  app.use('/api/courses', require('../backend/src/routes/courses'));
-} catch (e) {
-  console.error('[API] Failed to load courses routes:', e.message);
-  throw e;
-}
-
-try {
   app.use('/api/quiz', require('../backend/src/routes/quiz'));
 } catch (e) {
   console.error('[API] Failed to load quiz routes:', e.message);
